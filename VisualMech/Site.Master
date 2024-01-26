@@ -14,9 +14,9 @@
 
     <webopt:bundlereference runat="server" path="~/Content/css" />
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-
+    <link rel="stylesheet" href="/Content/custom_styles.css">
 </head>
-<body>
+<body class="main-home-color">
     <form runat="server">
         <asp:ScriptManager runat="server">
             <Scripts>
@@ -37,24 +37,30 @@
             </Scripts>
         </asp:ScriptManager>
 
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
+        <div class="black-space"></div>
+        <div class="top-gradient-red navbar nav-width">
+            <div class="container justify-content-center">
+                <img class="top-logo" src="Images/VGM_logo.png" alt=" ">
+                <div>
+                    <h1 class="display-3 fw-bolder text-light">VGMech</h1>
+                    <p class="text-light px-0 text-center m-0 fw-bold">Visual Game Mechanics</p>
+                </div>
+            </div>
+       </div>
+
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm bg-danger nav-width">
             <div class="container">
-                <a class="navbar-brand" runat="server" href="~/">VisualMech</a>
-                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
                 <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/">Home</a></li>
-
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/">About Us</a></li>
+                        <li class="nav-item fw-bold margin-right-space"><a class="nav-link white-link" runat="server" href="~/">Home</a></li>
+                        <li class="nav-item fw-bold margin-right-space"><a class="nav-link white-link" runat="server" href="~/">Learn</a></li>
+                        <li class="nav-item fw-bold "><a class="nav-link white-link" runat="server" href="~/">About Us</a></li>
 
                     </ul>
                 </div>
             </div>
         </nav>
-        <div class="container body-content">
+        <div>
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
             <hr />
