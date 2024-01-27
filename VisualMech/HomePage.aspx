@@ -2,48 +2,236 @@
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+    <webopt:bundlereference runat="server" path="~/Content/css" />
+    <link rel="stylesheet" href="/Content/custom_styles.css">
+    <script src="https://kit.fontawesome.com/d7d0e3dd38.js" crossorigin="anonymous"></script>
     <script src="/Content/custom_js.js"></script>
     <main>
-        <section class="intro-section-color" aria-labelledby="aspnetTitle">
+
+        <!-- Home page layout -->
+
+        <section id="homepage" class="intro-section-color" aria-labelledby="aspnetTitle">
             <div class="container">
                 <div class="row my-3 py-5">
-                    <div class="col align-content-center justify-content-center text-center my-3 py-5">
+                    <div class="col-md-6 justify-content-center text-center my-3 py-5">
                         <h1 class=" display-3 text-center text-light fw-bolder">Redefining <br /> Learning of Game<br /> Mechanics!</h1>
                     </div>
-                    <div class="col align-content-center justify-content-center text-center ">
-                        <img class="w-100" src="Images/game-mechanics-cover.png" alt=" ">
+                    <div class="col-md-6 justify-content-center text-center ">
+                        <img class="img-fluid" src="Images/game-mechanics-cover.png" alt=" ">
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="container" >
-            <div id="product-card">
-                <div id="product-front">
-                  <div class="shadow"></div>
-                    <img class="w-100" src="Images/jump_card_bg.png" alt="" />
-                    <div class="image_overlay"></div>
-                    <a id="view_details">View details</a>
-                    <div class="stats">         
-                        <div class="stats-container">
-                            <span class="product_name">Movement</span>    
-                            <p>Click to learn!</p>                                            
-                    
-                            <div class="product-options">
-                                <strong>DESCRIPTION:</strong>
-                                <span>Get to know movement integration, variations, and more!</span>
-                            </div>                       
-                        </div>
-                     </div>
+        <!-- Game Mechanic Cards Layout -->
+
+
+        <section id="game cards" class="container align-content-center justify-content-center" >
+            <ul class="cards align-content-center justify-content-center d-grid">
+              <li class=" align-content-center justify-content-center m-auto ">
+                <a href="" class="card">
+                  <img src="Images/jump_card_bg.png" class="card__image" alt="" />
+                  <div class="card__overlay">
+                    <div class="card__header">
+                      <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"></svg>                     
+                      <img class="card__thumb" src="Images/movement_icon.png" alt="" />
+                      <div class="card__header-text">
+                        <h3 class="card__title">MOVEMENT MECHANIC</h3>            
+                        <span class="card__status">Click to learn</span>
+                      </div>
                     </div>
-                </div>
-                 
-             
+                    <p class="fw-bolder card__title_description">Description:</p>
+                    <p class="card__description">Get to know movement integration, variations, and more!</p>
+                  </div>
+                </a>      
+              </li>
+                <li class=" align-content-center justify-content-center m-auto">
+                <a href="" class="card">
+                  <img src="Images/jump_card_bg.png" class="card__image" alt="" />
+                  <div class="card__overlay">
+                    <div class="card__header">
+                      <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"></svg>                     
+                      <img class="card__thumb" src="Images/movement_icon.png" alt="" />
+                      <div class="card__header-text">
+                        <h3 class="card__title">MOVEMENT MECHANIC</h3>            
+                        <span class="card__status">Click to learn</span>
+                      </div>
+                    </div>
+                    <p class="fw-bolder card__title_description">Description:</p>
+                    <p class="card__description">Get to know movement integration, variations, and more!</p>
+                  </div>
+                </a>      
+              </li>
+                <li class=" align-content-center justify-content-center m-auto">
+                <a href="" class="card">
+                  <img src="Images/jump_card_bg.png" class="card__image" alt="" />
+                  <div class="card__overlay">
+                    <div class="card__header">
+                      <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"></svg>                     
+                      <img class="card__thumb" src="Images/movement_icon.png" alt="" />
+                      <div class="card__header-text">
+                        <h3 class="card__title">MOVEMENT MECHANIC</h3>            
+                        <span class="card__status">Click to learn</span>
+                      </div>
+                    </div>
+                    <p class="fw-bolder card__title_description">Description:</p>
+                    <p class="card__description">Get to know movement integration, variations, and more!</p>
+                  </div>
+                </a>      
+              </li>
+                <li class=" align-content-center justify-content-center m-auto">
+                <a href="" class="card">
+                  <img src="Images/jump_card_bg.png" class="card__image" alt="" />
+                  <div class="card__overlay">
+                    <div class="card__header">
+                      <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"></svg>                     
+                      <img class="card__thumb" src="Images/movement_icon.png" alt="" />
+                      <div class="card__header-text">
+                        <h3 class="card__title">MOVEMENT MECHANIC</h3>            
+                        <span class="card__status">Click to learn</span>
+                      </div>
+                    </div>
+                    <p class="fw-bolder card__title_description">Description:</p>
+                    <p class="card__description">Get to know movement integration, variations, and more!</p>
+                  </div>
+                </a>      
+              </li>
+                <li class=" align-content-center justify-content-center m-auto">
+                <a href="" class="card">
+                  <img src="Images/jump_card_bg.png" class="card__image" alt="" />
+                  <div class="card__overlay">
+                    <div class="card__header">
+                      <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"></svg>                     
+                      <img class="card__thumb" src="Images/movement_icon.png" alt="" />
+                      <div class="card__header-text">
+                        <h3 class="card__title">MOVEMENT MECHANIC</h3>            
+                        <span class="card__status">Click to learn</span>
+                      </div>
+                    </div>
+                    <p class="fw-bolder card__title_description">Description:</p>
+                    <p class="card__description">Get to know movement integration, variations, and more!</p>
+                  </div>
+                </a>      
+              </li>
+
+            </ul>
+
         </section>  
 
-          <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <!-- Mini Game layout -->
+        <section id="mini games" class="mini_games_bg_home">
+            <div class="row text-center text-light ">
+                <h1 class="display-4 mini_custom_padding fw-bolder">Play competitive mini games<br /> with other learners!</h1>
+            </div>
+            
+            <div class="container">
+                <div class="row my-3 py-5 justify-content-center text-center">
+                    <div class="col-md-6 justify-content-center text-center mx-md-5 square-bg my-5">
+                        MINI GAME 1 HERE
+                    </div>
+                    <div class="col-md-6 justify-content-center text-center mx-md-5 square-bg my-5 ">
+                        MINI GAME 2 HERE
+                    </div>
+                </div>
+            </div>
 
-        
+        </section>
+
+        <!-- About Us layout -->
+
+        <section id="about us" class="about_us_bg ">
+            <div class="row text-center text-light ">
+                <h1 class="display-4 mini_custom_padding fw-bolder">MEET THE TEAM AND<br /> EVERYTHING YOU NEED TO KNOW<br /> ABOUT US</h1>
+            </div>
+            <div class="row">
+                <div class="col-md-6 d-grid">
+                    <div class="col-md-6 square-bg-2 m-auto text-center my-3">
+                        
+                    </div>
+                    <div class="text-center">
+                        <p class="text-light"> Person Name</p>
+                    </div>
+                </div>
+                <div class="col-md-6 d-grid">
+                    <div class="col-md-6 square-bg-2 m-auto text-center my-3">
+                        
+                    </div>
+                    <div class="text-center">
+                        <p class="text-light"> Person Name</p>
+                    </div>
+                </div>
+                <div class="col-md-6 d-grid">
+                    <div class="col-md-6 square-bg-2 m-auto text-center my-3">
+                        
+                    </div>
+                    <div class="text-center">
+                        <p class="text-light"> Person Name</p>
+                    </div>
+                </div>
+                <div class="col-md-6 d-grid">
+                    <div class="col-md-6 square-bg-2 m-auto text-center my-3">
+                       
+                    </div>
+                    <div class="text-center">
+                        <p class="text-light"> Person Name</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Core Purpose layout -->
+
+            <div class="row text-center">
+                <h1 class="display-5 text-light fw-bolder">Our Core Purpose</h1>
+            </div>
+            <div class="container">
+                <p class="text-light my-2 py-4">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et consectetur enim. Cras vel tincidunt enim. Nunc ullamcorper, eros eu accumsan finibus, ante erat sollicitudin est, ut venenatis turpis ex vitae sapien. Donec fermentum eros tempus lacus bibendum laoreet. Quisque quis nisl vitae eros venenatis condimentum. Praesent semper in purus vitae tristique. In blandit, ipsum quis facilisis mollis, mi purus fermentum odio, iaculis finibus dui lectus in turpis. Donec nec dui id nibh imperdiet tempus a a nibh. Sed quis suscipit lacus, sit amet rhoncus justo. In eget elit vel dui rhoncus lacinia. Aenean pretium tempus ex et tincidunt. Vestibulum nibh tortor, volutpat eu cursus at, elementum in augue. Nulla vel porttitor mi. Aenean rhoncus, purus sit amet eleifend congue, est est mollis felis, a egestas tellus diam vitae arcu. Nullam laoreet consequat convallis.
+                </p>
+            </div>
+
+        </section>
+
+        <!-- Footer layout -->
+
+        <footer class="footer-background">
+            <div class="row d-grid">
+                
+                    <div class="col-sm-9 m-auto center_custom m-0">
+                        <div class="row center_custom">
+                            <img class="footer_logo" src="Images/VGM_logo.png" alt="Logo">
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="col-sm-9 m-auto">
+                        <div class="row">
+                            <p class="text-light footer_container fw-bolder">Join our community!</p>
+                        </div>
+                        <div class="row ">
+                            <div class="col">
+                                
+                                <a class="fa-brands fa-telegram fa-2xl my-1 brand_custom"></a>
+                                
+                                <a class="fa-brands fa-discord fa-2xl my-1 brand_custom"></a>
+                            </div>                            
+                        </div>
+                        <div class="row">
+                            <p class="text-light footer_container fw-bolder">Stay tuned</p>
+                        </div>
+                        <div class="row ">
+                            <div class="col">
+                                <a class="fa-brands fa-facebook fa-2xl my-1 brand_custom"></a>
+                                <a class="fa-brands fa-twitter  fa-2xl my-1 brand_custom"></a>
+                                <a class="fa-brands fa-facebook-messenger  fa-2xl my-1 brand_custom"></a>
+                            </div>                            
+                        </div>
+                        
+                    </div>
+                
+
+            </div>
+        </footer>
+
     </main>
    
 
