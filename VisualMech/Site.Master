@@ -6,7 +6,7 @@
 <head runat="server">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%: Page.Title %> - My ASP.NET Application</title>
+    <title><%: Page.Title %> VGMech</title>
 
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/bundles/modernizr") %>
@@ -52,9 +52,10 @@
             <div class="container">
                 <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item fw-bold margin-right-space"><a class="nav-link white-link" runat="server" href="~/">Home</a></li>
-                        <li class="nav-item fw-bold margin-right-space"><a class="nav-link white-link" runat="server" href="~/">Learn</a></li>
-                        <li class="nav-item fw-bold "><a class="nav-link white-link" runat="server" href="~/">About Us</a></li>
+                        <li class="nav-item fw-bold margin-right-space"><a class="nav-link white-link" runat="server" href="#homepage">Home</a></li>
+                        <li class="nav-item fw-bold margin-right-space"><a class="nav-link white-link" runat="server" href="#game cards">Learn</a></li>
+                        <li class="nav-item fw-bold margin-right-space"><a class="nav-link white-link" runat="server" href="#mini games">Compete</a></li>
+                        <li class="nav-item fw-bold "><a class="nav-link white-link" runat="server" href="#about us">About Us</a></li>
 
                     </ul>
                 </div>
@@ -63,10 +64,7 @@
         <div>
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
-            <hr />
-            <footer>
-                <p>&copy; <%: DateTime.Now.Year %> - My ASP.NET Application</p>
-            </footer>
+            
         </div>
     </form>
     <asp:PlaceHolder runat="server">
