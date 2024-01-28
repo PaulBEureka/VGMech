@@ -4,9 +4,8 @@
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
     <webopt:bundlereference runat="server" path="~/Content/css" />
     <link rel="stylesheet" href="/Content/custom_styles.css">
-    <script src="https://kit.fontawesome.com/d7d0e3dd38.js" crossorigin="anonymous"></script>
-    <script src="/Content/custom_js.js"></script>
-    <main>
+    <script src="/Content/custom.js"></script>
+    <main id="content">
 
         <!-- Home page layout -->
 
@@ -28,92 +27,7 @@
 
         <section id="game cards" class="container align-content-center justify-content-center" >
             <ul class="cards align-content-center justify-content-center d-grid">
-              <li class=" align-content-center justify-content-center m-auto ">
-                <a href="" class="card">
-                  <img src="Images/jump_card_bg.png" class="card__image" alt="" />
-                  <div class="card__overlay">
-                    <div class="card__header">
-                      <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"></svg>                     
-                      <img class="card__thumb" src="Images/movement_icon.png" alt="" />
-                      <div class="card__header-text">
-                        <h3 class="card__title">MOVEMENT MECHANIC</h3>            
-                        <span class="card__status">Click to learn</span>
-                      </div>
-                    </div>
-                    <p class="fw-bolder card__title_description">Description:</p>
-                    <p class="card__description">Get to know movement integration, variations, and more!</p>
-                  </div>
-                </a>      
-              </li>
-                <li class=" align-content-center justify-content-center m-auto">
-                <a href="" class="card">
-                  <img src="Images/jump_card_bg.png" class="card__image" alt="" />
-                  <div class="card__overlay">
-                    <div class="card__header">
-                      <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"></svg>                     
-                      <img class="card__thumb" src="Images/movement_icon.png" alt="" />
-                      <div class="card__header-text">
-                        <h3 class="card__title">MOVEMENT MECHANIC</h3>            
-                        <span class="card__status">Click to learn</span>
-                      </div>
-                    </div>
-                    <p class="fw-bolder card__title_description">Description:</p>
-                    <p class="card__description">Get to know movement integration, variations, and more!</p>
-                  </div>
-                </a>      
-              </li>
-                <li class=" align-content-center justify-content-center m-auto">
-                <a href="" class="card">
-                  <img src="Images/jump_card_bg.png" class="card__image" alt="" />
-                  <div class="card__overlay">
-                    <div class="card__header">
-                      <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"></svg>                     
-                      <img class="card__thumb" src="Images/movement_icon.png" alt="" />
-                      <div class="card__header-text">
-                        <h3 class="card__title">MOVEMENT MECHANIC</h3>            
-                        <span class="card__status">Click to learn</span>
-                      </div>
-                    </div>
-                    <p class="fw-bolder card__title_description">Description:</p>
-                    <p class="card__description">Get to know movement integration, variations, and more!</p>
-                  </div>
-                </a>      
-              </li>
-                <li class=" align-content-center justify-content-center m-auto">
-                <a href="" class="card">
-                  <img src="Images/jump_card_bg.png" class="card__image" alt="" />
-                  <div class="card__overlay">
-                    <div class="card__header">
-                      <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"></svg>                     
-                      <img class="card__thumb" src="Images/movement_icon.png" alt="" />
-                      <div class="card__header-text">
-                        <h3 class="card__title">MOVEMENT MECHANIC</h3>            
-                        <span class="card__status">Click to learn</span>
-                      </div>
-                    </div>
-                    <p class="fw-bolder card__title_description">Description:</p>
-                    <p class="card__description">Get to know movement integration, variations, and more!</p>
-                  </div>
-                </a>      
-              </li>
-                <li class=" align-content-center justify-content-center m-auto">
-                <a href="" class="card">
-                  <img src="Images/jump_card_bg.png" class="card__image" alt="" />
-                  <div class="card__overlay">
-                    <div class="card__header">
-                      <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"></svg>                     
-                      <img class="card__thumb" src="Images/movement_icon.png" alt="" />
-                      <div class="card__header-text">
-                        <h3 class="card__title">MOVEMENT MECHANIC</h3>            
-                        <span class="card__status">Click to learn</span>
-                      </div>
-                    </div>
-                    <p class="fw-bolder card__title_description">Description:</p>
-                    <p class="card__description">Get to know movement integration, variations, and more!</p>
-                  </div>
-                </a>      
-              </li>
-
+                <asp:Literal ID="litCardHtml" runat="server"></asp:Literal>
             </ul>
 
         </section>  
@@ -233,6 +147,9 @@
         </footer>
 
     </main>
+    <script src="https://kit.fontawesome.com/d7d0e3dd38.js" crossorigin="anonymous"></script>
+    <script src="/Content/custom.js"></script>
+    
    
 
 </asp:Content>

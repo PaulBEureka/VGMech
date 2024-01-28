@@ -15,6 +15,7 @@
     <webopt:bundlereference runat="server" path="~/Content/css" />
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" href="/Content/custom_styles.css">
+    <script src="/Content/custom.js"></script>
 </head>
 <body class="main-home-color">
     <form runat="server">
@@ -43,12 +44,12 @@
                 <img class="top-logo" src="Images/VGM_logo.png" alt=" ">
                 <div>
                     <h1 class="display-3 fw-bolder text-light">VGMech</h1>
-                    <p class="text-light px-0 text-center m-0 fw-bold">Visual Game Mechanics</p>
+                    <p class="text-light px-0 text-center m-0 fw-bold">Learn Game Mechanics Visually!</p>
                 </div>
             </div>
        </div>
 
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm bg-danger nav-width">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm bg-danger nav-cus fixed-top">
             <div class="container">
                 <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
@@ -56,8 +57,16 @@
                         <li class="nav-item fw-bold margin-right-space"><a class="nav-link white-link" runat="server" href="#game cards">Learn</a></li>
                         <li class="nav-item fw-bold margin-right-space"><a class="nav-link white-link" runat="server" href="#mini games">Compete</a></li>
                         <li class="nav-item fw-bold "><a class="nav-link white-link" runat="server" href="#about us">About Us</a></li>
-
                     </ul>
+                    <div class="row">
+                        <div class="col-9">
+                            <input id="searchBox" class="form-control mr-sm-2" type="search" placeholder="Search">
+                        </div>
+                        <div class="col-3">
+                            <button class="btn btn-outline-light my-2 my-sm-0" onclick="searchAndHighlight()" type="submit">Search</button>
+                        </div>
+                      
+                    </div>
                 </div>
             </div>
         </nav>
@@ -71,4 +80,5 @@
         <%: Scripts.Render("~/Scripts/bootstrap.js") %>
     </asp:PlaceHolder>
 </body>
+    
 </html>

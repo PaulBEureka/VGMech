@@ -11,6 +11,10 @@ html {
     scroll-behavior: smooth; 
 }
 
+.highlight {
+    background-color: yellow;
+}
+
 .top-gradient-red {
     background: rgb(91,7,21);
     background: linear-gradient(180deg, rgba(91,7,21,1) 0%, rgba(149,37,56,1) 53%, rgba(91,7,21,1) 100%);
@@ -35,9 +39,10 @@ html {
     color: black;
 }
 
-.nav-width{
+.nav-cus{
     width: 100%;
 }
+
 
 /*Home Page Styles*/
 
@@ -130,10 +135,10 @@ body {
     z-index: 1;
 }
 
-    .card__arc path {
-        fill: var(--surface-color);
-        d: path("M 40 80 c 22 0 40 -22 40 -40 v 40 Z");
-    }
+.card__arc path {
+    fill: var(--surface-color);
+    d: path("M 40 80 c 22 0 40 -22 40 -40 v 40 Z");
+}
 
 .card:hover .card__header {
     transform: translateY(0);
