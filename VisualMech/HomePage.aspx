@@ -9,6 +9,8 @@
 
         <!-- Home page layout -->
 
+        <!-- Yow wassup -->
+
         <section id="homepage" class="intro-section-color" aria-labelledby="aspnetTitle">
             <div class="container">
                 <div class="row my-3 py-5">
