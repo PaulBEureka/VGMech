@@ -7,10 +7,8 @@
     <script src="/Content/custom.js"></script>
     <main id="content">
 
-        <!-- Home page layout -->
-
-        <!-- Yow wassup -->
-        <!-- Test Comment #2 -->
+        <div class="main-home-color">
+            <!-- Home page layout -->
 
 
         <section id="homepage" class="intro-section-color" aria-labelledby="aspnetTitle">
@@ -108,47 +106,11 @@
             </div>
 
         </section>
+        </div>
 
-        <!-- Footer layout -->
+        
 
-        <footer class="footer-background">
-            <div class="row d-grid">
-                
-                    <div class="col-sm-9 m-auto center_custom m-0">
-                        <div class="row center_custom">
-                            <img class="footer_logo" src="Images/VGM_logo.png" alt="Logo">
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="col-sm-9 m-auto">
-                        <div class="row">
-                            <p class="text-light footer_container fw-bolder">Join our community!</p>
-                        </div>
-                        <div class="row ">
-                            <div class="col">
-                                
-                                <a class="fa-brands fa-telegram fa-2xl my-1 brand_custom"></a>
-                                
-                                <a class="fa-brands fa-discord fa-2xl my-1 brand_custom"></a>
-                            </div>                            
-                        </div>
-                        <div class="row">
-                            <p class="text-light footer_container fw-bolder">Stay tuned</p>
-                        </div>
-                        <div class="row ">
-                            <div class="col">
-                                <a class="fa-brands fa-facebook fa-2xl my-1 brand_custom"></a>
-                                <a class="fa-brands fa-twitter  fa-2xl my-1 brand_custom"></a>
-                                <a class="fa-brands fa-facebook-messenger  fa-2xl my-1 brand_custom"></a>
-                            </div>                            
-                        </div>
-                        
-                    </div>
-                
-
-            </div>
-        </footer>
+        
 
     </main>
     <script src="https://kit.fontawesome.com/d7d0e3dd38.js" crossorigin="anonymous"></script>

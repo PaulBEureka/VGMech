@@ -30,6 +30,7 @@ namespace VisualMech
         protected void Page_Load(object sender, EventArgs e)
         {
             
+
             foreach (Tuple<string, string, string> content in cardContents)
             {
                 var card = new Card
