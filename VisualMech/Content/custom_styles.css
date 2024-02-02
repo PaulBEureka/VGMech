@@ -69,7 +69,6 @@ html {
 
 body {
     font-family: 'Noto Sans JP', sans-serif;
-    background-color: #fef8f8;
 }
 
 .cards {
@@ -255,7 +254,6 @@ body {
 /*Footer Styles*/
 
 .footer-background {
-    background-color: #810606;
     min-height: 500px;
     align-items:center;
     text-align:center;
@@ -294,3 +292,74 @@ body {
     color:red;
 }
 
+
+
+/*Game Mechanics layout styles*/
+
+.gameMech-bgColor {
+    background: #f3f0cd;
+}
+
+.gameMech-section-holders {
+    width: 670px;
+    height: 500px;
+    background-color:  rgb(91,7,21);
+    padding-bottom: 3em;
+    padding-top: 3em;
+}
+
+.gameMech-code-holder {
+    justify-content:center;
+    text-align:center;
+    width: 620px;
+    height: 380px;
+    background-color: white;
+    padding-bottom: 3em;
+    padding-top: 3em;
+}
+
+.gameMech-layout {
+    padding-bottom: 50px;
+}
+
+.gameMech-information-holder {
+    background-color: rgb(91,7,21);
+    width: 86%;
+}
+
+.gameMech-padding-text {
+    padding-bottom: 15px;
+}
+
+.gameMech-padding-Title{
+    padding-bottom:0px;
+    margin-bottom:0px;
+}
+
+.gameMech-comment-layout {
+    background-color: rgb(91,7,21);
+    width: 87%;
+    height: 700px;
+}
+
+.gameMech-layout-padding {
+    padding-bottom:100px;
+}
+
+.gameMech-outer-box {
+    width: 97%;
+    height: 90%;
+    background-color: #e4e4e4;
+    padding-bottom: 1em;
+    padding-top: 1em;
+}
+
+.comment-section-size{
+    height:500px;
+    overflow:scroll
+}
+
+.unityLayout {
+    width: 620px;
+    height: 380px;
+}

@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="/Content/custom_styles.css">
     <script src="/Content/custom.js"></script>
 </head>
-<body class="main-home-color">
+<body >
     <form runat="server">
         <asp:ScriptManager runat="server">
             <Scripts>
@@ -52,11 +52,12 @@
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm bg-danger nav-cus fixed-top">
             <div class="container">
                 <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
+
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item fw-bold margin-right-space"><a class="nav-link white-link" runat="server" href="#homepage">Home</a></li>
-                        <li class="nav-item fw-bold margin-right-space"><a class="nav-link white-link" runat="server" href="#game cards">Learn</a></li>
-                        <li class="nav-item fw-bold margin-right-space"><a class="nav-link white-link" runat="server" href="#mini games">Compete</a></li>
-                        <li class="nav-item fw-bold "><a class="nav-link white-link" runat="server" href="#about us">About Us</a></li>
+                        <li class="nav-item fw-bold margin-right-space"><a class="nav-link white-link" runat="server" href="HomePage.aspx#homepage">Home</a></li>
+                        <li class="nav-item fw-bold margin-right-space"><a class="nav-link white-link" runat="server" href="HomePage.aspx#game cards">Learn</a></li>
+                        <li class="nav-item fw-bold margin-right-space"><a class="nav-link white-link" runat="server" href="HomePage.aspx#mini games">Compete</a></li>
+                        <li class="nav-item fw-bold "><a class="nav-link white-link" runat="server" href="HomePage.aspx#about us">About Us</a></li>
                     </ul>
                     <div class="row">
                         <div class="col-9">
@@ -75,6 +76,47 @@
             </asp:ContentPlaceHolder>
             
         </div>
+
+        <!-- Footer layout -->
+
+        <footer class="footer-background bg-danger">
+            <div class="row d-grid">
+                
+                    <div class="col-sm-9 m-auto center_custom m-0">
+                        <div class="row center_custom">
+                            <img class="footer_logo" src="Images/VGM_logo.png" alt="Logo">
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="col-sm-9 m-auto">
+                        <div class="row">
+                            <p class="text-light footer_container fw-bolder">Join our community!</p>
+                        </div>
+                        <div class="row ">
+                            <div class="col">
+                                
+                                <a class="fa-brands fa-telegram fa-2xl my-1 brand_custom"></a>
+                                
+                                <a class="fa-brands fa-discord fa-2xl my-1 brand_custom"></a>
+                            </div>                            
+                        </div>
+                        <div class="row">
+                            <p class="text-light footer_container fw-bolder">Stay tuned</p>
+                        </div>
+                        <div class="row ">
+                            <div class="col">
+                                <a class="fa-brands fa-facebook fa-2xl my-1 brand_custom"></a>
+                                <a class="fa-brands fa-twitter  fa-2xl my-1 brand_custom"></a>
+                                <a class="fa-brands fa-facebook-messenger  fa-2xl my-1 brand_custom"></a>
+                            </div>                            
+                        </div>
+                        
+                    </div>
+                
+
+            </div>
+        </footer>
     </form>
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/Scripts/bootstrap.js") %>
