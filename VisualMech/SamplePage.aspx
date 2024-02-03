@@ -65,9 +65,10 @@
                             <!--Per Comment Layout -->
                             <!--
                                 Need pa ng signup para maiconnect account sa database
-                                1. Create database
-                                2. Iconnect sa database para icollect comment records sa table then dynamically add html comment layouts
-                                3. Edit the post comment button method para mag add ng comment sa database then ireflect sa comment layout
+                                1. Create database (DONE)
+                                2. Gawing Dynamic tong Sample Page 
+                                3. Iconnect sa database para icollect comment records sa table then dynamically add html comment layouts
+                                4. Edit the post comment button method para mag add ng comment sa database then ireflect sa comment layout
                                 -->
                             <section>
                                 <div class="container">
