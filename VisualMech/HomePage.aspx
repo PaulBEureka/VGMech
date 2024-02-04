@@ -18,7 +18,7 @@
                         <h1 class=" display-3 text-center text-light fw-bolder">Redefining <br /> Learning of Game<br /> Mechanics!</h1>
                     </div>
                     <div class="col-md-6 justify-content-center text-center ">
-                        <img class="img-fluid" src="Images/game-mechanics-cover.png" alt=" ">
+                        <img class="img-fluid" src="Images/game-mechanics-cover.png" alt=" " >
                     </div>
                 </div>
             </div>
@@ -114,6 +114,30 @@
 
     </main>
     <script src="https://kit.fontawesome.com/d7d0e3dd38.js" crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            var cards = document.querySelectorAll('.card');
+            cards.forEach(function (card) {
+                card.addEventListener('click', function () {
+                    var cardId = this.getAttribute('data-card-id');
+                    console.log("Card ID: " + cardId);
+                    HandleIT(cardId);
+
+                });
+            });
+        });
+
+
+        function HandleIT(cardId) {
+            PageMethods.ProcessIT(cardId);
+
+        }  
+
+    </script>
+
+
+
     <script src="/Content/custom.js"></script>
     
    
