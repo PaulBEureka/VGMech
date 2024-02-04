@@ -14,12 +14,12 @@ namespace VisualMech
         private string imageSource = "Images/jump_card_bg.png";
         private string thumbSource = "Images/movement_icon.png";
         
-        private List<Tuple<string, string, string, string, string, string>> cardContents = new List<Tuple<string, string, string, string, string, string>> //Populate this to add game mechanic cards in homepage
+        private List<Tuple<string, string, string, string, string, string, string>> cardContents = new List<Tuple<string, string, string, string, string, string, string>> //Populate this to add game mechanic cards in homepage
         {
             //Format: Title, Description, Page name of the aspx to be linked
-            Tuple.Create("MOVEMENT MECHANIC", "Get to know movement integration, variations, and more!", "CodeText here", "Horror, PVP", "Platforming", "Any Mechanic"),
-            Tuple.Create("SHOOTING MECHANIC", "Learn how to add shooting elements!", "CodeText here", "Horror, PVP", "Platforming", "Any Mechanic"),
-            Tuple.Create("COLLECTING MECHANIC", "Get to know movement integration, variations, and more!", "CodeText here", "Horror, PVP", "Platforming", "Any Mechanic")
+            Tuple.Create("MOVEMENT MECHANIC", "Get to know movement integration, variations, and more!", "CodeText here", "Horror, PVP", "Platforming", "Any Mechanic","https://paulbeureka.github.io/UnityGame1/Game_1/"),
+            Tuple.Create("SHOOTING MECHANIC", "Learn how to add shooting elements!", "CodeText here", "Horror, PVP", "Platforming", "Any Mechanic", "https://paulbeureka.github.io/UnityGame1/Game_1/"),
+            Tuple.Create("COLLECTING MECHANIC", "Get to know movement integration, variations, and more!", "CodeText here", "Horror, PVP", "Platforming", "Any Mechanic", "https://paulbeureka.github.io/UnityGame1/Game_1/")
         };
 
         private string cardString = "";
@@ -30,7 +30,7 @@ namespace VisualMech
         {
             int cardIndex = 0;
 
-            foreach (Tuple<string, string, string, string, string, string> content in cardContents)
+            foreach (Tuple<string, string, string, string, string, string, string> content in cardContents)
             {
                 var card = new Card
                 {
@@ -41,7 +41,7 @@ namespace VisualMech
                     Status = "Click to learn",
                     Description = content.Item2,
                     ConnectedPageName = "SamplePage",
-                    UnityLink = "https://paulbeureka.github.io/UnityGame1/Game_1/",
+                    UnityLink = content.Item7,
                     CodeText = content.Item3,
                     CommonGenres = content.Item4,
                     PossibleVariations = content.Item5,
