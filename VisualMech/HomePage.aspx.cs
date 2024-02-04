@@ -17,7 +17,7 @@ namespace VisualMech
         private List<Tuple<string, string, string, string, string, string, string>> cardContents = new List<Tuple<string, string, string, string, string, string, string>> //Populate this to add game mechanic cards in homepage
         {
             //Format: Title, Description, Page name of the aspx to be linked
-            Tuple.Create("MOVEMENT MECHANIC", "Get to know movement integration, variations, and more!", "CodeText here", "Horror, PVP", "Platforming", "Any Mechanic","https://paulbeureka.github.io/UnityGame1/Game_1/"),
+            Tuple.Create("MOVEMENT MECHANIC", "Get to know movement integration, variations, and more!", "CodeText here", "Horror, PVP", "Platforming", "Any Mechanic","https://almers5.github.io/Game-Mechanics/MovementMechanic"),
             Tuple.Create("SHOOTING MECHANIC", "Learn how to add shooting elements!", "CodeText here", "Horror, PVP", "Platforming", "Any Mechanic", "https://paulbeureka.github.io/UnityGame1/Game_1/"),
             Tuple.Create("COLLECTING MECHANIC", "Get to know movement integration, variations, and more!", "CodeText here", "Horror, PVP", "Platforming", "Any Mechanic", "https://paulbeureka.github.io/UnityGame1/Game_1/")
         };
