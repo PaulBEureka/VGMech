@@ -7,6 +7,7 @@ namespace VisualMech.Content.Classes
 {
     public class Card
     {
+        public string CardID { get; set; }
         public string ImageSource { get; set; }
         public string ThumbSource { get; set; }
         public string Title { get; set; }
@@ -14,11 +15,19 @@ namespace VisualMech.Content.Classes
         public string Description { get; set; }
         public string ConnectedPageName { get; set; }
 
+        public string UnityLink { get; set; }
+        public string CodeText { get;set; }
+        public string CommonGenres { get; set; }
+        public string PossibleVariations { get; set; }
+        public string PossibleCombinations { get; set; }
+
+
+        
         public string GetHtml()
         {
             return $@"
-            <li class=""align-content-center justify-content-center m-auto"">
-                <a href=""{ConnectedPageName}.aspx"" class=""card"">
+            <li class=""align-content-center justify-content-center m-auto"" >
+                <a href=""{ConnectedPageName}.aspx"" class=""card"" data-card-id =""{CardID}"">
                     <img src=""{ImageSource}"" class=""card__image"" alt="""" />
                     <div class=""card__overlay"">
                         <div class=""card__header"">
@@ -35,5 +44,10 @@ namespace VisualMech.Content.Classes
                 </a>
             </li>";
         }
+
+
+
+
+
     }
 }
