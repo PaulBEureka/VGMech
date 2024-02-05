@@ -9,6 +9,7 @@ using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml.Linq;
+using VisualMech.Classes;
 using VisualMech.Content.Classes;
 
 namespace VisualMech
@@ -17,7 +18,9 @@ namespace VisualMech
     {
         public static SqlConnection connection;
         public static string connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\VGMechDatabase.mdf;Integrated Security=True";
-
+        public static List<Comment> comments = new List<Comment>();
+        public static string cardTitle = "";
+        public string allCommentString = "";
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -29,6 +32,7 @@ namespace VisualMech
             {
                 if (temp == cardInt)
                 {
+                    cardTitle = card.Title;
 
                     gameMechLit.Text = $@"
                     <section class=""gameMech-bgColor"">
@@ -75,88 +79,10 @@ namespace VisualMech
 
                 </div>
             </div>
-            
-            <!-- Comment Section layout -->
 
-            <div class=""row m-auto gameMech-layout-padding"">
-                <div class=""container gameMech-comment-layout d-grid"">
-                    <div class=""gameMech-outer-box m-auto d-grid"">
-                        <div class=""container m-0 mx-auto"">
-                            <div class=""row "">
-                                <h4 class=""fw-bolder"">Share your thoughts</h4>
-                            </div>
-                            <div>
-                                <hr />
-                            </div>
-                            <!--Per Comment Layout -->
-                            <!--
-                                Need pa ng signup para maiconnect account sa database
-                                1. Create database (DONE)
-                                2. Gawing Dynamic tong Sample Page 
-                                3. Iconnect sa database para icollect comment records sa table then dynamically add html comment layouts
-                                4. Edit the post comment button method para mag add ng comment sa database then ireflect sa comment layout
-                                -->
-                            <section>
-                                <div class=""container""> <!--GAGAWIN TONG LITERAL KAPAG LALAGYAN NA COMMENTS GALING DATABASE -->
-                                    <div class=""row"">
-                                        <div class=""col-sm-5 col-md-6 col-12 pb-4 comment-section-size"">
-                                            <div class=""comment mt-4 text-justify float-left"">
-                                                <img src=""https://i.imgur.com/yTFUilP.jpg"" alt="""" class=""rounded-circle"" width=""40"" height=""40"">
-                                                <h4>Jhon Doe</h4>
-                                                <span>- 20 October, 2018</span>
-                                                <br>
-                                                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Accusamus numquam assumenda hic aliquam vero sequi velit molestias doloremque molestiae dicta?</p>
-                                            </div>
-                                            <div class=""text-justify darker mt-4 float-right"">
-                                                <img src=""https://i.imgur.com/CFpa3nK.jpg"" alt="""" class=""rounded-circle"" width=""40"" height=""40"">
-                                                <h4>Rob Simpson</h4>
-                                                <span>- 20 October, 2018</span>
-                                                <br>
-                                                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Accusamus numquam assumenda hic aliquam vero sequi velit molestias doloremque molestiae dicta?</p>
-                                            </div>
-                                            <div class=""comment mt-4 text-justify"">
-                                                <img src=""https://i.imgur.com/yTFUilP.jpg"" alt="""" class=""rounded-circle"" width=""40"" height=""40"">
-                                                <h4>Jhon Doe</h4>
-                                                <span>- 20 October, 2018</span>
-                                                <br>
-                                                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Accusamus numquam assumenda hic aliquam vero sequi velit molestias doloremque molestiae dicta?</p>
-                                            </div>
-                                            <div class=""darker mt-4 text-justify"">
-                                                <img src=""https://i.imgur.com/CFpa3nK.jpg"" alt="""" class=""rounded-circle"" width=""40"" height=""40"">
-                                                <h4>Rob Simpson</h4>
-                                                <span>- 20 October, 2018</span>
-                                                <br>
-                                                <p >Lorem ipsum dolor sit, amet consectetur adipisicing elit. Accusamus numquam assumenda hic aliquam vero sequi velit molestias doloremque molestiae dicta?</p>
-                                            </div>
-                                        </div>
+            </section> ";
 
-
-                                        <div class=""col-lg-4 col-md-5 col-sm-4 offset-md-1 offset-sm-1 col-12 mt-4"">
-                                                <div class=""form-group"">
-                                                    <h4>Leave a comment</h4>
-                                                    <label for=""message"">Message</label>
-                                                    <textarea name=""msg"" id="""" cols=""30"" rows=""5"" class=""form-control"" style=""background-color: white; ""></textarea>
-                                                </div>
-                                                <div>
-                                                    <button type=""button"" id=""post"" class=""btn btn-danger my-3"" onclick=""post_Click()"">Post Comment</button>
-
-                                                </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </section>
-
-
-
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-        </section>
-                    ";
+                    get_Comments(card.Title);
                 }
 
 
@@ -165,28 +91,58 @@ namespace VisualMech
         }
     
 
-        protected void post_Click(object sender, EventArgs e)
+        
+        
+
+        public void get_Comments(string mechanicTitle)
         {
-            
-            using (connection = new SqlConnection(connectionString))
+            Response.Write("Nag-update");
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                try
+                // Step 2: Write SQL Query
+                string query = $@"
+                        SELECT CommentTable.*, UserTable.username 
+                        FROM CommentTable 
+                        INNER JOIN UserTable ON CommentTable.user_id = UserTable.user_id 
+                        WHERE CommentTable.mechanic_title = '{mechanicTitle}'
+                    ";
+
+
+                // Step 3: Execute Query
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     connection.Open();
-                    Response.Write("<script>alert('Comment posted successfully')</script>");
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        // Step 4: Process Data
+                        while (reader.Read())
+                        {
+                            string username = reader["username"].ToString();
+                            string dateCommented = reader["comment_date"].ToString();
+                            string comment = reader["comment"].ToString();
 
-
-                }
-                catch (Exception ex)
-                {
-                    Response.Write("<script>alert('Error')</script>");
+                            allCommentString += $@"
+                                <div class=""comment mt-4 text-justify float-left"">
+                                    <img src=""https://i.imgur.com/yTFUilP.jpg"" alt="""" class=""rounded-circle"" width=""40"" height=""40"">
+                                    <h4>{username}</h4>
+                                    <span>- {dateCommented}</span>
+                                    <br>
+                                    <p>{comment}</p>
+                                </div>
+                                <div>
+                                    <hr />
+                                </div>";
+                            
+                        }
+                    }
                 }
             }
 
+            CommentHtml.Text = allCommentString;
         }
 
         [WebMethod]
-        public static string post_Click()
+        public static string post_Click(string message)
         {
             string result = "";
             using (connection = new SqlConnection(connectionString))
@@ -194,11 +150,27 @@ namespace VisualMech
                 try
                 {
                     connection.Open();
+
+                    string query = "INSERT INTO CommentTable (user_id, mechanic_title ,comment, comment_date) VALUES (@UserId, @MechanicTitle, @CommentText, @CommentDate)";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@UserId", 1);
+                        command.Parameters.AddWithValue("@MechanicTitle", cardTitle);
+                        command.Parameters.AddWithValue("@CommentText", message);
+                        command.Parameters.AddWithValue("@CommentDate", DateTime.Now);
+
+                        command.ExecuteNonQuery();
+                    }
+
+
                     result = "Comment posted successfully";
+
+                    connection.Close();
                 }
                 catch (Exception ex)
                 {
-                    result = "Error";
+                    result = ex.Message;
                 }
             }
             return result;

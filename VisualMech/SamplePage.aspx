@@ -7,7 +7,57 @@
     <main >
         <asp:Literal ID="gameMechLit" runat="server"></asp:Literal>
 
+        <section class="gameMech-bgColor">
+            <!-- Comment Section layout -->
 
+            <div class="row m-auto gameMech-layout-padding">
+                <div class="container gameMech-comment-layout d-grid">
+                    <div class="gameMech-outer-box m-auto d-grid">
+                        <div class="container m-0 mx-auto">
+                            <div class="row ">
+                                <h4 class="fw-bolder">Share your thoughts</h4>
+                            </div>
+                            <div>
+                                <hr />
+                            </div>
+
+                            <!--Per Comment Layout -->
+
+                            <section>
+                                <div class="container"> 
+                                    <div class="row">
+                                        <div class="col-sm-5 col-md-6 col-12 pb-4 comment-section-size">
+                                            
+                                            <asp:Literal ID="CommentHtml" runat="server"></asp:Literal>
+                                        </div>
+                                        
+
+                                        <div class="col-lg-4 col-md-5 col-sm-4 offset-md-1 offset-sm-1 col-12 mt-4">
+                                                <div class="form-group">
+                                                    <h4>Leave a comment</h4>
+                                                    <label for="message">Message</label>
+                                                    <textarea name="msg" id="commentbox" cols="30" rows="5" class="form-control" style="background-color: white; "></textarea>
+                                                </div>
+                                                <div>
+                                                    <button type="button" id="post" class="btn btn-danger my-3" onclick="post_Click()">Post Comment</button>
+
+                                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </section>
+                    
 
         
     </main>
