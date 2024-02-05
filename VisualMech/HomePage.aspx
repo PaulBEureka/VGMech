@@ -67,7 +67,7 @@
                         
                     </div>
                     <div class="text-center">
-                        <p class="text-light"> Person Name</p>
+                        <p class="text-light">Paul Carlo Bataga</p>
                     </div>
                 </div>
                 <div class="col-md-6 d-grid">
@@ -75,7 +75,7 @@
                         
                     </div>
                     <div class="text-center">
-                        <p class="text-light"> Person Name</p>
+                        <p class="text-light">Ciriaco John Almeron</p>
                     </div>
                 </div>
                 <div class="col-md-6 d-grid">
@@ -83,7 +83,7 @@
                         
                     </div>
                     <div class="text-center">
-                        <p class="text-light"> Person Name</p>
+                        <p class="text-light">Aries Diomampo</p>
                     </div>
                 </div>
                 <div class="col-md-6 d-grid">
@@ -91,7 +91,7 @@
                        
                     </div>
                     <div class="text-center">
-                        <p class="text-light"> Person Name</p>
+                        <p class="text-light">Kimtribi Aleksie Cuevas</p>
                     </div>
                 </div>
             </div>
@@ -102,8 +102,8 @@
                 <h1 class="display-5 text-light fw-bolder">Our Core Purpose</h1>
             </div>
             <div class="container">
-                <p class="text-light my-2 py-4">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et consectetur enim. Cras vel tincidunt enim. Nunc ullamcorper, eros eu accumsan finibus, ante erat sollicitudin est, ut venenatis turpis ex vitae sapien. Donec fermentum eros tempus lacus bibendum laoreet. Quisque quis nisl vitae eros venenatis condimentum. Praesent semper in purus vitae tristique. In blandit, ipsum quis facilisis mollis, mi purus fermentum odio, iaculis finibus dui lectus in turpis. Donec nec dui id nibh imperdiet tempus a a nibh. Sed quis suscipit lacus, sit amet rhoncus justo. In eget elit vel dui rhoncus lacinia. Aenean pretium tempus ex et tincidunt. Vestibulum nibh tortor, volutpat eu cursus at, elementum in augue. Nulla vel porttitor mi. Aenean rhoncus, purus sit amet eleifend congue, est est mollis felis, a egestas tellus diam vitae arcu. Nullam laoreet consequat convallis.
+                <p class="text-light my-2 py-4 text-center fw-bold h4">
+                    "To empower aspiring game developers and enthusiasts with deep understanding of game mechanics through interactive learning experiences,  fostering both knowledge acquisition and enjoyment in a dynamic virtual environment."
                 </p>
             </div>
 
