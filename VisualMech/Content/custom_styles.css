@@ -363,3 +363,21 @@ body {
     width: 620px;
     height: 380px;
 }
+
+/*MiniGame Styles*/
+
+.rcorners2 {
+    border-radius: 25px;
+    background: #fff0f0;
+    padding: 10px;
+    width: 200px;
+    height: 150px;
+}
+
+.rounded_corners {
+    border-radius: 25px;
+}
+
+.no_bg{
+    background:none;
+}
