@@ -31,6 +31,7 @@
         <section id="game cards" class="container align-content-center justify-content-center" >
             <ul class="cards align-content-center justify-content-center d-grid">
                 <asp:Literal ID="litCardHtml" runat="server"></asp:Literal>
+
             </ul>
 
         </section>  

@@ -14,12 +14,15 @@
 //Try lang to, to be fixed pa
 
 function post_Click() {
-    PageMethods.post_Click(onSuccess, onError);
+    var message = document.getElementById('commentbox').value; // Get textarea value
+
+    PageMethods.post_Click(message,onSuccess, onError);
 }
 
 function onSuccess(response) {
     // Handle success response here
     alert(response);
+    window.location.href = window.location.pathname; // Redirect to the same page
 }
 
 function onError(response) {
