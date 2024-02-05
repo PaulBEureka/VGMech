@@ -15,8 +15,8 @@ namespace VisualMech
 {
     public partial class WebForm1 : System.Web.UI.Page
     {
-        SqlConnection connection;
-        string connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\VGMechDatabase.mdf;Integrated Security=True";
+        public static SqlConnection connection;
+        public static string connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\VGMechDatabase.mdf;Integrated Security=True";
 
 
         protected void Page_Load(object sender, EventArgs e)
@@ -137,8 +137,9 @@ namespace VisualMech
                                                     <label for=""message"">Message</label>
                                                     <textarea name=""msg"" id="""" cols=""30"" rows=""5"" class=""form-control"" style=""background-color: white; ""></textarea>
                                                 </div>
-                                                <div class=""form-group"">
-                                                    <asp:Button type=""button"" id=""post"" class=""btn btn-danger my-3"" runat=""server"" OnClick=""post_Click"" Text=""Post Comment""></asp:Button>
+                                                <div>
+                                                    <button type=""button"" id=""post"" class=""btn btn-danger my-3"" onclick=""post_Click()"">Post Comment</button>
+
                                                 </div>
                                         </div>
                                     </div>
@@ -184,7 +185,26 @@ namespace VisualMech
 
         }
 
-        
+        [WebMethod]
+        public static string post_Click()
+        {
+            string result = "";
+            using (connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    result = "Comment posted successfully";
+                }
+                catch (Exception ex)
+                {
+                    result = "Error";
+                }
+            }
+            return result;
+        }
+
+
 
     }
 }

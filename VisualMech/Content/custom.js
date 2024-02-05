@@ -13,6 +13,18 @@
 
 //Try lang to, to be fixed pa
 
+function post_Click() {
+    PageMethods.post_Click(onSuccess, onError);
+}
 
+function onSuccess(response) {
+    // Handle success response here
+    alert(response);
+}
+
+function onError(response) {
+    // Handle error response here
+    alert("An error occurred while posting comment.");
+}
 
 
