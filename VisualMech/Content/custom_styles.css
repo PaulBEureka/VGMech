@@ -106,7 +106,11 @@ body {
     border-radius: calc(var(--curve) * 1px);
     background-color: var(--surface-color);
     transform: translateY(100%);
-    transition: .2s ease-in-out;
+    transition: .3s ease-in-out;
+}
+
+.card:hover img {
+    filter: brightness(1.2);
 }
 
 .card:hover .card__overlay {
@@ -167,14 +171,14 @@ body {
 
 .card__status {
     font-size: .8em;
-    color: #D7BDCA;
+    color: rgba(82, 73, 77, 0.8);
 }
 
 .card__description {
     padding-left: 2em;
     padding-bottom: 2em;
     margin: 0;
-    color: #D7BDCA;
+    color: rgba(103,101,101,1);
     font-family: "MockFlowFont";
     display: -webkit-box;
     -webkit-box-orient: vertical;
@@ -372,10 +376,15 @@ body {
     padding: 10px;
     width: 200px;
     height: 150px;
+    transition: filter 0.3s ease;
 }
 
 .rounded_corners {
     border-radius: 25px;
+}
+
+.rcorners2:hover {
+    filter: brightness(1.7);
 }
 
 .no_bg{

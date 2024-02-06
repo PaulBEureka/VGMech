@@ -5,7 +5,11 @@
     <link rel="stylesheet" href="/Content/custom_styles.css">
     <script src="/Content/custom.js"></script>
     <main>
+        <div>
+            <h3 class="text-center">Mini Game Layout Here</h3>
 
+
+        </div>
 
 
 
