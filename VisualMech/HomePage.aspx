@@ -59,35 +59,35 @@
             </div>
             <div class="row">
                 <div class="col-md-6 d-grid">
-                    <div class="col-md-6 square-bg-2 m-auto text-center my-3">
-                        
+                    <div class="col-md-6 square-bg-3 m-auto text-center my-3">
+                    <img src="./Images/PaulBataga.jpg" height="300" width="250"/> 
                     </div>
                     <div class="text-center">
-                        <p class="text-light"> Person Name</p>
+                        <p class="text-light"> Paul Carlo I. Bataga</p>
                     </div>
                 </div>
                 <div class="col-md-6 d-grid">
-                    <div class="col-md-6 square-bg-2 m-auto text-center my-3">
-                        
+                    <div class="col-md-6 square-bg-3 m-auto text-center my-3">
+                    <img src="./Images/CJAlmeron.jpg" height="300" width="250"/>   
                     </div>
                     <div class="text-center">
-                        <p class="text-light"> Person Name</p>
+                        <p class="text-light"> Ciriaco John L. Almeron</p>
                     </div>
                 </div>
                 <div class="col-md-6 d-grid">
-                    <div class="col-md-6 square-bg-2 m-auto text-center my-3">
-                        
+                    <div class="col-md-6 square-bg-3 m-auto text-center my-3">
+                    <img src="./Images/AriesDiomampo.jpg" height="300" width="250"/>    
                     </div>
                     <div class="text-center">
-                        <p class="text-light"> Person Name</p>
+                        <p class="text-light"> Aries S. Diomampo</p>
                     </div>
                 </div>
                 <div class="col-md-6 d-grid">
-                    <div class="col-md-6 square-bg-2 m-auto text-center my-3">
-                       
+                    <div class="col-md-6 square-bg-3 m-auto text-center my-3">
+                    <img src="./Images/KimCuevas.jpg" height="300" width="250"/>
                     </div>
                     <div class="text-center">
-                        <p class="text-light"> Person Name</p>
+                        <p class="text-light"> Kimtribi Aleksie B. Cuevas</p> 
                     </div>
                 </div>
             </div>
@@ -99,7 +99,21 @@
             </div>
             <div class="container">
                 <p class="text-light my-2 py-4">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et consectetur enim. Cras vel tincidunt enim. Nunc ullamcorper, eros eu accumsan finibus, ante erat sollicitudin est, ut venenatis turpis ex vitae sapien. Donec fermentum eros tempus lacus bibendum laoreet. Quisque quis nisl vitae eros venenatis condimentum. Praesent semper in purus vitae tristique. In blandit, ipsum quis facilisis mollis, mi purus fermentum odio, iaculis finibus dui lectus in turpis. Donec nec dui id nibh imperdiet tempus a a nibh. Sed quis suscipit lacus, sit amet rhoncus justo. In eget elit vel dui rhoncus lacinia. Aenean pretium tempus ex et tincidunt. Vestibulum nibh tortor, volutpat eu cursus at, elementum in augue. Nulla vel porttitor mi. Aenean rhoncus, purus sit amet eleifend congue, est est mollis felis, a egestas tellus diam vitae arcu. Nullam laoreet consequat convallis.
+                For aspiring game developers, understanding the core purposes of visual learning in game mechanics is crucial for creating engaging and immersive game experiences.<br /><br />
+
+                1. <b>Refining Player Interaction</b> : The visuals in game mechanics play a vital role in providing feedback to the aspiring developers, helping them make informed decisions.
+                Providing visual feedback is crucial for enhancing player understanding, engagement, and decision-making. Having gameplay feedback such as visual cues, rewards, information presentation contribute to creating
+                a more immersive and enjoyable gaming experience. Furthermore, aspiring game developers can create games that effectively communicate with players and provide meaningful feedback throughout the gameplay.
+                <br /><br />
+
+                2. <b>Enhancing Immersion</b> : Enhancing immersion in Game Mechanics involves aspiring game developers can create a sense of presence and draw players into the game world.
+                To help them create visually and audibly captivating experiences, designing responsive game mechanics, crafting engaging narratives, and finding the right balance between realism and abstraction. 
+                By implementing these techniques, game developers can create immersive gaming experiences that captivates and engage players.
+                <br /><br />
+
+                3. <b>Engaging and Retaining Players</b> : To encourage the aspiring developers, we aim to encourage developers to make a visually appealing and aesthetically pleasing graphics to effectively capture and hold
+                player's attention. Engaging visuals not only contribute to the overall enjoyment of the game but also serve as a motivation for players to continue playing.
+    
                 </p>
             </div>
 
