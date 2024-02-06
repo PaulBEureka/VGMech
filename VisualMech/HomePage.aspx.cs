@@ -13,7 +13,9 @@ namespace VisualMech
     {
         private string imageSource = "Images/jump_card_bg.png";
         private string thumbSource = "Images/movement_icon.png";
-        
+
+        // Gonna Fixed this to make it organized and accommodate more than 7 strings
+
         private List<Tuple<string, string, string, string, string, string, string>> cardContents = new List<Tuple<string, string, string, string, string, string, string>> //Populate this to add game mechanic cards in homepage
         {
             //Format: Title, Description, Page name of the aspx to be linked
@@ -21,6 +23,8 @@ namespace VisualMech
             Tuple.Create("SHOOTING MECHANIC", "Learn how to add shooting elements!", "CodeText here", "Horror, PVP", "Platforming", "Any Mechanic", "https://almers5.github.io/Game-Mechanics/ShootingMechanic/"),
             Tuple.Create("COLLECTING MECHANIC", "Get to know movement integration, variations, and more!", "CodeText here", "Horror, PVP", "Platforming", "Any Mechanic", "https://paulbeureka.github.io/UnityGame1/Game_1/")
         };
+
+        
 
         private string cardString = "";
 
