@@ -46,15 +46,15 @@
                 <div class="row my-3 py-5 justify-content-center text-center ">
                     <div class="col-md-6 justify-content-center text-center mx-md-5 square-bg my-5 no_bg">
                         <p class="fw-bolder h4 text-light">MINI GAME: BRICK BREAKER</p>
-                        <a class="btn w-100 h-100 rcorners2" href="#" role="button">
+                        <a class="btn w-100 h-100 rcorners2" href="MiniGamePage.aspx" role="button">
                             <img src="Images/Mini_Game1_thumb.png" alt="buttonpng" class="img-fluid w-100 h-100 rounded_corners" />
                         </a>
 
                     </div>
                     <div class="col-md-6 justify-content-center text-center mx-md-5 square-bg my-5 no_bg">
-                        <p class="fw-bolder h4 text-light">MINI GAME 2 TITLE</p>
-                        <a class="btn w-100 h-100 rcorners2" href="#" role="button">
-                            <img src="" alt="buttonpng" class="img-fluid w-100 h-100 rounded_corners" />
+                        <p class="fw-bolder h4 text-light">MINI GAME: BRICK BREAKER</p>
+                        <a class="btn w-100 h-100 rcorners2" href="MiniGamePage.aspx" role="button">
+                            <img src="Images/Mini_Game1_thumb.png" alt="buttonpng" class="img-fluid w-100 h-100 rounded_corners" />
                         </a>
 
                     </div>
@@ -72,7 +72,7 @@
             <div class="row">
                 <div class="col-md-6 d-grid">
                     <div class="col-md-6 square-bg-2 m-auto text-center my-3">
-                        
+                        <img src="Images/paul_pic.jpg" alt="imgpng" class="img-fluid w-100 h-100" />
                     </div>
                     <div class="text-center">
                         <p class="text-light">Paul Carlo Bataga</p>
@@ -80,7 +80,7 @@
                 </div>
                 <div class="col-md-6 d-grid">
                     <div class="col-md-6 square-bg-2 m-auto text-center my-3">
-                        
+                        <img src="Images/cj_pic.jpg" alt="imgpng" class="img-fluid w-100 h-100" />
                     </div>
                     <div class="text-center">
                         <p class="text-light">Ciriaco John Almeron</p>
@@ -88,7 +88,7 @@
                 </div>
                 <div class="col-md-6 d-grid">
                     <div class="col-md-6 square-bg-2 m-auto text-center my-3">
-                        
+                        <img src="Images/aries_pic.jpg" alt="imgpng" class="img-fluid w-100 h-100" />
                     </div>
                     <div class="text-center">
                         <p class="text-light">Aries Diomampo</p>
@@ -96,7 +96,7 @@
                 </div>
                 <div class="col-md-6 d-grid">
                     <div class="col-md-6 square-bg-2 m-auto text-center my-3">
-                       
+                       <img src="Images/kim_pic.jpg" alt="imgpng" class="img-fluid w-100 h-100" />
                     </div>
                     <div class="text-center">
                         <p class="text-light">Kimtribi Aleksie Cuevas</p>
