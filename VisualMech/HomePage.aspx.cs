@@ -11,51 +11,26 @@ namespace VisualMech
 {
     public partial class _Default : Page
     {
-        private string imageSource = "Images/jump_card_bg.png";
-        private string thumbSource = "Images/movement_icon.png";
-
-        // Gonna Fixed this to make it organized and accommodate more than 7 strings
-
-        private List<Tuple<string, string, string, string, string, string, string>> cardContents = new List<Tuple<string, string, string, string, string, string, string>> //Populate this to add game mechanic cards in homepage
+       
+        private List<Card> cardList = new List<Card>() // Add Cards here and edit contents based on field, also increment the CardID each entry of card
         {
-            //Format: Title, Description, Page name of the aspx to be linked
-            Tuple.Create("MOVEMENT MECHANIC", "Get to know movement integration, variations, and more!", "CodeText here", "Horror, PVP", "Platforming", "Any Mechanic","https://almers5.github.io/Game-Mechanics/MovementMechanic"),
-            Tuple.Create("SHOOTING MECHANIC", "Learn how to add shooting elements!", "CodeText here", "Horror, PVP", "Platforming", "Any Mechanic", "https://almers5.github.io/Game-Mechanics/ShootingMechanic/"),
-            Tuple.Create("COLLECTING MECHANIC", "Get to know movement integration, variations, and more!", "CodeText here", "Horror, PVP", "Platforming", "Any Mechanic", "https://paulbeureka.github.io/UnityGame1/Game_1/")
+            new Card(){CardID="0", Title="MOVEMENT MECHANIC", ImageSource = "Images/movement_bg.png", ThumbSource = "Images/movement_icon.png", Description = "Get to know movement integration, variations, and more!", UnityLink = "https://almers5.github.io/Game-Mechanics/MovementMechanic",
+            CodeText = "CodeText here", CommonGenres = "Horror, PVP", PossibleVariations = "Platforming", PossibleCombinations="Any Mechanic"},
+            new Card(){CardID="1", Title="SHOOTING MECHANIC", ImageSource = "Images/shooting_bg.png", ThumbSource = "Images/shooting_thumb.png", Description = "Learn how to add shooting elements!", UnityLink = "https://almers5.github.io/Game-Mechanics/ShootingMechanic/",
+            CodeText = "CodeText here", CommonGenres = "Horror, PVP", PossibleVariations = "Platforming", PossibleCombinations="Any Mechanic"},
+            new Card(){CardID="2", Title="COLLECTING MECHANIC", ImageSource = "Images/jump_card_bg.png", ThumbSource = "Images/collecting_thumb.png", Description = "Want your game to have collecting mechanics? Go here!", UnityLink = "https://paulbeureka.github.io/UnityGame1/Game_1/",
+            CodeText = "CodeText here", CommonGenres = "Horror, PVP", PossibleVariations = "Platforming", PossibleCombinations="Any Mechanic"},
         };
-
         
-
         private string cardString = "";
 
-        public List<Card> cardList = new List<Card>();
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            int cardIndex = 0;
 
-            foreach (Tuple<string, string, string, string, string, string, string> content in cardContents)
+            foreach (Card card in cardList)
             {
-                var card = new Card
-                {
-                    CardID = cardIndex.ToString(),
-                    ImageSource = imageSource,
-                    ThumbSource = thumbSource,
-                    Title = content.Item1,
-                    Status = "Click to learn",
-                    Description = content.Item2,
-                    ConnectedPageName = "SamplePage",
-                    UnityLink = content.Item7,
-                    CodeText = content.Item3,
-                    CommonGenres = content.Item4,
-                    PossibleVariations = content.Item5,
-                    PossibleCombinations = content.Item6
-                };
-
-                cardIndex++;
                 cardString += card.GetHtml();
-                cardList.Add(card);
-                
             }
 
             Session["CardList"] = cardList;
