@@ -56,8 +56,8 @@ namespace VisualMech
                         <div class=""row"">
                             <h2 class=""text-light fw-bolder"">Coding Implementation</h2>
                         </div>
-                        <div class=""row justify-content-center text-center m-auto gameMech-code-holder"">
-                            {card.CodeText}
+                        <div class=""row justify-content-center m-auto gameMech-code-holder"">
+                            <p class= ""text-start"">{card.CodeText}</>
                         </div>
                     </div>
                 </div>
