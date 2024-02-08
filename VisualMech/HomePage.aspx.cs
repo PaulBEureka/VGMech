@@ -15,11 +15,47 @@ namespace VisualMech
         private List<Card> cardList = new List<Card>() // Add Cards here and edit contents based on field, also increment the CardID each entry of card
         {
             new Card(){CardID="0", Title="MOVEMENT MECHANIC", ImageSource = "Images/movement_bg.png", ThumbSource = "Images/movement_icon.png", Description = "Get to know movement integration, variations, and more!", UnityLink = "https://almers5.github.io/Game-Mechanics/MovementMechanic",
-                CodeText = "CodeText here Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ullamcorper tellus ut eros placerat finibus. Vestibulum eleifend nulla ac lorem laoreet ornare. Nullam a venenatis felis, ut convallis purus. Proin at dignissim tortor. Etiam ut diam ante. Praesent volutpat, turpis ac vulputate finibus, massa felis consectetur arcu, a pellentesque erat nisl sit amet est. Pellentesque at imperdiet lacus. Integer ac suscipit erat. Morbi nibh augue, porttitor in congue ac, pulvinar sed augue.\r\n\r\nNullam sollicitudin egestas justo nec commodo. Nullam mollis sit amet velit eu cursus. Nam id dolor sollicitudin augue accumsan aliquam. Nullam mauris turpis, ornare at ullamcorper vel, sodales eu lorem. Duis at massa eu diam porta efficitur. Pellentesque molestie est libero, ac gravida elit sagittis vel. Nullam laoreet urna a turpis tincidunt accumsan. Integer malesuada dapibus mauris quis imperdiet. Sed ut elementum odio, at vehicula lectus.\r\n\r\nVivamus nec tellus interdum libero malesuada aliquam quis ac nisl. Mauris facilisis justo vitae nulla malesuada, eu egestas orci semper. Nam a nisl quis leo tristique aliquam. Duis ut sapien eget velit blandit viverra. Donec fermentum dolor vitae sem faucibus lobortis. Nulla lacinia pharetra diam et tincidunt. Mauris in maximus ligula. Aliquam dignissim enim et lectus hendrerit, a pellentesque lorem posuere. Sed suscipit risus aliquam, hendrerit mauris ut, fringilla massa. Mauris pulvinar vitae turpis nec hendrerit. Nulla et nunc blandit, tincidunt augue id, consectetur lacus.\r\n\r\nCras quis mi nisi. Praesent venenatis tristique imperdiet. Proin ac velit eget risus commodo vulputate et quis nibh. Fusce vulputate massa in est scelerisque accumsan. Pellentesque congue, leo eget tincidunt maximus, sem arcu malesuada mi, in pulvinar dolor lorem vitae diam. Cras aliquet massa eu lectus commodo, ac consequat lorem mollis. Morbi ipsum nisi, suscipit vitae pulvinar sed, mattis sit amet turpis. Duis dui nisl, condimentum vitae convallis non, malesuada vestibulum tellus. Donec at sapien egestas, molestie libero at, molestie libero. Etiam pellentesque ullamcorper elit, pulvinar tincidunt elit vehicula vel. Duis fringilla, metus quis condimentum ultricies, lectus felis vulputate augue, aliquam iaculis diam dui sit amet eros. Curabitur pretium quam risus, et accumsan massa lacinia ut. Nulla eleifend diam tellus, a imperdiet ex semper eget.", 
-                CommonGenres = "Horror, PVP", PossibleVariations = "Platforming", PossibleCombinations="Any Mechanic"},
+                CodeText = "public class Player : MonoBehaviour<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;" +
+                "[SerializeField] float moveSpeed = 10f;<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;void Update()<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />" +
+                "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Move();<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;" +
+                "private void Move()<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+                "// Time.deltaTime makes it the same movement for every computers FPS<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+                "var deltaX = Input.GetAxis(\"Horizontal\") * Time.deltaTime * moveSpeed;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+                "var newXPosition = Mathf.Clamp(transform.position.x + deltaX, xMin, xMax);<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+                "var deltaY = Input.GetAxis(\"Vertical\") * Time.deltaTime * moveSpeed;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+                "var newYPosition = Mathf.Clamp(transform.position.y + deltaY, yMin, yMax);<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+                "transform.position = new Vector2(newXPosition, newYPosition);<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}", 
+                CommonGenres = "Adventure, Platformers, First Person Shooters, Racing, Open World, Role Playing Games", PossibleVariations = "Top-Down Movement, Side-on Movement, 3D Movement, Click to Move", PossibleCombinations="This game mechanic is frequently utilized across various genres, a wide range of mechanics like shooting, gathering, and others are commonly integrated with the movement mechanism."},
             new Card(){CardID="1", Title="SHOOTING MECHANIC", ImageSource = "Images/shooting_bg.png", ThumbSource = "Images/shooting_thumb.png", Description = "Learn how to add shooting elements!", UnityLink = "https://almers5.github.io/Game-Mechanics/ShootingMechanic/",
-                CodeText = "CodeText here", 
-                CommonGenres = "Horror, PVP", PossibleVariations = "Platforming", PossibleCombinations="Any Mechanic"},
+                CodeText = "public class Player : MonoBehaviour<br />{<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;" +
+                "[SerializeField] Rigidbody2D rb;<br />&nbsp;&nbsp;&nbsp;&nbsp;[SerializeField] Weapon weapon;<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;" +
+                "Vector2 mousePosition;<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;void Update()<br />&nbsp;&nbsp;&nbsp;&nbsp;" +
+                "{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+                "if (Input.GetButtonDown(\"Fire1\"))<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+                "{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+                "weapon.Fire();<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+                "mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;" +
+                "}<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;private void FixedUpdate()<br />&nbsp;&nbsp;&nbsp;&nbsp;" +
+                "{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+                "Vector2 aimDirection = mousePosition - rb.position;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+                "float aimAngle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg - 90f;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+                "rb.rotation = aimAngle;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}<br /><br />" +
+                "public class Player : MonoBehaviour<br />{<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;" +
+                "[SerializeField] Rigidbody2D rb;<br />&nbsp;&nbsp;&nbsp;&nbsp;[SerializeField] Weapon weapon;<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;" +
+                "Vector2 mousePosition;<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;void Update()<br />&nbsp;&nbsp;&nbsp;&nbsp;" +
+                "{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+                "if (Input.GetButtonDown(\"Fire1\"))<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+                "{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+                "weapon.Fire();<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+                "mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;" +
+                "private void FixedUpdate()<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+                "Vector2 aimDirection = mousePosition - rb.position;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+                "float aimAngle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg - 90f;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+                "rb.rotation = aimAngle;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}<br /><br />" +
+                "public class Bullet : MonoBehaviour<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;" +
+                "private void OnCollisionEnter2D(Collision2D collision)<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+                "Destroy(collision.gameObject);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Destroy(gameObject);<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}", 
+                CommonGenres = "First Person Shooters, Third Person Shooters, Action Adventure, Battle Royale, Sci-Fi, Survival Horror", PossibleVariations = "Click to Shoot, Precision Shooting, Aim Down Sights, Projectile Types, Cover Based Shooting", PossibleCombinations="This game mechanic is mostly implemented on action base games which movement mechanics is needed with resource management."},
             new Card(){CardID="2", Title="COLLECTING MECHANIC", ImageSource = "Images/jump_card_bg.png", ThumbSource = "Images/collecting_thumb.png", Description = "Want your game to have collecting mechanics? Go here!", UnityLink = "https://paulbeureka.github.io/UnityGame1/Game_1/",
                 CodeText = "CodeText here", 
                 CommonGenres = "Horror, PVP", PossibleVariations = "Platforming", PossibleCombinations="Any Mechanic"},
