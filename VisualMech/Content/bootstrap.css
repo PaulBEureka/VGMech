@@ -379,6 +379,7 @@ button,
 [type=reset],
 [type=submit] {
   -webkit-appearance: button;
+    height: 28px;
 }
 button:not(:disabled),
 [type=button]:not(:disabled),
