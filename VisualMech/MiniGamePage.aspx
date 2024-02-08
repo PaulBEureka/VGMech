@@ -12,7 +12,7 @@
                             <p class="text-white display-5 m-auto">MINI GAME TITLE</p>
                         </div>
                         <div class="row  center_custom m-auto my-5 mt-0">
-                            <iframe src="https://paulbeureka.github.io/UnityGame1/Game_1/" class="mini_game_inner_box" scrolling="no"></iframe>
+                            <iframe src="https://almers5.github.io/Game-Mechanics/MiniGame1/" class="mini_game_inner_box" scrolling="no"></iframe>
                         </div>
             </div>
 
