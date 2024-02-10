@@ -96,7 +96,6 @@ namespace VisualMech
 
         public void get_Comments(string mechanicTitle)
         {
-            Response.Write("Nag-update");
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 // Step 2: Write SQL Query
