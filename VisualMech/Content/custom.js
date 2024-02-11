@@ -28,6 +28,7 @@ function onSuccess(response) {
 function onError(response) {
     // Handle error response here
     alert("An error occurred while posting comment.");
+    window.location.href = "/SignInPage.aspx"; 
 }
 
 

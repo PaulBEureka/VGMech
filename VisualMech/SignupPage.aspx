@@ -13,11 +13,16 @@
                             <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="New_Username_tb" ErrorMessage="*" ForeColor="White"></asp:RequiredFieldValidator>
                             <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server"
                                 ControlToValidate="New_Username_tb"
-                                ErrorMessage="Username must be at least 15 characters long."
-                                ValidationExpression="^.{15,}$"
+                                ErrorMessage="Username must be 1-15 characters long."
+                                ValidationExpression="^.{1,15}$"
                                 ForeColor="White"
                                  Font-Size="Small">
                             </asp:RegularExpressionValidator>
+                            <asp:Label runat="server" ID="taken_lbl" Text ="Username already taken" Font-Size="Small" ForeColor="White" Visible="false">
+
+                            </asp:Label>
+
+
                         </h5>                
                         <h5 style="color: white; padding-bottom:10px; text-align:left">New Password: <asp:TextBox ID="New_Password_tb" runat="server" Width="348px" TextMode="Password"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="New_Password_tb" ErrorMessage="*" ForeColor="White"></asp:RequiredFieldValidator>
