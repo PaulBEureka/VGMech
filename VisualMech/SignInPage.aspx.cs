@@ -27,6 +27,7 @@ namespace VisualMech
                         FROM UserTable 
                         WHERE UserTable.username = '{Username_tb.Text}'";
 
+
             string result = "";
 
             using (connection = new SqlConnection(connectionString))
@@ -46,8 +47,12 @@ namespace VisualMech
                             Incorrect_lbl.Visible = false;
                             reader.Read();
 
+                            int user_id = reader.GetInt32(reader.GetOrdinal("user_id"));
+
                             string username = reader.GetString(reader.GetOrdinal("username"));
                             string password = reader.GetString(reader.GetOrdinal("password"));
+
+                            string num = reader.FieldCount.ToString();
 
                             PasswordHasher passwordHasher = new PasswordHasher();
 
@@ -62,7 +67,9 @@ namespace VisualMech
                             }
                             else
                             {
-                                Username_tb.Text = $"hi {username}";
+                                Session["CurrentUser"] = username;
+                                Session["Current_ID"] = user_id;
+                                Response.Redirect("HomePage.aspx");
                             }
                         }
                         else

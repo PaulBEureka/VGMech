@@ -36,10 +36,10 @@
                                                 <div class="form-group">
                                                     <h4>Leave a comment</h4>
                                                     <label for="message">Message</label>
-                                                    <textarea name="msg" id="commentbox" cols="30" rows="5" class="form-control" style="background-color: white; "></textarea>
+                                                    <textarea name="msg" id="commentbox" cols="30" rows="5" class="form-control" style="background-color: white; resize: none; height:400px;" draggable="false"></textarea>
                                                 </div>
                                                 <div>
-                                                    <button type="button" id="post" class="btn btn-danger my-3" onclick="post_Click()">Post Comment</button>
+                                                    <button type="button" id="post" class="comment_button my-2 bg-danger" onclick="post_Click()">Post Comment</button>
 
                                                 </div>
                                         </div>

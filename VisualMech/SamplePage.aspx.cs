@@ -146,30 +146,55 @@ namespace VisualMech
             string result = "";
             using (connection = new SqlConnection(connectionString))
             {
+                
                 try
                 {
-                    connection.Open();
+                    // Get the current HttpContext
+                    HttpContext context = HttpContext.Current;
 
-                    string query = "INSERT INTO CommentTable (user_id, mechanic_title ,comment, comment_date) VALUES (@UserId, @MechanicTitle, @CommentText, @CommentDate)";
-
-                    using (SqlCommand command = new SqlCommand(query, connection))
+                    if(message.Length <= 0)
                     {
-                        command.Parameters.AddWithValue("@UserId", 1);
-                        command.Parameters.AddWithValue("@MechanicTitle", cardTitle);
-                        command.Parameters.AddWithValue("@CommentText", message);
-                        command.Parameters.AddWithValue("@CommentDate", DateTime.Now);
+                        throw new Exception("Comment cannot be empty");
+                    }
+                    else
+                    {
+                        if (context.Session["Current_ID"] != null)
+                        {
+                            connection.Open();
 
-                        command.ExecuteNonQuery();
+                            string query = "INSERT INTO CommentTable (user_id, mechanic_title ,comment, comment_date) VALUES (@UserId, @MechanicTitle, @CommentText, @CommentDate)";
+
+                            using (SqlCommand command = new SqlCommand(query, connection))
+                            {
+                                command.Parameters.AddWithValue("@UserId", context.Session["Current_ID"]);
+                                command.Parameters.AddWithValue("@MechanicTitle", cardTitle);
+                                command.Parameters.AddWithValue("@CommentText", message);
+                                command.Parameters.AddWithValue("@CommentDate", DateTime.Now);
+
+                                command.ExecuteNonQuery();
+                            }
+
+
+                            result = "Comment Posted Successfully";
+
+                            connection.Close();
+                        }
+                        else
+                        {
+                            throw new Exception("Please Sign In First");
+                        }
                     }
 
+                    
 
-                    result = "Comment posted successfully";
-
-                    connection.Close();
                 }
                 catch (Exception ex)
                 {
                     result = ex.Message;
+                    
+                    
+
+                    
                 }
             }
             return result;

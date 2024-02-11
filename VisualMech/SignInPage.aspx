@@ -2,9 +2,15 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
     <webopt:bundlereference runat="server" path="~/Content/css" />
+    
     <link rel="stylesheet" href="/Content/custom_styles.css">
+    
+    
+    
     <script src="/Content/custom.js"></script>
     <main>
+
+
         <div class="row align-self-center my-5 signup_background signup_rectangle_2 d-grid m-auto">
             <div class="row align-self-center signup_rectangle m-auto signup_padding">
                     <div class="d-grid">                        
@@ -29,6 +35,9 @@
 
             </div>
         </div>
+
+
+        
         
     </main>
 

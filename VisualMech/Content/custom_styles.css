@@ -513,3 +513,25 @@ body {
 }
 
 
+.comment_button {
+    border: none;
+    color: white;
+    text-align: center;
+    font-size: 14px;
+    font-weight:bolder;
+    opacity: 1;
+    transition: 0.3s;
+    display: inline-block;
+    text-decoration: none;
+    cursor: pointer;
+    width: 150px;
+    border-radius: 5%;
+    height: 40px;
+}
+
+.comment_button:hover {
+    filter: brightness(1.2);
+    border: solid;
+    border-color: black;
+    border-width: 2px;
+}
