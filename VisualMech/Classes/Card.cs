@@ -18,6 +18,7 @@ namespace VisualMech.Content.Classes
         public string CommonGenres { get; set; }
         public string PossibleVariations { get; set; }
         public string PossibleCombinations { get; set; }
+        public string InteractiveControls { get; set; }
 
 
         

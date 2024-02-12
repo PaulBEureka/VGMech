@@ -35,12 +35,22 @@
                                         <div class="col-lg-4 col-md-5 col-sm-4 offset-md-1 offset-sm-1 col-12 mt-4">
                                                 <div class="form-group">
                                                     <h4>Leave a comment</h4>
+                                                    
+
+                                                    <% if (Session["CurrentUser"] != null) { %>
                                                     <label for="message">Message</label>
                                                     <textarea name="msg" id="commentbox" cols="30" rows="5" class="form-control" style="background-color: white; resize: none; height:400px;" draggable="false"></textarea>
+                                                    
+                                                    
+                                                    <% } %>
+                                                
                                                 </div>
                                                 <div>
+                                                    <% if (Session["CurrentUser"] == null) { %>
+                                                    <button type="button" id="post_disbled" class="comment_button my-2 bg-danger" onclick="sign_in_comment()">Sign in to comment</button>
+                                                     <% } else { %>
                                                     <button type="button" id="post" class="comment_button my-2 bg-danger" onclick="post_Click()">Post Comment</button>
-
+                                                    <% } %>
                                                 </div>
                                         </div>
                                     </div>

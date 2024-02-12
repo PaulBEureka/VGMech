@@ -308,7 +308,7 @@ body {
 
 .gameMech-section-holders {
     width: 670px;
-    height: 500px;
+    height: 700px;
     background-color:  rgb(91,7,21);
     padding-bottom: 3em;
     padding-top: 3em;
@@ -317,9 +317,8 @@ body {
 .gameMech-code-holder {
     overflow: scroll;
     width: 620px;
-    height: 380px;
+    height: 100%;
     background-color: white;
-    padding-bottom: 3em;
     padding-top: 3em;
 }
 
@@ -368,6 +367,9 @@ body {
 .unityLayout {
     width: 620px;
     height: 380px;
+    border:solid;
+    border-width:5px;
+    border-color:white;
 }
 
 /*MiniGame Styles*/
