@@ -38,6 +38,7 @@ namespace VisualMech
                     <section class=""gameMech-bgColor"">
             <div  class=""row text-center "">
                 <h1 class=""display-4 mini_custom_padding fw-bolder"">{card.Title}</h1>
+                
             </div>
 
             <!--Interactive Demonstration and Coding Implementation layout -->
@@ -47,9 +48,14 @@ namespace VisualMech
                     <div class=""col-md-6 justify-content-center text-center mx-md-3 gameMech-section-holders my-5"">
                         <div class=""row"">
                             <h2 class=""text-light fw-bolder"">Interactive Demonstration</h2>
-                        </div>
+                            
+                    </div>
                         <div>
                             <iframe src=""{card.UnityLink}"" class=""unityLayout"" scrolling=""no""></iframe>
+                        </div>
+                        <div>
+                            <h4 class=""text-light fw-bolder gameMech-padding-Title pb-3"">INTERACTIVE CONTROLS</h4>
+                            <p class=""text-light m-0 gameMech-padding-text fs-6"">{card.InteractiveControls}</p>
                         </div>
                     </div>
                     <div class=""col-md-6 d-grid gameMech-section-holders mx-md-3 my-5 "">
@@ -62,6 +68,8 @@ namespace VisualMech
                     </div>
                 </div>
             </div>
+
+
             <!-- Information layout -->
             <div class=""row d-grid gameMech-layout"">
                 <div class=""container gameMech-information-holder m-auto p-3"">
@@ -122,7 +130,7 @@ namespace VisualMech
 
                             allCommentString += $@"
                                 <div class=""comment mt-4 text-justify float-left"">
-                                    <img src=""https://i.imgur.com/yTFUilP.jpg"" alt="""" class=""rounded-circle"" width=""40"" height=""40"">
+                                    <img src=""Images/person_icon.png"" alt="""" class=""rounded-circle"" width=""40"" height=""40"">
                                     <h4>{username}</h4>
                                     <span>- {dateCommented}</span>
                                     <br>

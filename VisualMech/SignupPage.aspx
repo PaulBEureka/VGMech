@@ -50,16 +50,18 @@
                         
                         </h5>
                         
-                        <asp:Button class="signup_button m-auto" ID="Register_btn" runat="server" Text="Register" OnClick="Register_btn_Click"/>
+                        <asp:Button class="signup_button m-auto " ID="Register_btn" runat="server" Text="Register" OnClick="Register_btn_Click"/>
                         
                         <br />
                         <a style="text-align:right; text-decoration-line: underline" class="nav-link white-link" runat="server" href="SignInPage.aspx" >Sign In</a>
                     </div>
                     
-
+                
 
             </div>
         </div>
+
+        
         
     </main>
 

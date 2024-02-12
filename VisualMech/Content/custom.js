@@ -31,4 +31,15 @@ function onError(response) {
     window.location.href = "/SignInPage.aspx"; 
 }
 
+function sign_in_comment(){
+    window.location.href = "/SignInPage.aspx";
+}
+
+
+
+
+var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+    return new bootstrap.Tooltip(tooltipTriggerEl)
+})
 
