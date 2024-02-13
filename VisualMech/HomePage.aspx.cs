@@ -61,7 +61,7 @@ namespace VisualMech
             new Card(){CardID="2", Title="COLLECTING MECHANIC", ImageSource = "Images/jump_card_bg.png", ThumbSource = "Images/collecting_thumb.png", Description = "Want your game to have collecting mechanics? Go here!", UnityLink = "https://paulbeureka.github.io/UnityGame1/Game_1/",
                 CodeText = "CodeText here", 
                 CommonGenres = "Horror, PVP", PossibleVariations = "Platforming", PossibleCombinations="Any Mechanic"
-                , InteractiveControls = "Left Arrow Key - Move to Left<br/>Right Arrow Key - Move to Right<br/>Space Bar - Jump"},
+                , InteractiveControls = "Left Arrow Key or S - Move to Left<br/>Right Arrow Key or D - Move to Right<br/>Space Bar - Jump"},
         };
         
         private string cardString = "";
