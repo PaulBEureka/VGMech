@@ -11,19 +11,69 @@
             <!-- Home page layout -->
 
 
-        <section id="homepage" class="intro-section-color" aria-labelledby="aspnetTitle">
-            <div class="container">
-                <div class="row my-3 py-5">
-                    <div class="col-md-6 justify-content-center text-center my-3 py-5">
-                        <h1 class=" display-3 text-center text-light fw-bolder">Redefining <br /> Learning of Game<br /> Mechanics!</h1>
-                    </div>
-                    <div class="col-md-6 justify-content-center text-center ">
-                        <img class="img-fluid" src="Images/game-mechanics-cover.png" alt=" " >
-                    </div>
+        <section id="homepage" class="intro-section-color my-3" aria-labelledby="aspnetTitle">
+            <div id="carouselExampleInterval" class="carousel slide container " data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselExampleInterval" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#carouselExampleInterval" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#carouselExampleInterval" data-bs-slide-to="2" aria-label="Slide 3"></button>
                 </div>
+                <div class="carousel-inner">
+                    <div class="carousel-item active" data-bs-interval="5000">
+                        <div class="row my-3 py-5">
+                            <div class="col-md-6 justify-content-center text-center my-3 py-5 d-grid">
+                                <h1 class="display-3 text-center text-light fw-bolder m-auto">Redefining <br /> Learning of Game<br /> Mechanics!</h1>
+                            </div>
+                            <div class="col-md-6 justify-content-center text-center">
+                                <img class="img-fluid carousel-img" src="Images/game-mechanics-cover.png" alt=" ">
+                            </div>
+                        </div>
+                    </div>
+                     <div class="carousel-item" data-bs-interval="5000">
+                        <div class="row my-3 py-5">
+                            <div class="col-md-6 justify-content-center text-center">
+                                <img class="img-fluid carousel-img" src="Images/game-mechanics-cover2.png" alt=" ">
+                            </div>
+                            <div class="col-md-6 justify-content-center text-center my-3 py-5 d-grid">
+                                <h1 class="display-3 text-center text-light fw-bolder m-auto">Interactively learn<br />Each Game Mechanic!</h1>
+                            </div>
+                            
+                        </div>
+                    </div>
+                     <div class="carousel-item" data-bs-interval="5000">
+                         <div class="row my-3 py-5">
+                            <div class="col-md-6 justify-content-center text-center my-3 py-5 d-grid">
+                                <h1 class="display-3 text-center text-light fw-bolder m-auto">Collaboratively learn<br />with other learners!</h1>
+                            </div>
+                             <div class="col-md-6 justify-content-center text-center">
+                                <img class="img-fluid carousel-img1" src="Images/game-mechanics-cover3.png" alt=" ">
+                            </div>
+                            
+                        </div>
+
+
+
+                    </div>
+
+
+
+
+
+
+                    <!-- Add other carousel items here -->
+                </div>
+                
             </div>
-            
         </section>
+
+
+
+
+
+
+
+
+
 
         <!-- Game Mechanic Cards Layout -->
 
