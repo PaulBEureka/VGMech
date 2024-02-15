@@ -1,6 +1,8 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
@@ -12,8 +14,8 @@ namespace VisualMech
 {
     public partial class SignInPage : System.Web.UI.Page
     {
-        public static SqlConnection connection;
-        public static string connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\VGMechDatabase.mdf;Integrated Security=True";
+
+        public static string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -23,71 +25,61 @@ namespace VisualMech
         protected void Login_btn_Click(object sender, EventArgs e)
         {
             string query = $@"
-                        SELECT *
-                        FROM UserTable 
-                        WHERE UserTable.username = '{Username_tb.Text}'";
-
+                SELECT *
+                FROM UserTable 
+                WHERE UserTable.username = @Username";
 
             string result = "";
 
-            using (connection = new SqlConnection(connectionString))
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 try
                 {
-                    using (SqlCommand command = new SqlCommand(query, connection))
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
-
+                        command.Parameters.AddWithValue("@Username", Username_tb.Text);
 
                         connection.Open();
-                        SqlDataReader reader = command.ExecuteReader();
-
-                        if (reader.HasRows) // This means it got some match
+                        using (MySqlDataReader reader = command.ExecuteReader())
                         {
-                            No_Username_lbl.Visible = false;
-                            Incorrect_lbl.Visible = false;
-                            reader.Read();
-
-                            int user_id = reader.GetInt32(reader.GetOrdinal("user_id"));
-
-                            string username = reader.GetString(reader.GetOrdinal("username"));
-                            string password = reader.GetString(reader.GetOrdinal("password"));
-
-                            string num = reader.FieldCount.ToString();
-
-                            PasswordHasher passwordHasher = new PasswordHasher();
-
-
-                            // Verify the password
-                            bool isMatch = passwordHasher.VerifyPassword(Password_tb.Text, password);
-
-                            if (!isMatch)
+                            if (reader.HasRows)
                             {
-                                Incorrect_lbl.Visible = true;
-                                
+                                No_Username_lbl.Visible = false;
+                                Incorrect_lbl.Visible = false;
+                                reader.Read();
+
+                                int user_id = reader.GetInt32(reader.GetOrdinal("user_id"));
+                                string username = reader.GetString(reader.GetOrdinal("username"));
+                                string password = reader.GetString(reader.GetOrdinal("password"));
+
+                                PasswordHasher passwordHasher = new PasswordHasher();
+
+                                // Verify the password
+                                bool isMatch = passwordHasher.VerifyPassword(Password_tb.Text, password);
+
+                                if (!isMatch)
+                                {
+                                    Incorrect_lbl.Visible = true;
+                                }
+                                else
+                                {
+                                    Session["CurrentUser"] = username;
+                                    Session["Current_ID"] = user_id;
+                                    Response.Redirect("HomePage.aspx");
+                                }
                             }
                             else
                             {
-                                Session["CurrentUser"] = username;
-                                Session["Current_ID"] = user_id;
-                                Response.Redirect("HomePage.aspx");
+                                No_Username_lbl.Visible = true;
                             }
                         }
-                        else
-                        {
-                            No_Username_lbl.Visible = true;
-
-                        }
-
-                        connection.Close();
                     }
                 }
-
                 catch (Exception ex)
                 {
                     result = ex.Message;
                     Response.Write(result);
                 }
-
             }
         }
     }
