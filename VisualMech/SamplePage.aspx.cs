@@ -129,7 +129,7 @@ namespace VisualMech
                             string comment = reader["comment"].ToString();
 
                             allCommentString += $@"
-                                <div class=""comment mt-4 text-justify float-left"">
+                                <div class=""comment mt-4 text-justify float-left"" >
                                     <img src=""Images/person_icon.png"" alt="""" class=""rounded-circle"" width=""40"" height=""40"">
                                     <h4>{username}</h4>
                                     <span>- {dateCommented}</span>

@@ -34,120 +34,16 @@
                             4. Query to update databse when new top player is recorded
                             5. Perform method to update leaderboard onced done playing-->
                         <div class="container m-auto my-5 mt-0">
-                            <div class="row mt-3">
-                                <div class="col-md-1 d-grid">
-                                    <p class="fw-bolder text-white fs-3 my-3">1.</p>
-                                </div>
-                                <div class="col-md-1">
-                                    <div class="leaderboard_circle"></div>
-                                </div>
-                                <div class="col-md-9 leaderboard_white_rec_round">
-                                    <div class="row">
-                                        <div class =" col-6 my-3">
-                                            <p class="fw-bolder text-start">USERNAME</p>
-                                        </div>
-                                        <div class =" col-6 my-3">
-                                            <p class="fw-bolder text-end">SCORE</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div>
-                                <hr / class="text-white">
-                            </div>
 
-                            <div class="row mt-3">
-                                <div class="col-md-1 d-grid">
-                                    <p class="fw-bolder text-white fs-3 my-3">2.</p>
-                                </div>
-                                <div class="col-md-1">
-                                    <div class="leaderboard_circle"></div>
-                                </div>
-                                <div class="col-md-9 leaderboard_white_rec_round">
-                                    <div class="row">
-                                        <div class =" col-6 my-3">
-                                            <p class="fw-bolder text-start">USERNAME</p>
-                                        </div>
-                                        <div class =" col-6 my-3">
-                                            <p class="fw-bolder text-end">SCORE</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <asp:Literal ID="LeaderboardHTML1" runat="server"></asp:Literal>
 
-                            <div>
-                                <hr / class="text-white">
-                            </div>
+                            
 
-                            <div class="row mt-3">
-                                <div class="col-md-1 d-grid">
-                                    <p class="fw-bolder text-white fs-3 my-3">3.</p>
-                                </div>
-                                <div class="col-md-1">
-                                    <div class="leaderboard_circle"></div>
-                                </div>
-                                <div class="col-md-9 leaderboard_white_rec_round">
-                                    <div class="row">
-                                        <div class =" col-6 my-3">
-                                            <p class="fw-bolder text-start">USERNAME</p>
-                                        </div>
-                                        <div class =" col-6 my-3">
-                                            <p class="fw-bolder text-end">SCORE</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            
 
-                            <div>
-                                <hr / class="text-white">
-                            </div>
+                            
 
-                            <div class="row mt-3">
-                                <div class="col-md-1 d-grid">
-                                    <p class="fw-bolder text-white fs-3 my-3">4.</p>
-                                </div>
-                                <div class="col-md-1">
-                                    <div class="leaderboard_circle"></div>
-                                </div>
-                                <div class="col-md-9 leaderboard_white_rec_round">
-                                    <div class="row">
-                                        <div class =" col-6 my-3">
-                                            <p class="fw-bolder text-start">USERNAME</p>
-                                        </div>
-                                        <div class =" col-6 my-3">
-                                            <p class="fw-bolder text-end">SCORE</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <hr / class="text-white">
-                            </div>
-
-                            <div class="row mt-3">
-                                <div class="col-md-1 d-grid">
-                                    <p class="fw-bolder text-white fs-3 my-3">5.</p>
-                                </div>
-                                <div class="col-md-1">
-                                    <div class="leaderboard_circle"></div>
-                                </div>
-                                <div class="col-md-9 leaderboard_white_rec_round">
-                                    <div class="row">
-                                        <div class =" col-6 my-3">
-                                            <p class="fw-bolder text-start">USERNAME</p>
-                                        </div>
-                                        <div class =" col-6 my-3">
-                                            <p class="fw-bolder text-end">SCORE</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <hr / class="text-white">
-                            </div>
 
 
                             
