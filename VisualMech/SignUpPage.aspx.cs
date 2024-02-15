@@ -1,5 +1,7 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
@@ -9,26 +11,24 @@ using System.Web.UI.WebControls;
 using VisualMech.Classes;
 using BCryptNet = BCrypt.Net.BCrypt; // If this has error, run this in package manager console: Install-Package BCrypt.Net
 
-
 namespace VisualMech
 {
 	public partial class SignupPage : System.Web.UI.Page
 	{
-        public static string connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\VGMechDatabase.mdf;Integrated Security=True";
-        public static SqlConnection connection;
+
+        public static string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
 
         protected void Page_Load(object sender, EventArgs e)
 		{
 
 		}
 
-        
-        
+
+
 
         protected void Register_btn_Click(object sender, EventArgs e)
         {
             string result = "";
-
 
             if (!CheckUsername())
             {
@@ -37,26 +37,24 @@ namespace VisualMech
             else
             {
                 taken_lbl.Visible = false;
-                using (connection = new SqlConnection(connectionString))
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
                     try
                     {
                         connection.Open();
 
-                        string query = "INSERT INTO UserTable (username , password) VALUES (@Username, @Password)";
+                        string query = "INSERT INTO UserTable (username, password) VALUES (@Username, @Password)";
 
-                        using (SqlCommand command = new SqlCommand(query, connection))
+                        using (MySqlCommand command = new MySqlCommand(query, connection))
                         {
                             PasswordHasher passwordHasher = new PasswordHasher();
 
                             string hashPassword = passwordHasher.HashPassword(New_Password_tb.Text);
 
-
                             command.Parameters.AddWithValue("@Username", New_Username_tb.Text);
                             command.Parameters.AddWithValue("@Password", hashPassword);
                             command.ExecuteNonQuery();
                         }
-
 
                         result = "New User Registered Successfully";
 
@@ -72,117 +70,85 @@ namespace VisualMech
                         Response.Write(result);
                     }
                 }
-
             }
-
-
-
-
         }
 
         private bool CheckUsername()
         {
-            string result = "";
-
             string query = $@"
-                        SELECT *
-                        FROM UserTable 
-                        WHERE UserTable.username = '{New_Username_tb.Text}'";
+                SELECT *
+                FROM UserTable 
+                WHERE UserTable.username = @Username";
 
-
-            using (connection = new SqlConnection(connectionString))
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 try
                 {
-                    using (SqlCommand command = new SqlCommand(query, connection))
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
-
+                        command.Parameters.AddWithValue("@Username", New_Username_tb.Text);
 
                         connection.Open();
-                        SqlDataReader reader = command.ExecuteReader();
-
-                        if (reader.HasRows) // This means it got some match
+                        using (MySqlDataReader reader = command.ExecuteReader())
                         {
-
-                            connection.Close();
-                            return false;
+                            if (reader.HasRows)
+                            {
+                                return false; // Username exists
+                            }
+                            else
+                            {
+                                return true; // Username does not exist
+                            }
                         }
-                        else
-                        {
-
-                            connection.Close();
-                            return true;
-
-                        }
-
                     }
                 }
-
                 catch (Exception ex)
                 {
-                    result = ex.Message;
-                    Response.Write(result);
+                    Response.Write(ex.Message);
                     return false;
                 }
-
             }
-
-
-
-
         }
+
 
 
 
         private void loginUser()
         {
             string query = $@"
-                        SELECT *
-                        FROM UserTable 
-                        WHERE UserTable.username = '{New_Username_tb.Text}'";
+                SELECT *
+                FROM UserTable 
+                WHERE UserTable.username = @Username";
 
-
-            string result = "";
-
-            using (connection = new SqlConnection(connectionString))
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 try
                 {
-                    using (SqlCommand command = new SqlCommand(query, connection))
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
-
+                        command.Parameters.AddWithValue("@Username", New_Username_tb.Text);
 
                         connection.Open();
-                        SqlDataReader reader = command.ExecuteReader();
-
-                        if (reader.HasRows) // This means it got some match
+                        using (MySqlDataReader reader = command.ExecuteReader())
                         {
-                            reader.Read();
+                            if (reader.HasRows)
+                            {
+                                reader.Read();
 
-                            int user_id = reader.GetInt32(reader.GetOrdinal("user_id"));
+                                int user_id = reader.GetInt32(reader.GetOrdinal("user_id"));
+                                string username = reader.GetString(reader.GetOrdinal("username"));
 
-                            string username = reader.GetString(reader.GetOrdinal("username"));
-                            string password = reader.GetString(reader.GetOrdinal("password"));
-
-                            string num = reader.FieldCount.ToString();
-
-                            
                                 Session["CurrentUser"] = username;
                                 Session["Current_ID"] = user_id;
                                 Response.Redirect("HomePage.aspx");
-                            
+                            }
                         }
-
-                        connection.Close();
                     }
                 }
-
                 catch (Exception ex)
                 {
-                    result = ex.Message;
-                    Response.Write(result);
+                    Response.Write(ex.Message);
                 }
-
             }
         }
 

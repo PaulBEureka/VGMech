@@ -11,13 +11,13 @@ using System.Web.UI.WebControls;
 using System.Xml.Linq;
 using VisualMech.Classes;
 using VisualMech.Content.Classes;
+using MySql.Data.MySqlClient;
 
 namespace VisualMech
 {
     public partial class WebForm1 : System.Web.UI.Page
     {
-        public static SqlConnection connection;
-        public static string connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\VGMechDatabase.mdf;Integrated Security=True";
+        public static string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
         public static List<Comment> comments = new List<Comment>();
         public static string cardTitle = "";
         public string allCommentString = "";
@@ -97,29 +97,28 @@ namespace VisualMech
                 temp++;
             }
         }
-    
 
-        
-        
+
+
+
 
         public void get_Comments(string mechanicTitle)
         {
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 // Step 2: Write SQL Query
                 string query = $@"
-                        SELECT CommentTable.*, UserTable.username 
-                        FROM CommentTable 
-                        INNER JOIN UserTable ON CommentTable.user_id = UserTable.user_id 
-                        WHERE CommentTable.mechanic_title = '{mechanicTitle}'
-                    ";
-
+                SELECT CommentTable.*, UserTable.username 
+                FROM CommentTable 
+                INNER JOIN UserTable ON CommentTable.user_id = UserTable.user_id 
+                WHERE CommentTable.mechanic_title = '{mechanicTitle}'
+            ";
 
                 // Step 3: Execute Query
-                using (SqlCommand command = new SqlCommand(query, connection))
+                using (MySqlCommand command = new MySqlCommand(query, connection))
                 {
                     connection.Open();
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    using (MySqlDataReader reader = command.ExecuteReader())
                     {
                         // Step 4: Process Data
                         while (reader.Read())
@@ -129,17 +128,16 @@ namespace VisualMech
                             string comment = reader["comment"].ToString();
 
                             allCommentString += $@"
-                                <div class=""comment mt-4 text-justify float-left"" >
-                                    <img src=""Images/person_icon.png"" alt="""" class=""rounded-circle"" width=""40"" height=""40"">
-                                    <h4>{username}</h4>
-                                    <span>- {dateCommented}</span>
-                                    <br>
-                                    <p>{comment}</p>
-                                </div>
-                                <div>
-                                    <hr />
-                                </div>";
-                            
+                        <div class=""comment mt-4 text-justify float-left"" >
+                            <img src=""Images/person_icon.png"" alt="""" class=""rounded-circle"" width=""40"" height=""40"">
+                            <h4>{username}</h4>
+                            <span>- {dateCommented}</span>
+                            <br>
+                            <p>{comment}</p>
+                        </div>
+                        <div>
+                            <hr />
+                        </div>";
                         }
                     }
                 }
@@ -152,15 +150,14 @@ namespace VisualMech
         public static string post_Click(string message)
         {
             string result = "";
-            using (connection = new SqlConnection(connectionString))
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                
                 try
                 {
                     // Get the current HttpContext
                     HttpContext context = HttpContext.Current;
 
-                    if(message.Length <= 0)
+                    if (message.Length <= 0)
                     {
                         throw new Exception("Comment cannot be empty");
                     }
@@ -170,9 +167,9 @@ namespace VisualMech
                         {
                             connection.Open();
 
-                            string query = "INSERT INTO CommentTable (user_id, mechanic_title ,comment, comment_date) VALUES (@UserId, @MechanicTitle, @CommentText, @CommentDate)";
+                            string query = "INSERT INTO CommentTable (user_id, mechanic_title, comment, comment_date) VALUES (@UserId, @MechanicTitle, @CommentText, @CommentDate)";
 
-                            using (SqlCommand command = new SqlCommand(query, connection))
+                            using (MySqlCommand command = new MySqlCommand(query, connection))
                             {
                                 command.Parameters.AddWithValue("@UserId", context.Session["Current_ID"]);
                                 command.Parameters.AddWithValue("@MechanicTitle", cardTitle);
@@ -182,9 +179,7 @@ namespace VisualMech
                                 command.ExecuteNonQuery();
                             }
 
-
                             result = "Comment Posted Successfully";
-
                             connection.Close();
                         }
                         else
@@ -192,17 +187,10 @@ namespace VisualMech
                             throw new Exception("Please Sign In First");
                         }
                     }
-
-                    
-
                 }
                 catch (Exception ex)
                 {
                     result = ex.Message;
-                    
-                    
-
-                    
                 }
             }
             return result;
