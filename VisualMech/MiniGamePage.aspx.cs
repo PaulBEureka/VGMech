@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -16,10 +17,17 @@ namespace VisualMech
         public static string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
         public string allLeaderboardsString = "";
 
+
+
         protected void Page_Load(object sender, EventArgs e)
         {
+            
+
+
             GetLeaderboards();
         }
+
+        
 
 
 
