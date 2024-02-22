@@ -11,10 +11,17 @@
                         <div class="row minigame_title text-center d-grid m-auto">
                             <p class="text-white display-5 m-auto">MINI GAME TITLE</p>
                         </div>
-                        <div class="row  center_custom m-auto my-5 mt-0">
-                            <iframe src="https://almers5.github.io/Game-Mechanics/MiniGame1/" class="mini_game_inner_box" scrolling="no"></iframe>
-                        </div>
-            </div>
+                        
+                        <% if(Session["Current_ID"] != null) { %>
+                            <div class="row  center_custom m-auto my-5 mt-0">
+                                <iframe src="http://localhost/unity/WebGl Build/index.html?current_id=<%= Session["Current_ID"] %>" class="mini_game_inner_box" scrolling="no"></iframe>
+                            </div>
+                        <% } else { %>
+                            <div class="row  center_custom m-auto my-5 mt-0">
+                                <button type="button" id="post_disbled" class="comment_button my-2 bg-danger w-100" onclick="sign_in_comment()">Sign in to play mini game :></button>
+                            </div>
+                        <% } %>
+                                    </div>
 
             
             
@@ -62,6 +69,7 @@
 
 
     </main>
+    </script>
 
 
     <script src="https://kit.fontawesome.com/d7d0e3dd38.js" crossorigin="anonymous"></script>

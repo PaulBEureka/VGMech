@@ -63,8 +63,11 @@ namespace VisualMech
                                 }
                                 else
                                 {
+
                                     Session["CurrentUser"] = username;
                                     Session["Current_ID"] = user_id;
+
+
                                     Response.Redirect("HomePage.aspx");
                                 }
                             }
