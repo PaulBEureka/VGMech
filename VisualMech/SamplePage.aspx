@@ -4,6 +4,9 @@
     <webopt:bundlereference runat="server" path="~/Content/css" />
     <link rel="stylesheet" href="/Content/custom_styles.css">
     <script src="/Content/custom.js"></script>
+    <script src="Scripts/jquery.signalR-2.4.3.min.js"></script>
+    <script src="signalr/hubs"></script>
+
     <main >
         <asp:Literal ID="gameMechLit" runat="server"></asp:Literal>
 

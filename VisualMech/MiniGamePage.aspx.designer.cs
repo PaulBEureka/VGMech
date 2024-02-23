@@ -13,14 +13,5 @@ namespace VisualMech
 
     public partial class WebForm2
     {
-
-        /// <summary>
-        /// LeaderboardHTML1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal LeaderboardHTML1;
     }
 }
