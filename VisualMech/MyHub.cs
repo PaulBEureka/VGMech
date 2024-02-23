@@ -20,6 +20,13 @@ namespace VisualMech
             Clients.All.updateLeaderboards(leaderboardsData);
         }
 
+
+        public async Task UpdateComments(string mecanicTitle)
+        {
+            string commentsData = await RetrieveCommentsData(mecanicTitle);
+            Clients.All.updateComments(commentsData);
+        }
+
         private async Task<string> RetrieveLeaderboardsDataAsync()
         {
             string allLeaderboardsString = "";
@@ -84,6 +91,58 @@ namespace VisualMech
 
             return allLeaderboardsString;
         }
+
+
+
+        private async Task<string> RetrieveCommentsData(string mechanicTitle)
+        {
+            string allCommentString = "";
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                // Step 2: Write SQL Query
+                string query = $@"
+                SELECT CommentTable.*, UserTable.username 
+                FROM CommentTable 
+                INNER JOIN UserTable ON CommentTable.user_id = UserTable.user_id 
+                WHERE CommentTable.mechanic_title = '{mechanicTitle}'
+            ";
+
+                // Step 3: Execute Query
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    await connection.OpenAsync();
+
+                    using (MySqlDataReader reader = (MySqlDataReader)await command.ExecuteReaderAsync())
+                    {
+                        // Step 4: Process Data
+                        while (await reader.ReadAsync())
+                        {
+                            string username = reader["username"].ToString();
+                            string dateCommented = reader["comment_date"].ToString();
+                            string comment = reader["comment"].ToString();
+
+                            allCommentString += $@"
+                        <div class=""comment mt-4 text-justify float-left"" >
+                            <img src=""Images/person_icon.png"" alt="""" class=""rounded-circle"" width=""40"" height=""40"">
+                            <h4>{username}</h4>
+                            <span>- {dateCommented}</span>
+                            <br>
+                            <p>{comment}</p>
+                        </div>
+                        <div>
+                            <hr />
+                        </div>";
+                        }
+                    }
+                }
+            }
+
+            return allCommentString;
+        }
+
+
+
 
         
     }

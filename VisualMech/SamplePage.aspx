@@ -3,9 +3,17 @@
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
     <webopt:bundlereference runat="server" path="~/Content/css" />
     <link rel="stylesheet" href="/Content/custom_styles.css">
-    <script src="/Content/custom.js"></script>
-    <script src="Scripts/jquery.signalR-2.4.3.min.js"></script>
+    <script src="Scripts/jquery-3.4.1.js"></script>
+    <script src="Scripts/jquery.signalR-2.4.3.js"></script>
     <script src="signalr/hubs"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+
+
+
+    <script src="/Content/custom.js"></script>
 
     <main >
         <asp:Literal ID="gameMechLit" runat="server"></asp:Literal>
@@ -31,7 +39,9 @@
                                     <div class="row">
                                         <div class="col-sm-5 col-md-6 col-12 pb-4 comment-section-size">
                                             
-                                            <asp:Literal ID="CommentHtml" runat="server"></asp:Literal>
+                                            <div id="commentSection">
+                                                <!-- Existing comments will be dynamically added here -->
+                                            </div>
                                         </div>
                                         
 
@@ -75,7 +85,39 @@
         
     </main>
 
+    <script>
+        $(function () {
+            var chat = $.connection.myHub;
 
+            // Function to update comments
+            function updateComments(cardTitle) {
+                chat.server.updateComments(cardTitle)
+                    .done(function () {
+                        console.log("Comments updated successfully.");
+                    })
+                    .fail(function (error) {
+                        console.error("Error updating comments: " + error);
+                    });
+            }
+
+            // Handle the updateComments message from the server
+            chat.client.updateComments = function (commentHTML) {
+                // Update the comments on the webpage
+                $('#commentSection').html(commentHTML);
+                console.log("Comments updated.");
+            };
+
+            $.connection.hub.start().done(function () {
+                console.log("SignalR connected.");
+
+                PageMethods.get_Comments(onSuccess);
+            });
+
+            function onSuccess(response) {
+                updateComments(response);
+            }
+        });
+    </script>
 
 
     <script src="https://kit.fontawesome.com/d7d0e3dd38.js" crossorigin="anonymous"></script>

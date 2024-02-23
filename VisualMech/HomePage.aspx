@@ -5,10 +5,13 @@
     <webopt:bundlereference runat="server" path="~/Content/css" />
     <link rel="stylesheet" href="/Content/custom_styles.css">
     <script src="Scripts/jquery-3.4.1.js"></script>
-
-
     <script src="Scripts/jquery.signalR-2.4.3.js"></script>
     <script src="signalr/hubs"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+
     
     <script src="/Content/custom.js"></script>
     <main id="content">

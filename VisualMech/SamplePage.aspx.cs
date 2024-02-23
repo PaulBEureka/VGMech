@@ -12,6 +12,7 @@ using System.Xml.Linq;
 using VisualMech.Classes;
 using VisualMech.Content.Classes;
 using MySql.Data.MySqlClient;
+using Microsoft.AspNet.SignalR;
 
 namespace VisualMech
 {
@@ -20,7 +21,7 @@ namespace VisualMech
         public static string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
         public static List<Comment> comments = new List<Comment>();
         public static string cardTitle = "";
-        public string allCommentString = "";
+       
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -90,7 +91,7 @@ namespace VisualMech
 
             </section> ";
 
-                    get_Comments(card.Title);
+                    //get_Comments(card.Title);
                 }
 
 
@@ -101,50 +102,16 @@ namespace VisualMech
 
 
 
-
-        public void get_Comments(string mechanicTitle)
+        [WebMethod]
+        public static string get_Comments()
         {
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
-            {
-                // Step 2: Write SQL Query
-                string query = $@"
-                SELECT CommentTable.*, UserTable.username 
-                FROM CommentTable 
-                INNER JOIN UserTable ON CommentTable.user_id = UserTable.user_id 
-                WHERE CommentTable.mechanic_title = '{mechanicTitle}'
-            ";
-
-                // Step 3: Execute Query
-                using (MySqlCommand command = new MySqlCommand(query, connection))
-                {
-                    connection.Open();
-                    using (MySqlDataReader reader = command.ExecuteReader())
-                    {
-                        // Step 4: Process Data
-                        while (reader.Read())
-                        {
-                            string username = reader["username"].ToString();
-                            string dateCommented = reader["comment_date"].ToString();
-                            string comment = reader["comment"].ToString();
-
-                            allCommentString += $@"
-                        <div class=""comment mt-4 text-justify float-left"" >
-                            <img src=""Images/person_icon.png"" alt="""" class=""rounded-circle"" width=""40"" height=""40"">
-                            <h4>{username}</h4>
-                            <span>- {dateCommented}</span>
-                            <br>
-                            <p>{comment}</p>
-                        </div>
-                        <div>
-                            <hr />
-                        </div>";
-                        }
-                    }
-                }
-            }
-
-            CommentHtml.Text = allCommentString;
+            return cardTitle;
         }
+
+
+
+
+
 
         [WebMethod]
         public static string post_Click(string message)
@@ -181,6 +148,8 @@ namespace VisualMech
 
                             result = "Comment Posted Successfully";
                             connection.Close();
+
+                            
                         }
                         else
                         {
