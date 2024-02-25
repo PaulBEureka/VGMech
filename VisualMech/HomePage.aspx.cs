@@ -27,7 +27,7 @@ namespace VisualMech
                 "transform.position = new Vector2(newXPosition, newYPosition);<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}", 
                 CommonGenres = "Adventure, Platformers, First Person Shooters, Racing, Open World, Role Playing Games", PossibleVariations = "Top-Down Movement, Side-on Movement, 3D Movement, Click to Move", PossibleCombinations="This game mechanic is frequently utilized across various genres, a wide range of mechanics like shooting, gathering, and others are commonly integrated with the movement mechanism."
             , InteractiveControls = "W - Move Forward <br/>A - Move Left<br/>S - Move Backward<br/>D - Move Right"},
-            new Card(){CardID="1", Title="SHOOTING MECHANIC", ImageSource = "Images/shooting_bg.png", ThumbSource = "Images/shooting_thumb.png", Description = "Learn how to add shooting elements!", UnityLink = "https://almers5.github.io/Game-Mechanics/ShootingMechanic/",
+            new Card(){CardID="1", Title="SHOOTING MECHANIC", ImageSource = "Images/ShootingMechanic_Thumbnail.png", ThumbSource = "Images/shooting_thumb.png", Description = "Learn how to add shooting elements!", UnityLink = "https://almers5.github.io/Game-Mechanics/ShootingMechanic/",
                 CodeText = "public class Player : MonoBehaviour<br />{<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;" +
                 "[SerializeField] Rigidbody2D rb;<br />&nbsp;&nbsp;&nbsp;&nbsp;[SerializeField] Weapon weapon;<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;" +
                 "Vector2 mousePosition;<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;void Update()<br />&nbsp;&nbsp;&nbsp;&nbsp;" +
@@ -58,7 +58,7 @@ namespace VisualMech
                 "Destroy(collision.gameObject);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Destroy(gameObject);<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}", 
                 CommonGenres = "First Person Shooters, Third Person Shooters, Action Adventure, Battle Royale, Sci-Fi, Survival Horror", PossibleVariations = "Click to Shoot, Precision Shooting, Aim Down Sights, Projectile Types, Cover Based Shooting", PossibleCombinations="This game mechanic is mostly implemented on action base games which movement mechanics is needed with resource management."
                 ,InteractiveControls = "Mouse Pointer - Aim<br/>Left Click Mouse Button - Shoot"},
-            new Card(){CardID="2", Title="COLLECTING MECHANIC", ImageSource = "Images/jump_card_bg.png", ThumbSource = "Images/collecting_thumb.png", Description = "Want your game to have collecting mechanics? Go here!", UnityLink = "https://paulbeureka.github.io/UnityGame1/Game_1/",
+            new Card(){CardID="2", Title="COLLECTING MECHANIC", ImageSource = "Images/CollectingMechanic_Thumbnail.png", ThumbSource = "Images/collecting_thumb.png", Description = "Want your game to have collecting mechanics? Go here!", UnityLink = "https://almers5.github.io/Game-Mechanics/CollectingMechanic/",
                 CodeText = "CodeText here", 
                 CommonGenres = "Horror, PVP", PossibleVariations = "Platforming", PossibleCombinations="Any Mechanic"
                 , InteractiveControls = "Left Arrow Key or S - Move to Left<br/>Right Arrow Key or D - Move to Right<br/>Space Bar - Jump"},
