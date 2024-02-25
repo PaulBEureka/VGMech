@@ -315,6 +315,8 @@
     <Content Include="HomePage.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Content\custom.js" />
+    <Content Include="Images\CollectingMechanic_Thumbnail.png" />
+    <Content Include="Images\ShootingMechanic_Thumbnail.png" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -450,9 +452,7 @@
       <DependentUpon>MiniGamePage.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Images\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
