@@ -28,49 +28,63 @@ namespace VisualMech
 
         protected void Register_btn_Click(object sender, EventArgs e)
         {
-            string result = "";
 
-            if (!CheckUsername())
+            if (captchacode.Text == Session["sessionCaptcha"].ToString())
             {
-                taken_lbl.Visible = true;
-            }
-            else
-            {
-                taken_lbl.Visible = false;
-                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                string result = "";
+
+                if (!CheckUsername())
                 {
-                    try
+                    taken_lbl.Visible = true;
+                }
+                else
+                {
+                    taken_lbl.Visible = false;
+                    using (MySqlConnection connection = new MySqlConnection(connectionString))
                     {
-                        connection.Open();
-
-                        string query = "INSERT INTO UserTable (username, password) VALUES (@Username, @Password)";
-
-                        using (MySqlCommand command = new MySqlCommand(query, connection))
+                        try
                         {
-                            PasswordHasher passwordHasher = new PasswordHasher();
+                            connection.Open();
 
-                            string hashPassword = passwordHasher.HashPassword(New_Password_tb.Text);
+                            string query = "INSERT INTO UserTable (username, password) VALUES (@Username, @Password)";
 
-                            command.Parameters.AddWithValue("@Username", New_Username_tb.Text);
-                            command.Parameters.AddWithValue("@Password", hashPassword);
-                            command.ExecuteNonQuery();
+                            using (MySqlCommand command = new MySqlCommand(query, connection))
+                            {
+                                PasswordHasher passwordHasher = new PasswordHasher();
+
+                                string hashPassword = passwordHasher.HashPassword(New_Password_tb.Text);
+
+                                command.Parameters.AddWithValue("@Username", New_Username_tb.Text);
+                                command.Parameters.AddWithValue("@Password", hashPassword);
+                                command.ExecuteNonQuery();
+                            }
+
+                            result = "New User Registered Successfully";
+
+                            loginUser();
+
+                            Response.Write(result);
+
+                            connection.Close();
                         }
-
-                        result = "New User Registered Successfully";
-
-                        loginUser();
-
-                        Response.Write(result);
-
-                        connection.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        result = ex.Message;
-                        Response.Write(result);
+                        catch (Exception ex)
+                        {
+                            result = ex.Message;
+                            Response.Write(result);
+                        }
                     }
                 }
             }
+            else
+            {
+                lblCaptchaErrorMsg.Text = "Captcha code is incorrect.Please enter correct captcha code.";
+                lblCaptchaErrorMsg.ForeColor = System.Drawing.Color.White;
+                captchacode.Text = "";
+            }
+
+
+
+
         }
 
         private bool CheckUsername()
