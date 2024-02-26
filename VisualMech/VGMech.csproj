@@ -348,6 +348,7 @@
     <Content Include="Content\app.config" />
     <Content Include="SamplePage.aspx" />
     <Content Include="MiniGamePage.aspx" />
+    <Content Include="Captcha.aspx" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -450,6 +451,13 @@
     </Compile>
     <Compile Include="MiniGamePage.aspx.designer.cs">
       <DependentUpon>MiniGamePage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Captcha.aspx.cs">
+      <DependentUpon>Captcha.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Captcha.aspx.designer.cs">
+      <DependentUpon>Captcha.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup />

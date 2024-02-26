@@ -105,6 +105,33 @@ namespace VisualMech
         protected global::System.Web.UI.WebControls.CompareValidator CompareValidatorPassword;
 
         /// <summary>
+        /// captchaImage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Image captchaImage;
+
+        /// <summary>
+        /// captchacode control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox captchacode;
+
+        /// <summary>
+        /// lblCaptchaErrorMsg control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblCaptchaErrorMsg;
+
+        /// <summary>
         /// Register_btn control.
         /// </summary>
         /// <remarks>

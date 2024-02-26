@@ -18,6 +18,7 @@ namespace VisualMech
         {
             Session["CurrentUser"] = null;
             Session["Current_ID"] = null;
+            Session["sessionCaptcha"] = null;
             Response.Redirect(Request.Url.AbsoluteUri);
         }
 

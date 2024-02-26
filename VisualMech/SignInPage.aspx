@@ -23,6 +23,16 @@
                             <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="Password_tb" ErrorMessage="*" ForeColor="White"></asp:RequiredFieldValidator>
                             <asp:Label Text ="Incorrect Password" Visible="false" Font-Size="Small" ID="Incorrect_lbl" runat="server"></asp:Label>
                         </h5>
+                        
+                        <div class=" align-content-center text-center">
+                            <asp:Image ID="captchaImage" runat="server" Height="40px" Width="150px" ImageUrl="~/Captcha.aspx" /><br />
+                            <br />
+                            <asp:TextBox ID="captchacode" runat="server" Placeholder="Enter Captcha code"></asp:TextBox><br />
+                            <asp:Label ID="lblCaptchaErrorMsg" runat="server" Text="" Font-Size="Small"></asp:Label><br />
+                        </div>
+                        <br />
+                        
+                        
                         <asp:Button class="signin_button m-auto" ID="Login_btn" runat="server" Text="Login" OnClick="Login_btn_Click"/>
                         
                         <br />

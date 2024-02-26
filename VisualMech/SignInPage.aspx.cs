@@ -24,65 +24,77 @@ namespace VisualMech
 
         protected void Login_btn_Click(object sender, EventArgs e)
         {
-            string query = $@"
+
+            if (captchacode.Text == Session["sessionCaptcha"].ToString())
+            {
+
+
+                string query = $@"
                 SELECT *
                 FROM UserTable 
                 WHERE UserTable.username = @Username";
 
-            string result = "";
+                string result = "";
 
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
-            {
-                try
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    try
                     {
-                        command.Parameters.AddWithValue("@Username", Username_tb.Text);
-
-                        connection.Open();
-                        using (MySqlDataReader reader = command.ExecuteReader())
+                        using (MySqlCommand command = new MySqlCommand(query, connection))
                         {
-                            if (reader.HasRows)
+                            command.Parameters.AddWithValue("@Username", Username_tb.Text);
+
+                            connection.Open();
+                            using (MySqlDataReader reader = command.ExecuteReader())
                             {
-                                No_Username_lbl.Visible = false;
-                                Incorrect_lbl.Visible = false;
-                                reader.Read();
-
-                                int user_id = reader.GetInt32(reader.GetOrdinal("user_id"));
-                                string username = reader.GetString(reader.GetOrdinal("username"));
-                                string password = reader.GetString(reader.GetOrdinal("password"));
-
-                                PasswordHasher passwordHasher = new PasswordHasher();
-
-                                // Verify the password
-                                bool isMatch = passwordHasher.VerifyPassword(Password_tb.Text, password);
-
-                                if (!isMatch)
+                                if (reader.HasRows)
                                 {
-                                    Incorrect_lbl.Visible = true;
+                                    No_Username_lbl.Visible = false;
+                                    Incorrect_lbl.Visible = false;
+                                    reader.Read();
+
+                                    int user_id = reader.GetInt32(reader.GetOrdinal("user_id"));
+                                    string username = reader.GetString(reader.GetOrdinal("username"));
+                                    string password = reader.GetString(reader.GetOrdinal("password"));
+
+                                    PasswordHasher passwordHasher = new PasswordHasher();
+
+                                    // Verify the password
+                                    bool isMatch = passwordHasher.VerifyPassword(Password_tb.Text, password);
+
+                                    if (!isMatch)
+                                    {
+                                        Incorrect_lbl.Visible = true;
+                                    }
+                                    else
+                                    {
+
+                                        Session["CurrentUser"] = username;
+                                        Session["Current_ID"] = user_id;
+
+
+                                        Response.Redirect("HomePage.aspx");
+                                    }
                                 }
                                 else
                                 {
-
-                                    Session["CurrentUser"] = username;
-                                    Session["Current_ID"] = user_id;
-
-
-                                    Response.Redirect("HomePage.aspx");
+                                    No_Username_lbl.Visible = true;
                                 }
-                            }
-                            else
-                            {
-                                No_Username_lbl.Visible = true;
                             }
                         }
                     }
+                    catch (Exception ex)
+                    {
+                        result = ex.Message;
+                        Response.Write(result);
+                    }
                 }
-                catch (Exception ex)
-                {
-                    result = ex.Message;
-                    Response.Write(result);
-                }
+            }
+            else
+            {
+                lblCaptchaErrorMsg.Text = "Captcha code is incorrect.Please enter correct captcha code.";
+                lblCaptchaErrorMsg.ForeColor = System.Drawing.Color.White;
+                captchacode.Text = "";
             }
         }
     }

@@ -49,7 +49,15 @@
                         
                         
                         </h5>
-                        
+
+                        <div class=" align-content-center text-center">
+                            <asp:Image ID="captchaImage" runat="server" Height="40px" Width="150px" ImageUrl="~/Captcha.aspx" /><br />
+                            <br />
+                            <asp:TextBox ID="captchacode" runat="server" Placeholder="Enter Captcha code"></asp:TextBox><br />
+                            <asp:Label ID="lblCaptchaErrorMsg" runat="server" Text="" Font-Size="Small"></asp:Label><br />
+                        </div>
+                        <br />
+
                         <asp:Button class="signup_button m-auto " ID="Register_btn" runat="server" Text="Register" OnClick="Register_btn_Click"/>
                         
                         <br />
