@@ -33,6 +33,32 @@ function onError(response) {
     window.location.href = "/SignInPage.aspx"; 
 }
 
+function reply_Click(parentCommentId) {
+    var parentString = parentCommentId.toString();
+    var message = document.getElementById('replybox-' + parentString).value; // Get textarea value
+
+    PageMethods.reply_Click(message, parentCommentId, onSuccess2, onError2);
+}
+
+function onSuccess2(response) {
+    // Handle success response here
+    alert(response);
+    window.location.href = window.location.pathname; // Redirect to the same page
+}
+
+function onError2(response) {
+    // Handle error response here
+    alert("An error occurred while posting comment.");
+    window.location.href = "/SignInPage.aspx";
+}
+
+
+
+
+
+
+
+
 function sign_in_comment(){
     window.location.href = "/SignInPage.aspx";
 }

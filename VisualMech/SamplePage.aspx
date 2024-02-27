@@ -22,9 +22,9 @@
             <!-- Comment Section layout -->
 
             <div class="row m-auto gameMech-layout-padding">
-                <div class="container gameMech-comment-layout d-grid">
+                <div class="container d-grid">
                     <div class="gameMech-outer-box m-auto d-grid">
-                        <div class="container m-0 mx-auto">
+                        <div class="container m-0 mx-auto d-grid">
                             <div class="row ">
                                 <h4 class="fw-bolder">Share your thoughts</h4>
                             </div>
@@ -33,39 +33,45 @@
                             </div>
 
                             <!--Per Comment Layout -->
+                            <div class="row container d-grid">
+                                    
+                                                    
 
+                                    <% if (Session["CurrentUser"] != null) { %>
+                                    <div class="col-5 mb-1 d-flex d-grid">
+                                        <img src="Images/person_icon.png" alt="" class="rounded-circle" width="40" height="40">
+                                        <h5 class="ms-3 my-auto"><%# Session["CurrentUser"] ?? "Default Name" %></h5>
+                                    </div>
+
+                                    
+                                    
+                                    <br />
+                                    <textarea name="msg" placeholder="Type your comment here" id="commentbox" rows="5" class="form-control" style="background-color: white; resize: none;" draggable="false"></textarea>
+                                    
+
+                                    <% } %>
+                                    
+                                    <% if (Session["CurrentUser"] == null) { %>
+                                    <button type="button" id="post_disbled" class="comment_button mx-auto my-2 bg-danger" onclick="sign_in_comment()">Sign in</button>
+                                        <% } else { %>
+                                    <button type="button" id="post" class="comment_button my-2 bg-danger" onclick="post_Click()">Post Comment</button>
+                                    <% } %>
+                            </div>
+
+                            <hr />
                             <section>
                                 <div class="container"> 
+                                    
+
                                     <div class="row">
-                                        <div class="col-sm-5 col-md-6 col-12 pb-4 comment-section-size">
+                                        <div class="col pb-4 comment-section-size">
                                             
                                             <div id="commentSection">
                                                 <!-- Existing comments will be dynamically added here -->
                                             </div>
+                                            
                                         </div>
                                         
-
-                                        <div class="col-lg-4 col-md-5 col-sm-4 offset-md-1 offset-sm-1 col-12 mt-4">
-                                                <div class="form-group">
-                                                    <h4>Leave a comment</h4>
-                                                    
-
-                                                    <% if (Session["CurrentUser"] != null) { %>
-                                                    <label for="message">Message</label>
-                                                    <textarea name="msg" id="commentbox" cols="30" rows="5" class="form-control" style="background-color: white; resize: none; height:400px;" draggable="false"></textarea>
-                                                    
-                                                    
-                                                    <% } %>
-                                                
-                                                </div>
-                                                <div>
-                                                    <% if (Session["CurrentUser"] == null) { %>
-                                                    <button type="button" id="post_disbled" class="comment_button my-2 bg-danger" onclick="sign_in_comment()">Sign in to comment</button>
-                                                     <% } else { %>
-                                                    <button type="button" id="post" class="comment_button my-2 bg-danger" onclick="post_Click()">Post Comment</button>
-                                                    <% } %>
-                                                </div>
-                                        </div>
                                     </div>
                                 </div>
                             </section>
@@ -117,6 +123,35 @@
                 updateComments(response);
             }
         });
+
+
+        function toggleReplies(commentId) {
+            var button = document.getElementById("toggle-replies-btn-" + commentId);
+            var container = document.getElementById("reply-container-" + commentId);
+
+            // Toggle aria-expanded attribute
+            var expanded = button.getAttribute("aria-expanded") === "true" || false;
+            button.setAttribute("aria-expanded", !expanded);
+
+            // Toggle aria-hidden attribute
+            var hidden = container.getAttribute("aria-hidden") === "true" || false;
+            container.setAttribute("aria-hidden", !hidden);
+        }
+
+        function toggleRespond(commentId) {
+            var button = document.getElementById("toggle-respond-btn-" + commentId);
+            var container = document.getElementById("respond-container-" + commentId);
+
+            // Toggle aria-expanded attribute
+            var expanded = button.getAttribute("aria-expanded") === "true" || false;
+            button.setAttribute("aria-expanded", !expanded);
+
+            // Toggle aria-hidden attribute
+            var hidden = container.getAttribute("aria-hidden") === "true" || false;
+            container.setAttribute("aria-hidden", !hidden);
+        }
+        
+
     </script>
 
 
