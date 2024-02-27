@@ -13,6 +13,7 @@ using VisualMech.Classes;
 using VisualMech.Content.Classes;
 using MySql.Data.MySqlClient;
 using Microsoft.AspNet.SignalR;
+using System.Web.Script.Serialization;
 
 namespace VisualMech
 {
@@ -103,13 +104,74 @@ namespace VisualMech
 
 
         [WebMethod]
-        public static string get_Comments()
+        public static string[] get_Comments()
         {
-            return cardTitle;
+            HttpContext context = HttpContext.Current;
+
+            string[] strings;
+
+            if (context.Session["CurrentUser"] != null)
+            {
+                strings = new string[2] { cardTitle, context.Session["CurrentUser"].ToString() };
+            }
+            else
+            {
+                strings = new string[2] { cardTitle, null };
+            }
+
+
+            return strings;
         }
 
 
+        [WebMethod]
+        public static string reply_Click(int parentCommentId, string replyText)
+        {
+            string result = "";
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    // Get the current HttpContext
+                    HttpContext context = HttpContext.Current;
 
+                    if (replyText.Length <= 0)
+                    {
+                        throw new Exception("Comment cannot be empty");
+                    }
+                    else
+                    {
+                        
+                        connection.Open();
+
+                        string query = "INSERT INTO CommentTable (user_id, mechanic_title, comment, comment_date, parent_comment_id) VALUES (@userId, @mechanicTitle, @comment, @commentDate, @parentCommentId);";
+
+                        using (MySqlCommand command = new MySqlCommand(query, connection))
+                        {
+                            command.Parameters.AddWithValue("@UserId", context.Session["Current_ID"]);
+                            command.Parameters.AddWithValue("@MechanicTitle", cardTitle);
+                            command.Parameters.AddWithValue("@CommentText", replyText);
+                            command.Parameters.AddWithValue("@CommentDate", DateTime.Now);
+                            command.Parameters.AddWithValue("@parentCommentId", parentCommentId);
+
+                            command.ExecuteNonQuery();
+                        }
+
+                        result = "Comment Posted Successfully";
+                        connection.Close();
+
+
+                        
+                        
+                    }
+                }
+                catch (Exception ex)
+                {
+                    result = ex.Message;
+                }
+            }
+            return result;
+        }
 
 
 
@@ -134,7 +196,8 @@ namespace VisualMech
                         {
                             connection.Open();
 
-                            string query = "INSERT INTO CommentTable (user_id, mechanic_title, comment, comment_date) VALUES (@UserId, @MechanicTitle, @CommentText, @CommentDate)";
+                            string query = "INSERT INTO CommentTable (user_id, mechanic_title, comment, comment_date, parent_comment_id) VALUES (@userId, @mechanicTitle, @comment, @commentDate, @parentCommentId);";
+
 
                             using (MySqlCommand command = new MySqlCommand(query, connection))
                             {
@@ -142,6 +205,7 @@ namespace VisualMech
                                 command.Parameters.AddWithValue("@MechanicTitle", cardTitle);
                                 command.Parameters.AddWithValue("@CommentText", message);
                                 command.Parameters.AddWithValue("@CommentDate", DateTime.Now);
+                                command.Parameters.AddWithValue("@parent_comment_id", null);
 
                                 command.ExecuteNonQuery();
                             }
