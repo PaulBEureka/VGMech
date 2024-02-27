@@ -142,7 +142,6 @@ namespace VisualMech
                                     {
                                         allCommentString.Replace("<!--CurrentReply" + parentCommentId + "-->",
                                         $@"
-                                            <div class=""reply mt-4 text-justify float-left"" >
                                                 <img src=""Images/person_icon.png"" alt="""" class=""rounded-circle"" width=""40"" height=""40"">
                                                 <h4>{username}</h4>
                                                 <span>- {dateCommented}</span>
@@ -162,15 +161,13 @@ namespace VisualMech
                                                         </div>
                                                     </div>
                                                 </div>
-                            
-                                            </ div >
-                                            <!--CurrentReply{parentCommentId}-->");
+                                                <hr />
+                                                <!--CurrentReply{parentCommentId}-->");
                                     }
                                     else
                                     {
                                         allCommentString.Replace("<!--CurrentReply" + parentCommentId + "-->",
                                         $@"
-                                            <div class=""reply mt-4 text-justify float-left"" >
                                                 <img src=""Images/person_icon.png"" alt="""" class=""rounded-circle"" width=""40"" height=""40"">
                                                 <h4>{username}</h4>
                                                 <span>- {dateCommented}</span>
@@ -183,9 +180,8 @@ namespace VisualMech
                                                        Reply
                                                     </button>
                                                 </div>
-                            
-                                            </ div >
-                                            <!--CurrentReply{parentCommentId}-->");
+                                                <hr />
+                                                <!--CurrentReply{parentCommentId}-->");
                                     }
                                 }
                                 else
@@ -224,10 +220,10 @@ namespace VisualMech
                                                                 </div>
                                                             </div>
                                                         </div>
-                            
+                                                        <hr />
+                                                        <!--CurrentReply{parentCommentId}-->
                                                     
                                                     </div>
-                                                    <!--CurrentReply{parentCommentId}-->
                                                 </div>
                                             </div>
                                         </div>
@@ -258,10 +254,11 @@ namespace VisualMech
                                                                Reply
                                                             </button>
                                                         </div>
-                            
-                                                    
+                                                        <hr />
+                                                        <!--CurrentReply{parentCommentId}-->
                                                     </div>
-                                                    <!--CurrentReply{parentCommentId}-->
+                                                    
+                                                    
                                                 </div>
                                             </div>
                                         </div>

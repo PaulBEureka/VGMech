@@ -34,10 +34,10 @@ function onError(response) {
 }
 
 function reply_Click(parentCommentId) {
-    var parentString = parentCommentId.toString();
-    var message = document.getElementById('replybox-' + parentString).value; // Get textarea value
+    var parentString = "replybox-" + parentCommentId.toString();
+    var message = document.getElementById(parentString).value; // Get textarea value
 
-    PageMethods.reply_Click(message, parentCommentId, onSuccess2, onError2);
+    PageMethods.reply_Click(parentCommentId, message, onSuccess2, onError2);
 }
 
 function onSuccess2(response) {
