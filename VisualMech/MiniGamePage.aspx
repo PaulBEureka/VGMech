@@ -111,7 +111,7 @@
                 updateLeaderboards();
 
                 // Set interval to call updateLeaderboards every 10 seconds
-                setInterval(updateLeaderboards, 10000);
+                setInterval(updateLeaderboards, 5000);
             });
         });
 
