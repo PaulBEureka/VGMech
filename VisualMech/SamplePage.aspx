@@ -121,6 +121,8 @@
 
             function onSuccess(response) {
                 updateComments(response);
+
+                setInterval(updateComments(response), 5000);
             }
         });
 

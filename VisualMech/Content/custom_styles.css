@@ -584,10 +584,17 @@ body {
 
 .reply-button {
     background-color: transparent; /* Transparent background */
-    border: none; /* Remove border */
+    color: black; /* Text color */
+    font-weight: 600;
+    border: none;
+    border-radius: 20px;
+    transition: .2s ease-in-out;
+}
+
+.reply-button:hover {
+    background-color: whitesmoke;
     color: black; /* Text color */
     cursor: pointer; /* Show pointer cursor on hover */
-    font-weight:bold;
 }
 
 .toggle-replies-btn {
@@ -596,17 +603,12 @@ body {
     color: #007bff; /* Text color */
     cursor: pointer; /* Show pointer cursor on hover */
     font-weight: bold;
+    text-align: start;
+    border-radius: 20px;
+    transition: .2s ease-in-out;
 }
 
-/* Style for the toggle button */
-.toggle-replies-btn {
-    background-color: transparent; /* Transparent background */
-    border: none; /* Remove border */
-    color: #007bff; /* Text color */
+.toggle-replies-btn:hover {
     cursor: pointer; /* Show pointer cursor on hover */
-}
-
-/* Style for the button when expanded */
-.toggle-replies-btn.expanded {
-    color: #dc3545; /* Change color when expanded */
+    background-color: whitesmoke;
 }

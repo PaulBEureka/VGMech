@@ -40,6 +40,13 @@ function reply_Click(parentCommentId) {
     PageMethods.reply_Click(parentCommentId, message, onSuccess2, onError2);
 }
 
+function innerReply_Click(parentCommentId, commentID) {
+    var parentString = "replybox-" + commentID.toString();
+    var message = document.getElementById(parentString).value; // Get textarea value
+
+    PageMethods.innerReply_Click(parentCommentId, message, onSuccess2, onError2);
+}
+
 function onSuccess2(response) {
     // Handle success response here
     alert(response);

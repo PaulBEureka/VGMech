@@ -7,6 +7,12 @@ using System.Web;
 using System.Threading;
 using System.Text;
 using System.Runtime.CompilerServices;
+using VisualMech.Classes;
+using System.Collections.Generic;
+using System.ComponentModel.Design;
+using System.Linq;
+using MySql.Data.Types;
+using System.Text.RegularExpressions;
 
 namespace VisualMech
 {
@@ -14,7 +20,8 @@ namespace VisualMech
     {
         private string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
         
-        
+        DateTime currentDateTime = DateTime.Now;
+
 
         public async Task UpdateLeaderboards()
         {
@@ -99,14 +106,13 @@ namespace VisualMech
 
         private async Task<string> RetrieveCommentsData(string[] info)
         {
-            StringBuilder allCommentString = new StringBuilder();
+            List<Comment> commentList = new List<Comment>();
 
             string mechanicTitle = info[0];
             string sessionUsername = info[1];
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                // Step 2: Write SQL Query
                 string query = $@"
             SELECT c1.*, UserTable.username 
             FROM CommentTable c1
@@ -114,266 +120,233 @@ namespace VisualMech
             WHERE c1.mechanic_title = '{mechanicTitle}'
         ";
 
-                // Step 3: Execute Query
                 using (MySqlCommand command = new MySqlCommand(query, connection))
                 {
                     await connection.OpenAsync();
 
                     using (MySqlDataReader reader = (MySqlDataReader)await command.ExecuteReaderAsync())
                     {
-                        HttpContext context = HttpContext.Current;
-                        // Step 4: Process Data
                         while (await reader.ReadAsync())
                         {
                             int commentId = reader.GetInt32("comment_id");
                             string username = reader["username"].ToString();
-                            string dateCommented = reader["comment_date"].ToString();
-                            string comment = reader["comment"].ToString();
+                            DateTime sqlDate = (DateTime)reader["comment_date"];
+                            string raw_comment = reader["comment"].ToString();
                             int? parentCommentId = reader.IsDBNull(reader.GetOrdinal("parent_comment_id")) ? (int?)null : reader.GetInt32(reader.GetOrdinal("parent_comment_id"));
 
-                            
+
+
+                            string dateCommented = GetTimeAgo(sqlDate);
+                            string comment = MakeNameBold(raw_comment);
 
 
                             if (parentCommentId != null)
                             {
-                                string currentString = allCommentString.ToString();
-                                if (currentString.Contains("<!--CurrentReply"+parentCommentId+"-->")){
-                                    if (sessionUsername != null)
-                                    {
-                                        allCommentString.Replace("<!--CurrentReply" + parentCommentId + "-->",
-                                        $@"
-                                                <img src=""Images/person_icon.png"" alt="""" class=""rounded-circle"" width=""40"" height=""40"">
-                                                <h4>{username}</h4>
-                                                <span>- {dateCommented}</span>
-                                                <br>
-                                                <p>{comment}</p>
-
-                                                        
-                                                <div class=""dropdown"">
-                                                    <button id=""toggle-respond-btn-{commentId}"" class=""reply-button w-25 text-start"" type=""button"" aria-expanded=""false"" aria-controls=""respond-container-{commentId}"" onclick=""toggleRespond({commentId})"">
-                                                        Reply
-                                                    </button>
-
-                                                    <div id=""respond-container-{commentId}"" class=""respond-container"" aria-labelledby=""toggle-replies-btn-{commentId}"" aria-hidden=""true"">
-                                                        <div class=""row container mb-3"">
-                                                            <textarea placeholder=""Type your reply here"" id=""replybox-{commentId}"" rows=""5"" class=""form-control"" style=""background-color: white; resize: none;"" draggable=""false""></textarea>
-                                                            <button type=""button"" id=""button-addon-reply-{commentId}"" class=""comment_button my-2 bg-danger"" onclick=""reply_Click({commentId})"">Reply</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <hr />
-                                                <!--CurrentReply{parentCommentId}-->");
-                                    }
-                                    else
-                                    {
-                                        allCommentString.Replace("<!--CurrentReply" + parentCommentId + "-->",
-                                        $@"
-                                                <img src=""Images/person_icon.png"" alt="""" class=""rounded-circle"" width=""40"" height=""40"">
-                                                <h4>{username}</h4>
-                                                <span>- {dateCommented}</span>
-                                                <br>
-                                                <p>{comment}</p>
-
-                                                        
-                                                <div class=""dropdown"">
-                                                    <button id=""toggle-respond-btn-{commentId}"" class=""reply-button w-25 text-start"" type=""button"" aria-expanded=""false"" aria-controls=""respond-container-{commentId}"" onclick=""sign_in_comment()"">
-                                                       Reply
-                                                    </button>
-                                                </div>
-                                                <hr />
-                                                <!--CurrentReply{parentCommentId}-->");
-                                    }
+                                Comment parentComment = commentList.FirstOrDefault(c => c.CommentId == parentCommentId);
+                                if (parentComment != null)
+                                {
+                                    parentComment.RepliesList.Add(new Comment(commentId, username, dateCommented, comment));
                                 }
                                 else
                                 {
-                                    int tempReplyCount = GetReplyCount((int)parentCommentId);
-
-
-                                    if (sessionUsername != null)
-                                    {
-                                        allCommentString.Replace("<!--" + parentCommentId + "-->",
-                                        $@"
-                                        <div class=""replies"">
-                                            <div class=""dropdown"">
-                                                <button id=""toggle-replies-btn-{commentId}"" class=""toggle-replies-btn"" type=""button"" aria-expanded=""false"" aria-controls=""reply-container-{commentId}"" onclick=""toggleReplies({commentId})"">
-                                                    view {tempReplyCount.ToString()} replies
-                                                </button>
-
-                                        
-                                                <div id=""reply-container-{commentId}"" class=""reply-container"" aria-labelledby=""toggle-replies-btn-{commentId}"" aria-hidden=""true"">
-                                                    <div class=""reply mt-4 text-justify float-left"" >
-                                                        <img src=""Images/person_icon.png"" alt="""" class=""rounded-circle"" width=""40"" height=""40"">
-                                                        <h4>{username}</h4>
-                                                        <span>- {dateCommented}</span>
-                                                        <br>
-                                                        <p>{comment}</p>
-
-                                                        <div class=""dropdown"">
-                                                            <button id=""toggle-respond-btn-{commentId}"" class=""reply-button w-25 text-start"" type=""button"" aria-expanded=""false"" aria-controls=""respond-container-{commentId}"" onclick=""toggleRespond({commentId})"">
-                                                                Reply
-                                                            </button>
-
-                                                            <div id=""respond-container-{commentId}"" class=""respond-container"" aria-labelledby=""toggle-replies-btn-{commentId}"" aria-hidden=""true"">
-                                                                <div class=""row container mb-3"">
-                                                                    <textarea placeholder=""Type your reply here"" id=""replybox-{commentId}"" rows=""5"" class=""form-control"" style=""background-color: white; resize: none;"" draggable=""false""></textarea>
-                                                                    <button type=""button"" id=""button-addon-reply-{commentId}"" class=""comment_button my-2 bg-danger"" onclick=""reply_Click({commentId})"">Reply</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <hr />
-                                                        <!--CurrentReply{parentCommentId}-->
-                                                    
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                
-                                    ");
-                                    }
-                                    else
-                                    {
-                                        allCommentString.Replace("<!--" + parentCommentId + "-->",
-                                        $@"
-                                        <div class=""replies"">
-                                            <div class=""dropdown"">
-                                                <button id=""toggle-replies-btn-{commentId}"" class=""toggle-replies-btn"" type=""button"" aria-expanded=""false"" aria-controls=""reply-container-{commentId}"" onclick=""toggleReplies({commentId})"">
-                                                    view {tempReplyCount.ToString()} replies
-                                                </button>
-
-                                        
-                                                <div id=""reply-container-{commentId}"" class=""reply-container"" aria-labelledby=""toggle-replies-btn-{commentId}"" aria-hidden=""true"">
-                                                    <div class=""reply mt-4 text-justify float-left"" >
-                                                        <img src=""Images/person_icon.png"" alt="""" class=""rounded-circle"" width=""40"" height=""40"">
-                                                        <h4>{username}</h4>
-                                                        <span>- {dateCommented}</span>
-                                                        <br>
-                                                        <p>{comment}</p>
-
-                                                        <div class=""dropdown"">
-                                                            <button id=""toggle-respond-btn-{commentId}"" class=""reply-button w-25 text-start"" type=""button"" aria-expanded=""false"" aria-controls=""respond-container-{commentId}"" onclick=""sign_in_comment()"">
-                                                               Reply
-                                                            </button>
-                                                        </div>
-                                                        <hr />
-                                                        <!--CurrentReply{parentCommentId}-->
-                                                    </div>
-                                                    
-                                                    
-                                                </div>
-                                            </div>
-                                        </div>
-                                
-                                    ");
-                                    }
-
-                                    
+                                    //Disregard, let the replyClick have the rootparent as parentComment
                                 }
-
                             }
                             else
                             {
-                                // Begin comment div
-                                allCommentString.Append($@"
-                            <div class=""comment mt-4 text-justify float-left"" >
-                            <img src=""Images/person_icon.png"" alt="""" class=""rounded-circle"" width=""40"" height=""40"">
-                            <h4>{username}</h4>
-                            <span>- {dateCommented}</span>
-                            <br>
-                            <p>{comment}</p>");
-
-                                if (sessionUsername != null)
-                                {
-                                    allCommentString.Append($@"  
-                                    <div class=""dropdown"">
-                                        <button id=""toggle-respond-btn-{commentId}"" class=""reply-button w-25 text-start"" type=""button"" aria-expanded=""false"" aria-controls=""respond-container-{commentId}"" onclick=""toggleRespond({commentId})"">
-                                            Reply
-                                        </button>
-
-                                        <div id=""respond-container-{commentId}"" class=""respond-container"" aria-labelledby=""toggle-replies-btn-{commentId}"" aria-hidden=""true"">
-                                            <div class=""row container mb-3"">
-                                                <textarea placeholder=""Type your reply here"" id=""replybox-{commentId}"" rows=""5"" class=""form-control"" style=""background-color: white; resize: none;"" draggable=""false""></textarea>
-                                                <button type=""button"" id=""button-addon-reply-{commentId}"" class=""comment_button my-2 bg-danger"" onclick=""reply_Click({commentId})"">Reply</button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-                                    <!--{commentId}-->
-                            
-
-                                    </div>
-                                    <hr />"
-                                        );
-                                }
-                                else
-                                {
-                                    allCommentString.Append($@"  
-                                    <div class=""dropdown"">
-                                        <button id=""toggle-respond-btn-{commentId}"" class=""reply-button w-25 text-start"" type=""button"" aria-expanded=""false"" aria-controls=""respond-container-{commentId}"" onclick=""sign_in_comment()"">
-                                           Reply
-                                        </button>
-                                    </div>
-
-
-                                    <!--{commentId}-->
-                            
-
-                                    </div>
-                                    <hr />"
-                                        );
-                                }
-
-                                    
-
-
-
-
+                                commentList.Add(new Comment(commentId, username, dateCommented, comment));
                             }
 
 
-
-
-                            
                         }
                     }
                 }
             }
 
+            string allCommentString = SortComment(commentList, sessionUsername);
+
             return allCommentString.ToString();
         }
 
-
-
-        private int GetReplyCount(int commentID)
+        private string SortComment(List<Comment> commentList, string sessionUser)
         {
-            int replyCount = 0;
-            
+            StringBuilder allCommentString = new StringBuilder();
 
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            foreach (Comment comment in commentList)
             {
-                string query = $@"SELECT COUNT(*) AS reply_count FROM CommentTable WHERE parent_comment_id = {commentID};";
+                string replyButton = "";
+                string viewRepliesButton = "";
+                string replyContainer = "";
+                string replyContainerDiv = "";
 
-                using (MySqlCommand command = new MySqlCommand(query, connection))
+                if (comment.RepliesList.Count != 0)
                 {
-                    connection.Open();
+                    replyContainerDiv = $@"
+                        <div id=""reply-container-{comment.CommentId}"" class=""reply-container"" aria-labelledby=""toggle-replies-btn-{comment.CommentId}"" aria-hidden=""true"">
+                            <div class=""reply mt-4 text-justify float-left"" >";
 
-                    // Execute the query and get the result
-                    object result = command.ExecuteScalar();
-
-                    // Check if the result is not null and can be converted to int
-                    if (result != null && int.TryParse(result.ToString(), out replyCount))
+                    foreach (Comment replyComment in comment.RepliesList)
                     {
-                        // Conversion successful, replyCount contains the count
+                        replyButton = sessionUser != null ? $@"
+                        <button id=""toggle-respond-btn-{replyComment.CommentId}"" class=""reply-button text-start"" type=""button"" aria-expanded=""false"" aria-controls=""respond-container-{replyComment.CommentId}"" onclick=""toggleRespond({replyComment.CommentId})"">
+                         Reply
+                        </button>                        " : $@"
+                        <button id=""toggle-respond-btn-{replyComment.CommentId}"" class=""reply-button text-start"" type=""button"" aria-expanded=""false"" aria-controls=""respond-container-{replyComment.CommentId}"" onclick=""sign_in_comment()"">
+                         Reply
+                        </button>
+                        ";
+
+                        replyContainer = sessionUser != null ? $@"
+                        <div id=""respond-container-{replyComment.CommentId}"" class=""respond-container"" aria-labelledby=""toggle-replies-btn-{replyComment.CommentId}"" aria-hidden=""true"">
+                            <div class=""row container mb-3"">
+                                <textarea placeholder=""Type your reply here {sessionUser}"" id=""replybox-{replyComment.CommentId}"" rows=""5"" class=""form-control"" style=""background-color: white; resize: none;"" draggable=""false"">@{replyComment.Username}</textarea>
+                                <button type=""button"" id=""button-addon-reply-{replyComment.CommentId}"" class=""comment_button my-2 bg-danger"" onclick=""innerReply_Click({comment.CommentId}, {replyComment.CommentId})"">Reply</button>
+                            </div>
+                        </div>
+                        " : "";
+
+
+
+
+                        replyContainerDiv += $@"
+                            <div class=""comment mt-4 float-left"" >
+                                <div class=""row"">
+                                    <div class=""col-1 text-end"">
+                                        <img src= ""Images/person_icon.png"" alt="""" class=""rounded-circle"" width=""40"" height=""40"">
+                                    </div>
+                                    <div class =""col-11"">
+                                        <div class=""row"">
+                                            <div class=""col"">
+                                                <span class=""fw-bold"">{replyComment.Username}</span>
+                                                <span class="""">{replyComment.DateCommented}</span>
+                                            </div>
+                                        </div>
+                                        <div class=""row"">
+                                            <p class="""">{replyComment.CommentContent}</p>
+                                        </div>
+                                        <div class=""row text-start"">
+                                            <div class=""dropdown"">
+                                                {replyButton}
+                                                {replyContainer}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>";
+
+
                     }
+
+                    replyContainerDiv += " </div></div>";
+
+                    viewRepliesButton = $@"
+                        <button id=""toggle-replies-btn-{comment.CommentId}"" class=""toggle-replies-btn"" type=""button"" aria-expanded=""false"" aria-controls=""reply-container-{comment.CommentId}"" onclick=""toggleReplies({comment.CommentId})"">
+                            view {comment.RepliesList.Count} replies
+                        </button>
+                        ";
                 }
+
+                
+
+                replyContainer = sessionUser != null ? $@"
+                    <div id=""respond-container-{comment.CommentId}"" class=""respond-container"" aria-labelledby=""toggle-replies-btn-{comment.CommentId}"" aria-hidden=""true"">
+                        <div class=""row container mb-3"">
+                            <textarea placeholder=""Type your reply here {sessionUser}"" id=""replybox-{comment.CommentId}"" rows=""5"" class=""form-control"" style=""background-color: white; resize: none;"" draggable=""false"">@{comment.Username}</textarea>
+                            <button type=""button"" id=""button-addon-reply-{comment.CommentId}"" class=""comment_button my-2 bg-danger"" onclick=""reply_Click({comment.CommentId})"">Reply</button>
+                        </div>
+                    </div>
+                " : "";
+
+
+                replyButton = sessionUser != null ? $@"
+                        <button id=""toggle-respond-btn-{comment.CommentId}"" class=""reply-button text-start"" type=""button"" aria-expanded=""false"" aria-controls=""respond-container-{comment.CommentId}"" onclick=""toggleRespond({comment.CommentId})"">
+                         Reply
+                        </button>                        " : $@"
+                        <button id=""toggle-respond-btn-{comment.CommentId}"" class=""reply-button text-start"" type=""button"" aria-expanded=""false"" aria-controls=""respond-container-{comment.CommentId}"" onclick=""sign_in_comment()"">
+                         Reply
+                        </button>
+                        ";
+
+                allCommentString.Append($@"
+                    <div class=""comment mt-4 float-left"" >
+                        <div class=""row"">
+                            <div class=""col-1 text-end"">
+                                <img src= ""Images/person_icon.png"" alt="""" class=""rounded-circle"" width=""40"" height=""40"">
+                            </div>
+                            <div class =""col-11"">
+                                <div class=""row"">
+                                    <div class=""col"">
+                                        <span class=""fw-bold"">{comment.Username}</span>
+                                        <span class="""">{comment.DateCommented}</span>
+                                    </div>
+                                </div>
+                                <div class=""row"">
+                                    <p class="""">{comment.CommentContent}</p>
+                                </div>
+                                <div class=""row text-start"">
+                                    <div class=""dropdown"">
+                                        {replyButton}
+                                        {replyContainer}
+                                    </div>
+                                    <div>
+                                        {viewRepliesButton}
+                                        {replyContainerDiv}
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                ");
+                
             }
 
-            return replyCount;
+
+            return allCommentString.ToString();
         }
 
+        private static string GetTimeAgo(DateTime inputDate)
+        {
+            TimeSpan timeDifference = DateTime.Now - inputDate;
 
+            if (timeDifference.TotalSeconds < 60)
+            {
+                return $"{(int)timeDifference.TotalSeconds} second{((int)timeDifference.TotalSeconds == 1 ? "" : "s")} ago";
+            }
+            else if (timeDifference.TotalMinutes < 60)
+            {
+                return $"{(int)timeDifference.TotalMinutes} minute{((int)timeDifference.TotalMinutes == 1 ? "" : "s")} ago";
+            }
+            else if (timeDifference.TotalHours < 24)
+            {
+                return $"{(int)timeDifference.TotalHours} hour{((int)timeDifference.TotalHours == 1 ? "" : "s")} ago";
+            }
+            else if (timeDifference.TotalDays < 30)
+            {
+                return $"{(int)timeDifference.TotalDays} day{((int)timeDifference.TotalDays == 1 ? "" : "s")} ago";
+            }
+            else if (timeDifference.TotalDays < 365)
+            {
+                int months = (int)(timeDifference.TotalDays / 30);
+                return $"{months} month{(months == 1 ? "" : "s")} ago";
+            }
+            else
+            {
+                int years = (int)(timeDifference.TotalDays / 365);
+                return $"{years} year{(years == 1 ? "" : "s")} ago";
+            }
+        }
 
+        private static string MakeNameBold(string commentText)
+        {
+            
+            string pattern = @"(@\w+)";
 
+            
+            string formattedComment = Regex.Replace(commentText, pattern, "<strong>$1</strong>");
 
+            return formattedComment;
+        }
     }
 }

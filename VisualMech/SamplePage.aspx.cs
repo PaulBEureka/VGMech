@@ -179,6 +179,60 @@ namespace VisualMech
             return result;
         }
 
+        [WebMethod]
+        public static string innerReply_Click(int parentCommentId, string message)
+        {
+            string result = "";
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    // Get the current HttpContext
+                    HttpContext context = HttpContext.Current;
+
+                    if (message.Length <= 0)
+                    {
+                        throw new Exception("Comment cannot be empty");
+                    }
+                    else
+                    {
+                        if (context.Session["Current_ID"] != null)
+                        {
+                            connection.Open();
+
+                            string query = "INSERT INTO CommentTable (user_id, mechanic_title, comment, comment_date, parent_comment_id) VALUES (@UserId, @MechanicTitle, @CommentText, @CommentDate, @Parent_comment_id)";
+
+                            using (MySqlCommand command = new MySqlCommand(query, connection))
+                            {
+                                command.Parameters.AddWithValue("@UserId", context.Session["Current_ID"]);
+                                command.Parameters.AddWithValue("@MechanicTitle", cardTitle);
+                                command.Parameters.AddWithValue("@CommentText", message);
+                                command.Parameters.AddWithValue("@CommentDate", DateTime.Now);
+                                command.Parameters.AddWithValue("Parent_comment_id", parentCommentId);
+
+                                command.ExecuteNonQuery();
+                            }
+
+                            result = "Comment Posted Successfully";
+                            connection.Close();
+
+
+                        }
+                        else
+                        {
+                            throw new Exception("Please Sign In First");
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    result = ex.Message;
+                }
+            }
+
+
+            return result;
+        }
 
 
         [WebMethod]
