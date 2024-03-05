@@ -18,7 +18,7 @@
             <!-- MINI GAME LAYOUT -->
             <div class="row align-self-center mini_game_box m-auto my-5">
                         <div class="row minigame_title text-center d-grid m-auto">
-                            <p class="text-white display-5 m-auto">MINI GAME TITLE</p>
+                            <p class="text-white display-5 m-auto">BLOCK BREAKER</p>
                         </div>
                         
                         <% if(Session["Current_ID"] != null) { %>
