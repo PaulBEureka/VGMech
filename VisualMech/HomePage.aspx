@@ -104,14 +104,14 @@
             <div class="container">
                 <div class="row my-3 py-5 justify-content-center text-center ">
                     <div class="col-md-6 justify-content-center text-center mx-md-5 square-bg my-5 no_bg">
-                        <p class="fw-bolder h3 text-light">BRICK BREAKER</p>
+                        <p class="fw-bolder h3 text-light">BLOCK BREAKER</p>
                         <a class="btn w-100 h-100 rcorners2" href="MiniGamePage.aspx" role="button">
                             <img src="Images/Mini_Game1_thumb.png" alt="buttonpng" class="img-fluid w-100 h-100 rounded_corners" />
                         </a>
 
                     </div>
                     <div class="col-md-6 justify-content-center text-center mx-md-5 square-bg my-5 no_bg">
-                        <p class="fw-bolder h3 text-light">BRICK BREAKER</p>
+                        <p class="fw-bolder h3 text-light">BLOCK BREAKER</p>
                         <a class="btn w-100 h-100 rcorners2" href="MiniGamePage.aspx" role="button">
                             <img src="Images/Mini_Game1_thumb.png" alt="buttonpng" class="img-fluid w-100 h-100 rounded_corners" />
                         </a>
