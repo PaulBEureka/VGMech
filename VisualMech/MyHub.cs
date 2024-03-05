@@ -54,7 +54,7 @@ namespace VisualMech
                     using (MySqlDataReader reader = (MySqlDataReader)await command.ExecuteReaderAsync())
                     {
                         int rankingNum = 1;
-                        int addColor = 20;
+                        int addColor = 15;
 
                         while (await reader.ReadAsync())
                         {
@@ -67,7 +67,7 @@ namespace VisualMech
                             {
                                 string dateString = dateTime.ToString("M/d/yyyy");
 
-                                allLeaderboardsString += $@"<div class=""row mt-3"" style=""background-color: rgb({91 + addColor},{7 + addColor}, {21 + addColor});"">
+                                allLeaderboardsString += $@"<div class=""row mt-3"" style=""background-color: rgb({200 - addColor},{66 - addColor}, {54 - addColor});"">
                                                         <div class=""col-md-1 d-grid"">
                                                             <p class=""fw-bolder text-white fs-3 my-3"">{rankingNum.ToString()}.</p>
                                                         </div>
