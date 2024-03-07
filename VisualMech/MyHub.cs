@@ -13,6 +13,8 @@ using System.ComponentModel.Design;
 using System.Linq;
 using MySql.Data.Types;
 using System.Text.RegularExpressions;
+using System.Data.SqlTypes;
+using System.Xml.Linq;
 
 namespace VisualMech
 {
@@ -20,7 +22,8 @@ namespace VisualMech
     {
         private string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
         
-        DateTime currentDateTime = DateTime.Now;
+        string[] info;
+
 
 
         public async Task UpdateLeaderboards()
@@ -32,10 +35,12 @@ namespace VisualMech
 
         public async Task UpdateComments(string[] stringArr)
         {
-
-            string commentsData = await RetrieveCommentsData(stringArr);
+            info = stringArr;
+            string[] commentsData = await RetrieveCommentsData();
             Clients.All.updateComments(commentsData);
         }
+
+        
 
         private async Task<string> RetrieveLeaderboardsDataAsync()
         {
@@ -104,12 +109,13 @@ namespace VisualMech
 
 
 
-        private async Task<string> RetrieveCommentsData(string[] info)
+        private async Task<string[]> RetrieveCommentsData()
         {
             List<Comment> commentList = new List<Comment>();
 
             string mechanicTitle = info[0];
             string sessionUsername = info[1];
+            string order = info[2];
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -136,7 +142,6 @@ namespace VisualMech
 
 
 
-                            string dateCommented = GetTimeAgo(sqlDate);
                             string comment = MakeNameBold(raw_comment);
 
 
@@ -145,7 +150,7 @@ namespace VisualMech
                                 Comment parentComment = commentList.FirstOrDefault(c => c.CommentId == parentCommentId);
                                 if (parentComment != null)
                                 {
-                                    parentComment.RepliesList.Add(new Comment(commentId, username, dateCommented, comment));
+                                    parentComment.RepliesList.Add(new Comment(commentId, username, sqlDate, comment));
                                 }
                                 else
                                 {
@@ -154,7 +159,7 @@ namespace VisualMech
                             }
                             else
                             {
-                                commentList.Add(new Comment(commentId, username, dateCommented, comment));
+                                commentList.Add(new Comment(commentId, username, sqlDate, comment));
                             }
 
 
@@ -163,21 +168,34 @@ namespace VisualMech
                 }
             }
 
-            string allCommentString = SortComment(commentList, sessionUsername);
 
-            return allCommentString.ToString();
+            return SortComment(commentList, sessionUsername, order);
         }
 
-        private string SortComment(List<Comment> commentList, string sessionUser)
+        private string[] SortComment(List<Comment> commentList, string sessionUser, string order)
         {
-            StringBuilder allCommentString = new StringBuilder();
+            // Sort the list by oldest DateCommented first
+            commentList = commentList.OrderBy(c => c.DateCommented).ToList();
 
+            if (order == "Newest")
+            {
+                commentList.Reverse(); // Sort the list by newest first
+            }
+
+
+            StringBuilder allCommentString = new StringBuilder();
+            allCommentString.Clear();
+
+
+
+            int commentCount = 0;
             foreach (Comment comment in commentList)
             {
                 string replyButton = "";
                 string viewRepliesButton = "";
                 string replyContainer = "";
                 string replyContainerDiv = "";
+                commentCount++;
 
                 if (comment.RepliesList.Count != 0)
                 {
@@ -187,6 +205,10 @@ namespace VisualMech
 
                     foreach (Comment replyComment in comment.RepliesList)
                     {
+                        commentCount++;
+                        string replydateCommented = GetTimeAgo(replyComment.DateCommented);
+
+
                         replyButton = sessionUser != null ? $@"
                         <button id=""toggle-respond-btn-{replyComment.CommentId}"" class=""reply-button text-start"" type=""button"" aria-expanded=""false"" aria-controls=""respond-container-{replyComment.CommentId}"" onclick=""toggleRespond({replyComment.CommentId})"">
                          Reply
@@ -218,7 +240,7 @@ namespace VisualMech
                                         <div class=""row"">
                                             <div class=""col"">
                                                 <span class=""fw-bold"">{replyComment.Username}</span>
-                                                <span class="""">{replyComment.DateCommented}</span>
+                                                <span class="""">{replydateCommented}</span>
                                             </div>
                                         </div>
                                         <div class=""row"">
@@ -246,7 +268,7 @@ namespace VisualMech
                         ";
                 }
 
-                
+                string dateCommented = GetTimeAgo(comment.DateCommented);
 
                 replyContainer = sessionUser != null ? $@"
                     <div id=""respond-container-{comment.CommentId}"" class=""respond-container"" aria-labelledby=""toggle-replies-btn-{comment.CommentId}"" aria-hidden=""true"">
@@ -277,7 +299,7 @@ namespace VisualMech
                                 <div class=""row"">
                                     <div class=""col"">
                                         <span class=""fw-bold"">{comment.Username}</span>
-                                        <span class="""">{comment.DateCommented}</span>
+                                        <span class="""">{dateCommented}</span>
                                     </div>
                                 </div>
                                 <div class=""row"">
@@ -302,8 +324,19 @@ namespace VisualMech
                 
             }
 
+            string commentCountString = commentCount.ToString() + " Comments";
 
-            return allCommentString.ToString();
+            string sortByFormat = $@"<div class=""dropdown"">
+                                            <button class=""sortby_button"" type=""button"" id=""sortDropdown"" data-bs-toggle=""dropdown"" aria-expanded=""false"">
+                                                <i class=""fa fa-sort"" aria-hidden=""true""></i> Sort by: {order}
+                                            </button>
+                                            <ul class=""dropdown-menu"" aria-labelledby=""sortDropdown"">
+                                                <li><a class=""dropdown-item"" onclick=""handleItemClick('Newest')"">Newest first</a></li>
+                                                <li><a class=""dropdown-item"" onclick=""handleItemClick('Oldest')"">Oldest first</a></li>
+                                            </ul>
+                                        </div>";
+
+            return new string[] { allCommentString.ToString(), commentCountString, sortByFormat };
         }
 
         private static string GetTimeAgo(DateTime inputDate)

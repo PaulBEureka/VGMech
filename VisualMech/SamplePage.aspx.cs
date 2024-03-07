@@ -22,6 +22,13 @@ namespace VisualMech
         public static string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
         public static List<Comment> comments = new List<Comment>();
         public static string cardTitle = "";
+        private static string order = "Newest";
+
+        public static string Order
+        {
+            get { return order; }
+            set { order = value; }
+        }
        
 
         protected void Page_Load(object sender, EventArgs e)
@@ -101,6 +108,12 @@ namespace VisualMech
         }
 
 
+        [WebMethod]
+        public static string changeCommentOrder(string newOrder)
+        {
+            Order = newOrder;
+            return Order;
+        }
 
 
         [WebMethod]
@@ -112,12 +125,13 @@ namespace VisualMech
 
             if (context.Session["CurrentUser"] != null)
             {
-                strings = new string[2] { cardTitle, context.Session["CurrentUser"].ToString() };
+                strings = new string[3] { cardTitle, context.Session["CurrentUser"].ToString(), Order };
             }
             else
             {
-                strings = new string[2] { cardTitle, null };
+                strings = new string[3] { cardTitle, null, Order };
             }
+
 
 
             return strings;
