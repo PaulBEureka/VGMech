@@ -88,7 +88,7 @@ namespace VisualMech
                                                                     <p class=""fw-bolder text-end"">{dateString}</p>
                                                                 </div>
                                                                 <div class ="" col-4 my-3"">
-                                                                    <p class=""fw-bolder text-end"">SCORE: {score}</p>
+                                                                    <p class=""fw-bolder text-end"">{score} pts</p>
                                                                 </div>
                                                             </div>
                                                         </div>
