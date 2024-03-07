@@ -30,7 +30,7 @@ function onSuccess(response) {
 function onError(response) {
     // Handle error response here
     alert("An error occurred while posting comment.");
-    window.location.href = "/SignInPage.aspx"; 
+    window.location.href = window.location.pathname; // Redirect to the same page
 }
 
 function reply_Click(parentCommentId) {
@@ -56,7 +56,7 @@ function onSuccess2(response) {
 function onError2(response) {
     // Handle error response here
     alert("An error occurred while posting comment.");
-    window.location.href = "/SignInPage.aspx";
+    window.location.href = window.location.pathname; // Redirect to the same page
 }
 
 

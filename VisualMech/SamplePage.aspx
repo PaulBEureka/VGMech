@@ -59,6 +59,18 @@
                             </div>
 
                             <hr />
+                            <div class="container">
+                                <div class="row justify-content-md-start align-items-center">
+                                    <div class="col-lg-2 fw-bolder" id="commentCountDiv">
+                                        
+                                    </div>
+                                    <div class="col-lg-5" id="sortByDiv">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+
+
                             <section>
                                 <div class="container"> 
                                     
@@ -75,6 +87,7 @@
                                     </div>
                                 </div>
                             </section>
+
 
 
 
@@ -108,24 +121,37 @@
 
             // Handle the updateComments message from the server
             chat.client.updateComments = function (commentHTML) {
+                var firstComment = commentHTML[0]; 
+                var secondComment = commentHTML[1]; 
+
                 // Update the comments on the webpage
-                $('#commentSection').html(commentHTML);
-                console.log("Comments updated.");
+                $('#commentSection').html(commentHTML[0]);
+                $('#commentCountDiv').html(commentHTML[1]);
+                $('#sortByDiv').html(commentHTML[2]);
             };
 
             $.connection.hub.start().done(function () {
                 console.log("SignalR connected.");
 
-                PageMethods.get_Comments(onSuccess);
+                PageMethods.get_Comments(onSuccess3);
+
             });
 
-            function onSuccess(response) {
+            function onSuccess3(response) {
                 updateComments(response);
 
-                setInterval(updateComments(response), 5000);
             }
+
+            
         });
 
+        function handleItemClick(order) {
+            PageMethods.changeCommentOrder(order, onSuccess4);
+        }
+
+        function onSuccess4(response) {
+            window.location.href = window.location.pathname; // Redirect to the same page
+        }
 
         function toggleReplies(commentId) {
             var button = document.getElementById("toggle-replies-btn-" + commentId);

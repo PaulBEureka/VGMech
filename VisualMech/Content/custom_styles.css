@@ -612,3 +612,19 @@ body {
     cursor: pointer; /* Show pointer cursor on hover */
     background-color: whitesmoke;
 }
+
+
+.sortby_button {
+    background-color: transparent; /* Transparent background */
+    color: black; /* Text color */
+    font-weight: 600;
+    border: none;
+    border-radius: 20px;
+    transition: .2s ease-in-out;
+}
+
+.sortby_button:hover {
+    background-color: whitesmoke;
+    color: black; /* Text color */
+    cursor: pointer; /* Show pointer cursor on hover */
+}
