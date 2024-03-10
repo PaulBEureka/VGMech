@@ -61,6 +61,11 @@ html {
     height: 400px;
 }
 
+.carousel-container{
+    height: inherit;
+
+}
+
 
 .intro-section-color {
     background: rgb(27,27,27);
@@ -316,7 +321,11 @@ body {
 /*Game Mechanics layout styles*/
 
 .gameMech-bgColor {
-    background: #f3f0cd;
+    background-image: url('../Images/try_bg.jpg'); /* Replace 'your-background-image.jpg' with your actual image path */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height:100%;
 }
 
 .gameMech-section-holders {
@@ -626,5 +635,21 @@ body {
 .sortby_button:hover {
     background-color: whitesmoke;
     color: black; /* Text color */
+    cursor: pointer; /* Show pointer cursor on hover */
+}
+
+
+.copy_button {
+    background-color: transparent; /* Transparent background */
+    color: white; /* Text color */
+    font-weight: 600;
+    width: 150px;
+    margin-right: 7px;
+    border: none;
+    transition: .2s ease-in-out;
+}
+
+.copy_button:hover {
+    color: lightgrey; /* Text color */
     cursor: pointer; /* Show pointer cursor on hover */
 }
