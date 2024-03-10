@@ -15,9 +15,10 @@
     <script src="/Content/custom.js"></script>
 
     <main >
-        <asp:Literal ID="gameMechLit" runat="server"></asp:Literal>
+        
 
         <section class="gameMech-bgColor">
+            <asp:Literal ID="gameMechLit" runat="server"></asp:Literal>
             <!-- Comment Section layout -->
 
             <div class="row m-auto gameMech-layout-padding">

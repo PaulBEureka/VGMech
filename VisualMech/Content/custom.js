@@ -12,8 +12,19 @@
 }
 
 
+function copyCodeText() {
+    // Get the text content of the element with id "codeText"
+    var codeText = document.getElementById("codeText").innerText;
 
-//Try lang to, to be fixed pa
+    // Use the Clipboard API to write the text content to the clipboard
+    navigator.clipboard.writeText(codeText)
+        .then(() => {
+            alert("Text copied to clipboard!");
+        })
+        .catch((error) => {
+            console.error("Could not copy text: ", error);
+        });
+}
 
 function post_Click() {
     var message = document.getElementById('commentbox').value; // Get textarea value

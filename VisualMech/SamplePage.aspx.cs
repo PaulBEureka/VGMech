@@ -44,9 +44,8 @@ namespace VisualMech
                     cardTitle = card.Title;
 
                     gameMechLit.Text = $@"
-                    <section class=""gameMech-bgColor"">
             <div  class=""row text-center "">
-                <h1 class=""display-4 mini_custom_padding fw-bolder"">{card.Title}</h1>
+                <h1 class=""display-4 mini_custom_padding fw-bolder text-white"">{card.Title}</h1>
                 
             </div>
 
@@ -70,9 +69,14 @@ namespace VisualMech
                     <div class=""col-md-6 d-grid gameMech-section-holders mx-md-3 my-5 "">
                         <div class=""row"">
                             <h2 class=""text-light fw-bolder"">Coding Implementation</h2>
+                            <div class=""col align-items-end text-end"">
+                                <button class=""copy_button text-end"" type=""button"" onclick=""copyCodeText()"">
+                                    <i class=""fa-solid fa-copy"" aria-hidden=""true""></i> Copy text
+                                </button>
+                            </div>
                         </div>
                         <div class=""row justify-content-center m-auto gameMech-code-holder"">
-                            <p class= ""text-start"">{card.CodeText}</>
+                            <p class= ""text-start"" id=""codeText"">{card.CodeText}</>
                         </div>
                     </div>
                 </div>
@@ -95,9 +99,7 @@ namespace VisualMech
                     <p class=""text-light m-0 gameMech-padding-text"">{card.PossibleCombinations}</p>
 
                 </div>
-            </div>
-
-            </section> ";
+            </div>";
 
                     //get_Comments(card.Title);
                 }
