@@ -81,7 +81,11 @@
                             <%# Session["CurrentUser"] ?? "Default Name" %>
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <li><asp:Button runat="server" class="dropdown-item" PostBackUrl="~/UserPage.aspx" Text="User Profile" CausesValidation="false"></asp:Button></li>
+                        
                             <li><asp:Button runat="server" class="dropdown-item" href="#" Text="Log Out" OnClick="btnCurrentUser_Click" CausesValidation="false"></asp:Button></li>
+                            
+                        
                         </ul>
                     </div>
                     <% } %>
