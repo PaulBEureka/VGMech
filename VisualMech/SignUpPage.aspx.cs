@@ -1,4 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
+using MySqlX.XDevAPI.Common;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -59,9 +60,11 @@ namespace VisualMech
                                 command.ExecuteNonQuery();
                             }
 
+                            
+
                             result = "New User Registered Successfully";
 
-                            loginUser();
+                            LoginUser();
 
                             Response.Write(result);
 
@@ -127,7 +130,7 @@ namespace VisualMech
 
 
 
-        private void loginUser()
+        private void LoginUser()
         {
             string query = $@"
                 SELECT *
@@ -155,9 +158,8 @@ namespace VisualMech
                                 Session["CurrentUser"] = username;
                                 Session["Current_ID"] = user_id;
 
-                                
+                                RecordDefaultAvatar();
 
-                                Response.Redirect("HomePage.aspx");
                             }
                         }
                     }
@@ -165,6 +167,38 @@ namespace VisualMech
                 catch (Exception ex)
                 {
                     Response.Write(ex.Message);
+                }
+            }
+        }
+
+
+        private void RecordDefaultAvatar()
+        {
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+
+                    string defaultAvatarPath = "~/Images/person_icon.png";
+
+                    string avatar_query = "INSERT INTO Avatar (user_id, avatar_path) VALUES (@UserId, @AvatarPath)";
+
+                    using (MySqlCommand command = new MySqlCommand(avatar_query, connection))
+                    {
+                        command.Parameters.AddWithValue("@UserId", Session["Current_ID"]);
+                        command.Parameters.AddWithValue("@AvatarPath", defaultAvatarPath);
+                        command.ExecuteNonQuery();
+                    }
+
+                    connection.Close();
+
+                    Response.Redirect("HomePage.aspx");
+                }
+                catch (Exception ex)
+                {
+                    Response.Write("An error occured " + ex);
+
                 }
             }
         }

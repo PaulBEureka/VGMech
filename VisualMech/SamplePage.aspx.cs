@@ -101,7 +101,6 @@ namespace VisualMech
                 </div>
             </div>";
 
-                    //get_Comments(card.Title);
                 }
 
 

@@ -21,10 +21,20 @@
                   <div class="card_user">
                     <div class="card-body-user">
                       <div class="d-flex flex-column align-items-center text-center">
-                        <img src="Images/person_icon.png" alt="User" class="rounded-circle" width="150">
+                        <asp:Literal ID="UserAvatarLit" runat="server"></asp:Literal>
+
+
                         <div class="mt-3">
-                          <h4>Username here</h4>
+                            <asp:Literal ID="UsernameLit" runat="server"></asp:Literal>
                           
+
+                            <asp:FileUpload ID="customFile" runat="server" CssClass="form-control" Accept=".jpg, .jpeg, .png, .gif" />
+                            
+                            <asp:Button ID="UploadBtn" Text="Change Avatar" runat="server" OnClick="Upload" CssClass="comment_button my-2 bg-danger" />
+                            <br />
+                            <asp:Label ID = "lblMessage" Text="Error" runat="server" ForeColor="Green" Visible="false" />
+                            
+
                         </div>
                       </div>
                     </div>
@@ -139,6 +149,19 @@
 
             $('#userInfoDiv').html(commentHTML[2]);
         }
+
+        document.getElementById('UploadBtn').onclick = function () {
+            var fileInput = document.getElementById('customFile');
+            var filePath = fileInput.value;
+            var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+
+            if (!allowedExtensions.exec(filePath)) {
+                alert('Please upload only image files (JPEG, PNG, GIF).');
+                return false;
+            }
+
+            return true;
+        };
     </script>
     
 
