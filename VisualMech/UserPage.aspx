@@ -30,7 +30,7 @@
 
                             <asp:FileUpload ID="customFile" runat="server" CssClass="form-control" Accept=".jpg, .jpeg, .png, .gif" />
                             
-                            <asp:Button ID="UploadBtn" Text="Change Avatar" runat="server" OnClick="Upload" CssClass="comment_button my-2 bg-danger" />
+                            <asp:Button ID="UploadBtn" Text="Change Avatar" runat="server" OnClick="UploadBtn_Click" CssClass="comment_button my-2 bg-danger" />
                             <br />
                             <asp:Label ID = "lblMessage" Text="Error" runat="server" ForeColor="Green" Visible="false" />
                             
@@ -54,40 +54,51 @@
                 <div class="col-md-8">
                   <div class="card_user mb-3" id="userInfoDiv">
                     <div class="card-body-user">
-                      <div class="row">
-                        <div class="col-sm-3">
-                          <h6 class="mb-0">Username</h6>
+                      <asp:Literal ID="UserInfosLit" runat="server"></asp:Literal>
+                      <asp:Panel ID="UserInfosEditPanel" runat="server" Visible="false">
+                            <div class='row mb-3'>
+                                <div class='col-sm-3'>
+                                    <h6 class='mb-0'>Username</h6>
+                                </div>
+                                <div class='col-sm-9 text-secondary'>
+                                    <asp:TextBox ID='InputUsername' runat='server' CssClass='form-control'></asp:TextBox>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class='row mb-3'>
+                                <div class='col-sm-3'>
+                                    <h6 class='mb-0'>Email</h6>
+                                </div>
+                                <div class='col-sm-9 text-secondary'>
+                                    <asp:TextBox ID='InputEmail' runat='server' CssClass='form-control'></asp:TextBox>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class='row mb-3'>
+                                <div class='col-sm-3'>
+                                    <h6 class='mb-0'>About Me</h6>
+                                </div>
+                                <div class='col-sm-9 text-secondary'>
+                                    <asp:TextBox ID='InputAboutMe' runat='server' CssClass='form-control'></asp:TextBox>
+                                </div>
+                            </div>
+                            <hr />
+                        </asp:Panel>
+                        <div class="row">
+                          <div class="col-sm-12 d-grid">
+                            <asp:Button ID="ConfirmBtn" Text="Confirm Change" runat="server" Visible="false" OnClick="ConfirmBtn_Click" OnClientClick="return confirm('Are you sure you want to commit any changes?');" CssClass="mx-auto comment_button my-2 bg-danger" />
                         </div>
-                        <div class="col-sm-9 text-secondary">
-                          Username here
                         </div>
-                      </div>
-                      <hr>
-                      <div class="row">
-                        <div class="col-sm-3">
-                          <h6 class="mb-0">Email</h6>
-                        </div>
-                        <div class="col-sm-9 text-secondary">
-                          Email here
-                        </div>
-                      </div>
-                      <hr>
-                      <div class="row">
-                        <div class="col-sm-3">
-                          <h6 class="mb-0">About Me</h6>
-                        </div>
-                        <div class="col-sm-9 text-secondary">
-                          About Me here
-                        </div>
-                      </div>
-                      <hr>
                       <div class="row">
                         <div class="col-sm-12">
-                          <button type="button" id="" class="comment_button my-2 bg-danger" onclick="changeContent()">Edit</button>
-                          <button type="button" id="" class="comment_button my-2 bg-danger" onclick="changeContent()">Change Password</button>
-                                     
+                          <asp:Button ID="EditBtn" Text="Edit" runat="server" OnClick="EditBtn_Click" CssClass="comment_button my-2 bg-danger" />
+                          <asp:Button ID="CancelEditBtn" Text="Cancel Edit" runat="server" OnClick="EditBtn_ClickBack" Visible="false" CssClass="comment_button my-2 bg-danger" />
+                             
+                          <asp:Button ID="ChangePassBtn" Text="Change Password" runat="server" OnClick="ChangePassBtn_Click" CssClass="comment_button my-2 bg-danger" />
+                                    
                         
                         </div>
+                      
                       </div>
                     </div>
                   </div>
