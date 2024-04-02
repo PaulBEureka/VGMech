@@ -42,12 +42,8 @@
                   <div class="card_user mt-3">
                       <div class="card-body-user">
                         <h6 class="d-flex align-items-center mb-3">Learn Completion Status</h6>
-                        <div class="progress">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div>
-                        </div>
-                        <div class="text-center">
-                            75% of all Learn Mechanics Completed
-                        </div>
+                        <asp:Literal ID="UserProgressLit" runat="server"></asp:Literal>
+                        
                       </div>
                   </div>
                 </div>
@@ -109,11 +105,8 @@
                         <div class="card-body-user">
                             <h6 class="d-flex align-items-center mb-3">Recommended New Learn Game Mechanics</h6>
                             <ul class="list-group list-group-flush">
-                                <li class="list-group-item"><a href="#">First Mechanic Title Here</a></li>
-                                <li class="list-group-item"><a href="#">Second Mechanic Title Here</a></li>
-                                <li class="list-group-item"><a href="#">Third Mechanic Title Here</a></li>
-                                <li class="list-group-item"><a href="#">Fourth Mechanic Title Here</a></li>
-                                <li class="list-group-item"><a href="#">Fifth Mechanic Title Here</a></li>
+                                
+                                <asp:Literal ID="RecomenddedPagesLit" runat="server"></asp:Literal>
                             </ul>
                         </div>
                       </div>
@@ -123,11 +116,9 @@
                         <div class="card-body-user">
                             <h6 class="d-flex align-items-center mb-3">Visited Learn Game Mechanics</h6>
                             <ul class="list-group list-group-flush">
-                                <li class="list-group-item">Date visited: 12/4/24 <br /><a href="#">First Mechanic Title Here</a></li>
-                                <li class="list-group-item">Date visited: 12/4/24 <br /><a href="#">Second Mechanic Title Here</a></li>
-                                <li class="list-group-item">Date visited: 12/4/24 <br /><a href="#">Third Mechanic Title Here</a></li>
-                                <li class="list-group-item">Date visited: 12/4/24 <br /><a href="#">Fourth Mechanic Title Here</a></li>
-                                <li class="list-group-item">Date visited: 12/4/24 <br /><a href="#">Fifth Mechanic Title Here</a></li>
+                                <asp:Literal ID="VisitedPagesLit" runat="server"></asp:Literal>
+                      
+                            
                             </ul>
                         </div>
                       </div>
@@ -155,6 +146,23 @@
     </main>
     
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var learnLinks = document.querySelectorAll('.learn-link');
+            learnLinks.forEach(function (learnLink) {
+                learnLink.addEventListener('click', function () {
+                    var linkId = this.getAttribute('data-card-id');
+                    console.log("Card ID: " + linkId);
+                    HandleLink(linkId);
+
+                });
+            });
+        });
+
+        function HandleLink(linkId) {
+            PageMethods.ProcessLink(linkId);
+
+        }  
+
         function changeContent() {
             var firstComment = commentHTML[0];
 
@@ -173,6 +181,8 @@
 
             return true;
         };
+
+        
     </script>
     
 

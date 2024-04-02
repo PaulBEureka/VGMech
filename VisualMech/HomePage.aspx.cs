@@ -71,7 +71,6 @@ namespace VisualMech
                 "currentStars += starCount;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;starText.text = \"STARS: \" + currentStars.ToString();<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}",
                 CommonGenres = "Horror, Battle Royale, Sandbox", PossibleVariations = "Key indicator to collect", PossibleCombinations="The potential combination of game mechanics integrated into this collection system would begin with a movement mechanic, followed by a building mechanic where the collected items serve a purpose, along with other action-based mechanics like melee and ranged attack systems."
                 , InteractiveControls = "W - Move Forward <br/>A - Move Left<br/>S - Move Backward<br/>D - Move Right"},
-
             new Card(){CardID="3", Title="INTERACT MECHANIC", ImageSource = "Images/InteractMechanic_Thumbnail.png", ThumbSource = "Images/InteractMechanic_Icon.png", Description = "Want your game to have an interacting mechanics? Go here!", UnityLink = "https://almers5.github.io/Game-Mechanics/InteractMechanic/",
                 CodeText = "public class NPC : MonoBehaviour<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;public GameObject dialoguePanel;<br />&nbsp;&nbsp;&nbsp;&nbsp;public Text dialogueText;<br />&nbsp;&nbsp;&nbsp;&nbsp;" +
                 "public string[] dialogue;<br />&nbsp;&nbsp;&nbsp;&nbsp;private int index;<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;public GameObject contButton;<br />&nbsp;&nbsp;&nbsp;&nbsp;" +
@@ -99,7 +98,6 @@ namespace VisualMech
                 "playerIsClose = false;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;zeroText();<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}",
                 CommonGenres = "Visual Novel, Role Playing Games", PossibleVariations = "Text on Screen, Dialogue cloud on top of a character, Cinematic text view mode", PossibleCombinations="Variations of game mechanics that can be implmented to interact mechanic would be a turn-based system mechanic or a choose four options type of mechanic that would further enhance its gameplay features."
                 , InteractiveControls = "Left Arrow Key or A - Move to Left<br/>Right Arrow Key or D - Move to Right<br/>Space Bar - Jump<br/>\"E\" - Press to interact"},
-
             new Card(){CardID="4", Title="HEALTH SYSTEM", ImageSource = "Images/HealthSystem_Thumbnail.png", ThumbSource = "Images/HealthSystem_Icon.png", Description = "Want your game to have health system mechanics? Go here!", UnityLink = "https://almers5.github.io/Game-Mechanics/HealthSystem/",
                 CodeText = "public class playerHealth : MonoBehaviour<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;public float health;<br />&nbsp;&nbsp;&nbsp;&nbsp;public float maxHealth;<br />&nbsp;&nbsp;&nbsp;&nbsp;" +
                 "public Image healthBar;<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;void Start()<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maxHealth = health;<br />&nbsp;&nbsp;&nbsp;&nbsp;" +
@@ -118,7 +116,7 @@ namespace VisualMech
 
             foreach (Card card in cardList)
             {
-                cardString += card.GetHtml();
+                cardString += card.GetCardHtml();
             }
 
             Session["CardList"] = cardList;
@@ -133,14 +131,11 @@ namespace VisualMech
         [WebMethod]
         public static void ProcessIT(int cardId)
         {
-            // Get the current HttpContext
             HttpContext context = HttpContext.Current;
 
-            // Check if HttpContext is available
             if (context != null)
             {
-                // Use the session from the context to set the variable
-                context.Session["CardId"] = cardId;
+                context.Session["LearnId"] = cardId;
             }
         }
     }

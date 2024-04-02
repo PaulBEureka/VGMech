@@ -717,3 +717,9 @@ body {
 .shadow-none {
     box-shadow: none !important;
 }
+
+
+
+.learn-link{
+    font-weight:normal;
+}

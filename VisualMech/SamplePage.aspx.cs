@@ -23,6 +23,7 @@ namespace VisualMech
         public static List<Comment> comments = new List<Comment>();
         public static string cardTitle = "";
         private static string order = "Newest";
+        public static List<Card> cardList;
 
         public static string Order
         {
@@ -33,8 +34,8 @@ namespace VisualMech
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            List<Card> cardList = Session["CardList"] as List<Card>;
-            int cardInt = (int)Session["CardId"];
+            cardList = Session["CardList"] as List<Card>;
+            int cardInt = (int)Session["LearnId"];
 
             int temp = 0;
             foreach (Card card in cardList)
@@ -42,70 +43,16 @@ namespace VisualMech
                 if (temp == cardInt)
                 {
                     cardTitle = card.Title;
-
-                    gameMechLit.Text = $@"
-            <div  class=""row text-center "">
-                <h1 class=""display-4 mini_custom_padding fw-bolder text-white"">{card.Title}</h1>
-                
-            </div>
-
-            <!--Interactive Demonstration and Coding Implementation layout -->
-            
-            <div class=""row d-grid"">
-                <div class=""row justify-content-center text-center m-auto"">
-                    <div class=""col-md-6 justify-content-center text-center mx-md-3 gameMech-section-holders my-5"">
-                        <div class=""row"">
-                            <h2 class=""text-light fw-bolder"">Interactive Demonstration</h2>
-                            
-                    </div>
-                        <div>
-                            <iframe src=""{card.UnityLink}"" class=""unityLayout"" scrolling=""no""></iframe>
-                        </div>
-                        <div>
-                            <h4 class=""text-light fw-bolder gameMech-padding-Title pb-3"">INTERACTIVE CONTROLS</h4>
-                            <p class=""text-light m-0 gameMech-padding-text fs-6"">{card.InteractiveControls}</p>
-                        </div>
-                    </div>
-                    <div class=""col-md-6 d-grid gameMech-section-holders mx-md-3 my-5 "">
-                        <div class=""row"">
-                            <h2 class=""text-light fw-bolder"">Coding Implementation</h2>
-                            <div class=""col align-items-end text-end"">
-                                <button class=""copy_button text-end"" type=""button"" onclick=""copyCodeText()"">
-                                    <i class=""fa-solid fa-copy"" aria-hidden=""true""></i> Copy text
-                                </button>
-                            </div>
-                        </div>
-                        <div class=""row justify-content-center m-auto gameMech-code-holder"">
-                            <p class= ""text-start"" id=""codeText"">{card.CodeText}</>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <!-- Information layout -->
-            <div class=""row d-grid gameMech-layout"">
-                <div class=""container gameMech-information-holder m-auto p-3"">
-                    <!-- Game genres layout -->
-                    <h5 class=""text-light fw-bolder gameMech-padding-Title"">Commonly Used Game Genres:</h5>
-                    <p class=""text-light m-0 gameMech-padding-text"">{card.CommonGenres}</p>
-                    
-                    <!-- Possible Variation layout -->
-                    <h5 class=""text-light fw-bolder gameMech-padding-Title"">Possible Variation of this Game Mechanic:</h5>
-                    <p class=""text-light m-0 gameMech-padding-text"">{card.PossibleVariations}</p>
-
-                    <!-- Possible Combination layout -->
-                    <h5 class=""text-light fw-bolder gameMech-padding-Title"">Possible Game Mechanics Combination:</h5>
-                    <p class=""text-light m-0 gameMech-padding-text"">{card.PossibleCombinations}</p>
-
-                </div>
-            </div>";
-
+                    gameMechLit.Text = card.GetLearnHtml();
                 }
-
-
                 temp++;
             }
+        
+            if(Session["Current_ID"] != null)
+            {
+                recordVisitedPage();
+            }
+        
         }
 
 
@@ -115,7 +62,6 @@ namespace VisualMech
             Order = newOrder;
             return Order;
         }
-
 
         [WebMethod]
         public static string[] get_Comments()
@@ -137,7 +83,6 @@ namespace VisualMech
 
             return strings;
         }
-
 
         [WebMethod]
         public static string reply_Click(int parentCommentId, string message)
@@ -249,12 +194,9 @@ namespace VisualMech
             return result;
         }
 
-
         [WebMethod]
         public static string post_Click(string message)
         {
-            
-
             string result = "";
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -306,6 +248,48 @@ namespace VisualMech
             return result;
         }
 
+        public void recordVisitedPage()
+        {
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+
+                    string selectQuery = "SELECT COUNT(*) FROM visited_pages WHERE user_id = @UserId AND mechanic_title = @MechanicTitle";
+                    int count;
+
+                    using (MySqlCommand selectCommand = new MySqlCommand(selectQuery, connection))
+                    {
+                        selectCommand.Parameters.AddWithValue("@UserId", Session["Current_ID"]);
+                        selectCommand.Parameters.AddWithValue("@MechanicTitle", cardTitle);
+                        count = Convert.ToInt32(selectCommand.ExecuteScalar());
+                    }
+
+                    if (count == 0) // No similar record found
+                    {
+                        string insertQuery = "INSERT INTO visited_pages (user_id, mechanic_title) VALUES (@UserId, @MechanicTitle)";
+                        using (MySqlCommand insertCommand = new MySqlCommand(insertQuery, connection))
+                        {
+                            insertCommand.Parameters.AddWithValue("@UserId", Session["Current_ID"]);
+                            insertCommand.Parameters.AddWithValue("@MechanicTitle", cardTitle);
+                            insertCommand.ExecuteNonQuery();
+                        }
+
+                    }
+                    else
+                    {
+                        // Similar record found, skip insertion of new record
+                    }
+
+                    connection.Close();
+                }
+                catch (Exception ex)
+                {
+                    Response.Write(ex.Message); 
+                }
+            }
+        }
 
 
     }
