@@ -354,6 +354,7 @@
     <Content Include="MiniGamePage.aspx" />
     <Content Include="Captcha.aspx" />
     <Content Include="UserPage.aspx" />
+    <Content Include="VerificationPage.aspx" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -392,6 +393,7 @@
     <Content Include="Site.Mobile.Master" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\EmailSender.cs" />
     <Compile Include="MyHub.cs" />
     <Compile Include="Classes\Card.cs" />
     <Compile Include="Classes\Comment.cs" />
@@ -470,6 +472,13 @@
     </Compile>
     <Compile Include="UserPage.aspx.designer.cs">
       <DependentUpon>UserPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="VerificationPage.aspx.cs">
+      <DependentUpon>VerificationPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="VerificationPage.aspx.designer.cs">
+      <DependentUpon>VerificationPage.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup />

@@ -281,7 +281,7 @@ namespace VisualMech
             totalLearnPages = tempCardList.Count;
 
             float temp = (float)totalVisitedPages / totalLearnPages;
-            double progressPercent = temp * 100;
+            double progressPercent = Math.Round((temp * 100), MidpointRounding.AwayFromZero);
             
             return $@"<div class=""progress"">
                             <div class=""progress-bar progress-bar-striped progress-bar-animated bg-danger"" role=""progressbar"" aria-valuenow=""{progressPercent}"" aria-valuemin=""0"" aria-valuemax=""100"" style=""width: {progressPercent}%""></div>

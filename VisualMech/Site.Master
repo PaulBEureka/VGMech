@@ -71,11 +71,7 @@
                         <li class="nav-item mx-3"><a class="nav-link white-link" href="HomePage.aspx#mini games">Compete</a></li>
                         <li class="nav-item mx-3"><a class="nav-link white-link" href="HomePage.aspx#about us">About Us</a></li>
                     </ul>
-                    <% if (Session["CurrentUser"] == null) { %>
-                    <ul class="navbar-nav">
-                        <li class="nav-item"><a class="nav-link white-link" href="SignInPage.aspx">Sign in | Sign up</a></li>
-                    </ul>
-                    <% } else { %>
+                    <% if (Session["CurrentUser"] != null && Session["CurrentActivation"] != null) { %>
                     <div class="dropdown">
                         <a class="text-white dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                             <%# Session["CurrentUser"] ?? "Default Name" %>
@@ -88,6 +84,10 @@
                         
                         </ul>
                     </div>
+                    <% } else { %>
+                        <ul class="navbar-nav">
+                            <li class="nav-item"><a class="nav-link white-link" href="SignInPage.aspx">Sign in | Sign up</a></li>
+                        </ul>
                     <% } %>
                 </div>
             </div>

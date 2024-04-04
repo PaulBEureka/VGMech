@@ -56,6 +56,7 @@ namespace VisualMech
                                     int user_id = reader.GetInt32(reader.GetOrdinal("user_id"));
                                     string username = reader.GetString(reader.GetOrdinal("username"));
                                     string password = reader.GetString(reader.GetOrdinal("password"));
+                                    string email = reader.GetString(reader.GetOrdinal("email"));
 
                                     PasswordHasher passwordHasher = new PasswordHasher();
 
@@ -71,9 +72,21 @@ namespace VisualMech
 
                                         Session["CurrentUser"] = username;
                                         Session["Current_ID"] = user_id;
+                                        Session["CurrentEmail"] = email;
 
+                                        if (CheckAccountActivation(user_id) == true)
+                                        {
+                                            Session["CurrentActivation"] = "1";
+                                            Response.Redirect("HomePage.aspx");
+                                        }
+                                        else
+                                        {
+                                            Session["CurrentActivation"] = "0";
+                                            Response.Write("Account Not Activated");
+                                        }
 
-                                        Response.Redirect("HomePage.aspx");
+                                        
+
                                     }
                                 }
                                 else
@@ -95,6 +108,43 @@ namespace VisualMech
                 lblCaptchaErrorMsg.Text = "Captcha code is incorrect.Please enter correct captcha code.";
                 lblCaptchaErrorMsg.ForeColor = System.Drawing.Color.White;
                 captchacode.Text = "";
+            }
+        }
+
+        private bool CheckAccountActivation(int user_id)
+        {
+            string query = $@"
+                SELECT *
+                FROM UserActivation 
+                WHERE UserActivation.user_id = @UserID";
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@UserID", user_id);
+
+                        connection.Open();
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                return true; // Account activated
+                            }
+                            else
+                            {
+                                return false; // Account not activated
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Response.Write(ex.Message);
+                    return false;
+                }
             }
         }
     }

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="SignupPage.aspx.cs" Inherits="VisualMech.SignupPage" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="SignupPage.aspx.cs" Inherits="VisualMech.SignupPage"  Async="true" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
     <webopt:bundlereference runat="server" path="~/Content/css" />
@@ -23,7 +23,27 @@
                             </asp:Label>
 
 
-                        </h5>                
+                        </h5>        
+                        
+                        <h5 style="color: white; padding-bottom:10px; text-align:left">Email: <asp:TextBox ID="Email_tb" runat="server" Width="348px"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ControlToValidate="Email_tb" ErrorMessage="*" ForeColor="White"></asp:RequiredFieldValidator>
+                            <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server"
+                                ControlToValidate="Email_tb"
+                                ErrorMessage="Invalid email format"
+                                ValidationExpression="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+                                ForeColor="White"
+                                Font-Size="Small">
+                            </asp:RegularExpressionValidator>
+
+                            <asp:Label runat="server" ID="email_lbl" Text ="Email Already Used" Font-Size="Small" ForeColor="White" Visible="false">
+
+                            </asp:Label>
+
+
+                        </h5>
+
+
+
                         <h5 style="color: white; padding-bottom:10px; text-align:left">New Password: <asp:TextBox ID="New_Password_tb" runat="server" Width="348px" TextMode="Password"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="New_Password_tb" ErrorMessage="*" ForeColor="White"></asp:RequiredFieldValidator>
                             <asp:RegularExpressionValidator ID="RegularExpressionValidatorPassword" runat="server"
@@ -54,14 +74,16 @@
                             <asp:Image ID="captchaImage" runat="server" Height="40px" Width="150px" ImageUrl="~/Captcha.aspx" /><br />
                             <br />
                             <asp:TextBox ID="captchacode" runat="server" Placeholder="Enter Captcha code"></asp:TextBox><br />
-                            <asp:Label ID="lblCaptchaErrorMsg" runat="server" Text="" Font-Size="Small"></asp:Label><br />
+                            <asp:Label ID="lblCaptchaErrorMsg" runat="server" Text="" Font-Size="Small" ForeColor="White"></asp:Label><br />
                         </div>
                         <br />
 
-                        <asp:Button class="signup_button m-auto " ID="Register_btn" runat="server" Text="Register" OnClick="Register_btn_Click"/>
-                        
-                        <br />
+
+                        <asp:Button class="signup_button m-auto " ID="Register_btn" OnClientClick="DisableButton()" runat="server" Text="Register" OnClick="Register_btn_Click"/>
                         <a style="text-align:right; text-decoration-line: underline" class="nav-link white-link" runat="server" href="SignInPage.aspx" >Sign In</a>
+                    
+                        <br />
+                        
                     </div>
                     
                 
@@ -76,4 +98,14 @@
 
     <script src="https://kit.fontawesome.com/d7d0e3dd38.js" crossorigin="anonymous"></script>
     <script src="/Content/custom.js"></script>
+    <script>
+        function DisableButton() {
+            var btn = document.getElementById('<%= Register_btn.ClientID %>');
+            setTimeout(function () {
+                btn.disabled = true;
+            }, 0);
+            return true;
+        }
+
+    </script>
 </asp:Content>

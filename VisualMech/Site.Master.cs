@@ -19,7 +19,9 @@ namespace VisualMech
             Session["CurrentUser"] = null;
             Session["Current_ID"] = null;
             Session["sessionCaptcha"] = null;
-            Response.Redirect(Request.Url.AbsoluteUri);
+            Session["CurrentActivation"] = null;
+            Session["CurrentEmail"] = null;
+            Response.Redirect("HomePage.aspx");
         }
 
     }

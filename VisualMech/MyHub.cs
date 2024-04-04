@@ -118,9 +118,10 @@ namespace VisualMech
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 string query = $@"
-            SELECT c1.*, UserTable.username 
+            SELECT c1.*, UserTable.username, Avatar.avatar_path 
             FROM CommentTable c1
             INNER JOIN UserTable ON c1.user_id = UserTable.user_id 
+            INNER JOIN Avatar ON UserTable.user_id = Avatar.user_id
             WHERE c1.mechanic_title = '{mechanicTitle}'
         ";
 
@@ -137,18 +138,18 @@ namespace VisualMech
                             DateTime sqlDate = (DateTime)reader["comment_date"];
                             string raw_comment = reader["comment"].ToString();
                             int? parentCommentId = reader.IsDBNull(reader.GetOrdinal("parent_comment_id")) ? (int?)null : reader.GetInt32(reader.GetOrdinal("parent_comment_id"));
-
+                            int userId = reader.GetInt32("user_id");
 
 
                             string comment = MakeNameBold(raw_comment);
-
+                            string commentAvatarPath = reader["avatar_path"].ToString();
 
                             if (parentCommentId != null)
                             {
                                 Comment parentComment = commentList.FirstOrDefault(c => c.CommentId == parentCommentId);
                                 if (parentComment != null)
                                 {
-                                    parentComment.RepliesList.Add(new Comment(commentId, username, sqlDate, comment));
+                                    parentComment.RepliesList.Add(new Comment(commentId, username, sqlDate, comment, commentAvatarPath));
                                 }
                                 else
                                 {
@@ -157,7 +158,7 @@ namespace VisualMech
                             }
                             else
                             {
-                                commentList.Add(new Comment(commentId, username, sqlDate, comment));
+                                commentList.Add(new Comment(commentId, username, sqlDate, comment, commentAvatarPath));
                             }
 
 
@@ -232,7 +233,7 @@ namespace VisualMech
                             <div class=""comment mt-4 float-left"" >
                                 <div class=""row"">
                                     <div class=""col-1 text-end"">
-                                        <img src= ""Images/person_icon.png"" alt="""" class=""rounded-circle"" width=""40"" height=""40"">
+                                        <img src= ""{replyComment.AvatarPath}"" alt="""" class=""rounded-circle"" width=""40"" height=""40"">
                                     </div>
                                     <div class =""col-11"">
                                         <div class=""row"">
@@ -291,7 +292,7 @@ namespace VisualMech
                     <div class=""comment mt-4 float-left"" >
                         <div class=""row"">
                             <div class=""col-1 text-end"">
-                                <img src= ""Images/person_icon.png"" alt="""" class=""rounded-circle"" width=""40"" height=""40"">
+                                <img src= ""{comment.AvatarPath}"" alt="""" class=""rounded-circle"" width=""40"" height=""40"">
                             </div>
                             <div class =""col-11"">
                                 <div class=""row"">
@@ -379,5 +380,7 @@ namespace VisualMech
 
             return formattedComment;
         }
+    
+        
     }
 }
