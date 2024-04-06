@@ -513,7 +513,6 @@ body {
     transition: 0.3s;
     display: inline-block;
     text-decoration: none;
-    cursor: pointer;
     width: 200px;
     border-radius: 5%;
     height: 40px;
@@ -543,7 +542,6 @@ body {
     transition: 0.3s;
     display: inline-block;
     text-decoration: none;
-    cursor: pointer;
     width: 200px;
     border-radius: 5%;
     height:40px;

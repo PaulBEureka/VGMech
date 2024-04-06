@@ -7,11 +7,14 @@ using System.Data.SqlClient;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using VisualMech.Classes;
 using VisualMech.Content.Classes;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace VisualMech
 {
@@ -25,12 +28,16 @@ namespace VisualMech
         private int totalLearnPages;
         private int totalVisitedPages;
 
+        public static bool IsClear { get; set; }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             tempCardList = Session["CardList"] as List<Card>;
 
             GetUserInfos();
             EditBtn.Click += EditBtn_Click;
+
+            
         }
 
         protected void UploadBtn_Click(object sender, EventArgs e)
@@ -393,6 +400,7 @@ namespace VisualMech
 
         protected void EditBtn_ClickBack(object sender, EventArgs e)
         {
+            ConfirmBtn.Text = "Confirm Change";
             UserInfosLit.Visible = true;
             UserInfosEditPanel.Visible = false;
 
@@ -408,6 +416,82 @@ namespace VisualMech
         }
 
         protected void ConfirmBtn_Click(object sender, EventArgs e)
+        {
+            bool tempClear = true;
+            bool isEmailChanged = false;
+
+            UsernameValidatorlbl.Visible = false;
+            EmailValidatorlbl.Visible = false;
+            OTPValidator.Visible = false;
+
+
+            if (!InputValidator.CheckUsername(InputUsername.Text) && InputUsername.Text != Session["CurrentUser"].ToString())
+            {
+                UsernameValidatorlbl.Text = "Username already taken";
+                UsernameValidatorlbl.Visible = true;
+                tempClear = false;
+            }
+
+            if(!InputValidator.CheckEmail(InputEmail.Text) && InputEmail.Text != Session["CurrentEmail"].ToString())
+            {
+                EmailValidatorlbl.Text = "Email already taken";
+                EmailValidatorlbl.Visible = true;
+                tempClear = false;
+            }
+            else
+            {
+                if (!EmailSender.IsValidEmail(InputEmail.Text))
+                {
+                    EmailValidatorlbl.Text = "Invalid email format";
+                    EmailValidatorlbl.Visible = true;
+                    tempClear = false;
+                }
+                else
+                {
+                    if (InputEmail.Text != Session["CurrentEmail"].ToString())
+                    {
+                        isEmailChanged = true;
+                    }
+                }
+            }
+
+
+
+            if (tempClear)
+            {
+                if (isEmailChanged)
+                {
+                    if (ConfirmBtn.Text == "Confirm Change") //Initial state, means that OTP is not yet sent
+                    {
+
+                        EmailSender.SendOTPEmail(InputEmail.Text, "VGMech Email Change Authentication", "To finish changing email please enter the OTP");
+                        OTPlbl.Visible = true;
+                        OTPtb.Visible = true;
+                        ConfirmBtn.Text = "Submit OTP"; //To serve as change to second state, OTP was sent
+
+                    }
+                    else // Second state, OTP is sent already
+                    {
+                        if (OTPtb.Text == EmailSender.OTP) // OTP is correct, proceed to update
+                        {
+                            UpdateInformation();
+                        }
+                        else
+                        {
+                            OTPValidator.Visible = true;
+                        }
+                    }
+                }
+                else
+                {
+                    UpdateInformation();
+                }
+
+            }
+
+        }
+
+        private void UpdateInformation()
         {
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -449,10 +533,8 @@ namespace VisualMech
 
                 }
             }
+
         }
-
-        
-
 
     }
 }

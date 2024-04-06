@@ -8,6 +8,7 @@ using System.Web;
 using Org.BouncyCastle.Asn1.Ocsp;
 using System.Text;
 using MySqlX.XDevAPI;
+using System.Text.RegularExpressions;
 
 namespace VisualMech.Classes
 {
@@ -15,7 +16,7 @@ namespace VisualMech.Classes
     {
         public static string OTP { get; set; }
 
-        public static async Task SendEmailAsync(string from, string to, string subject, string body)
+        public static void SendEmail(string from, string to, string subject, string body)
         {
             try
             {
@@ -34,7 +35,7 @@ namespace VisualMech.Classes
                     client.UseDefaultCredentials = false;
                     client.Credentials = basicCredential1;
 
-                    await client.SendMailAsync(message);
+                    client.Send(message);
 
         
                 }
@@ -57,17 +58,24 @@ namespace VisualMech.Classes
             OTP = otpDigits;
         }
 
-        public static async Task SendOTPEmailAsync(string email)
+        public static void SendOTPEmail(string email, string subject, string startingBody)
         {
             GenerateOTP();
             string from = "dummytry935@gmail.com";
-            string mailbody = $"Hello, your OTP is: {OTP}";
+            string mailbody = startingBody + $". Your OTP is: {OTP}";
 
-            await EmailSender.SendEmailAsync(from, email, "VGMech Account Activation", mailbody);
+             SendEmail(from, email, subject, mailbody);
             
         }
 
+        public static bool IsValidEmail(string input)
+        {
+            string pattern = @"^(?:\s*|(?:(?:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})\s*))$";
 
+            Regex regex = new Regex(pattern);
+
+            return regex.IsMatch(input);
+        }
 
     }
 }

@@ -96,6 +96,15 @@ namespace VisualMech
         protected global::System.Web.UI.WebControls.TextBox InputUsername;
 
         /// <summary>
+        /// UsernameValidatorlbl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label UsernameValidatorlbl;
+
+        /// <summary>
         /// InputEmail control.
         /// </summary>
         /// <remarks>
@@ -105,6 +114,15 @@ namespace VisualMech
         protected global::System.Web.UI.WebControls.TextBox InputEmail;
 
         /// <summary>
+        /// EmailValidatorlbl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label EmailValidatorlbl;
+
+        /// <summary>
         /// InputAboutMe control.
         /// </summary>
         /// <remarks>
@@ -112,6 +130,33 @@ namespace VisualMech
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox InputAboutMe;
+
+        /// <summary>
+        /// OTPlbl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label OTPlbl;
+
+        /// <summary>
+        /// OTPtb control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox OTPtb;
+
+        /// <summary>
+        /// OTPValidator control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label OTPValidator;
 
         /// <summary>
         /// ConfirmBtn control.

@@ -23,63 +23,80 @@ namespace VisualMech
     {
         private static readonly string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
 
-        protected async void Register_btn_Click(object sender, EventArgs e)
+
+        protected void Register_btn_Click(object sender, EventArgs e)
         {
             string captchaCode = captchacode.Text;
             string sessionCaptcha = Session["sessionCaptcha"].ToString();
+            bool tempClear = true;
+
+            taken_lbl.Visible = false;
+            email_lbl.Visible = false;
 
             if (captchaCode != sessionCaptcha)
             {
                 lblCaptchaErrorMsg.Text = "Captcha code is incorrect. Please enter correct captcha code.";
                 lblCaptchaErrorMsg.ForeColor = System.Drawing.Color.White;
                 captchacode.Text = "";
-                return;
+                tempClear = false;
             }
 
-            if (!CheckUsername())
+            if (!InputValidator.CheckUsername(New_Username_tb.Text))
             {
                 taken_lbl.Visible = true;
-                return;
+                tempClear = false;
             }
 
-            taken_lbl.Visible = false;
 
-            if (!CheckEmail())
+            if (!InputValidator.CheckEmail(Email_tb.Text))
             {
                 email_lbl.Visible = true;
-                return;
+                tempClear = false;
             }
 
-            await RegisterUser();
+            if (tempClear)
+            {
+                Session["tempUsername"] = New_Username_tb.Text;
+                Session["tempPassword"] = New_Password_tb.Text;
+                Session["tempEmail"] = Email_tb.Text;
+
+                EmailSender.SendOTPEmail(Session["tempEmail"].ToString(), "VGMech Account Activation", "Enter OTP to activate your account");
+
+
+                SignUpPanel.Visible = false;
+                VerifyPanel.Visible = true;
+            }
         }
 
-
-        private async Task RegisterUser()
+        private void RegisterUser()
         {
             try
             {
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
-                    await connection.OpenAsync();
+                    connection.Open();
 
                     string insertQuery = "INSERT INTO UserTable (username, password, email) VALUES (@Username, @Password, @Email)";
                     using (MySqlCommand command = new MySqlCommand(insertQuery, connection))
                     {
                         PasswordHasher passwordHasher = new PasswordHasher();
-                        string hashPassword = passwordHasher.HashPassword(New_Password_tb.Text);
+                        string hashPassword = passwordHasher.HashPassword(Session["tempPassword"].ToString());
 
-                        command.Parameters.AddWithValue("@Username", New_Username_tb.Text);
+                        command.Parameters.AddWithValue("@Username", Session["tempUsername"].ToString());
                         command.Parameters.AddWithValue("@Password", hashPassword);
-                        command.Parameters.AddWithValue("@Email", Email_tb.Text);
-                        await command.ExecuteNonQueryAsync();
+                        command.Parameters.AddWithValue("@Email", Session["tempEmail"].ToString());
+                        command.ExecuteNonQuery();
                     }
 
-                    await connection.CloseAsync();
+                    connection.Close();
+
+                    Session["tempUsername"] = null;
+                    Session["tempPassword"] = null;
+                    Session["tempEmail"] = null;
 
                     LoginUser();
 
-                    await EmailSender.SendOTPEmailAsync(Session["CurrentEmail"].ToString());
-                    Response.Redirect("VerificationPage.aspx");
+                    Response.Redirect("HomePage.aspx");
                 }
             }
             catch (Exception ex)
@@ -88,10 +105,9 @@ namespace VisualMech
             }
         }
 
-
         private void LoginUser()
         {
-            string selectQuery = "SELECT user_id, username FROM UserTable WHERE username = @Username";
+            string selectQuery = "SELECT user_id, username, email FROM UserTable WHERE username = @Username";
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 connection.Open();
@@ -106,10 +122,11 @@ namespace VisualMech
                         {
                             int user_id = reader.GetInt32("user_id");
                             string username = reader.GetString("username");
+                            string email = reader.GetString("email");
 
                             Session["CurrentUser"] = username;
                             Session["Current_ID"] = user_id;
-                            Session["CurrentEmail"] = Email_tb.Text;
+                            Session["CurrentEmail"] = email;
                             RecordDefaultAvatar();
                         }
                     }
@@ -140,44 +157,48 @@ namespace VisualMech
             }
 
                 
-        }
+        }      
 
         
-
-        private bool CheckUsername()
+        protected void OTPbtn_Click(object sender, EventArgs e)
         {
-            string query = "SELECT COUNT(*) FROM UserTable WHERE username = @Username";
-
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            if (EmailSender.OTP == OTPtb.Text)
             {
-                using (MySqlCommand command = new MySqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@Username", New_Username_tb.Text);
-                    connection.Open();
-                    int count = Convert.ToInt32(command.ExecuteScalar());
-                    return count == 0; 
-                }
+                Session["CurrentActivation"] = "1";
+                EmailSender.OTP = null;
+                RegisterUser();
+            }
+            else
+            {
+                lblTimer.Text = "Invalid OTP, Note: Changing of email could be done via Change Credentials button";
             }
         }
 
-        private bool CheckEmail()
+        protected void ResendBtn_Click(object sender, EventArgs e)
         {
-            string query = "SELECT COUNT(*) FROM UserTable WHERE email = @Email";
+            int currentValue = Convert.ToInt32(hfCountdownValue.Value);
 
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            if (currentValue > 1)
             {
-                using (MySqlCommand command = new MySqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@Email", Email_tb.Text);
-                    connection.Open();
-                    int count = Convert.ToInt32(command.ExecuteScalar());
-                    return count == 0;
-                }
+                hfCountdownValue.Value = (currentValue - 1).ToString();
+                ResendBtn.Text = $@"Resend OTP (Limit - {hfCountdownValue.Value} / 5)";
+
+                EmailSender.SendOTPEmail(Session["tempEmail"].ToString(), "VGMech Account Activation", "Enter OTP to activate your account");
+                ResendBtn.Enabled = true;
+            }
+            else
+            {
+                hfCountdownValue.Value = (currentValue - 1).ToString();
+                ResendBtn.Text = $@"Resend OTP (Limit - {hfCountdownValue.Value} / 5)";
+                ResendBtn.Enabled = false;
             }
         }
 
-        
-
+        protected void ChangeBtn_Click(object sender, EventArgs e)
+        {
+            SignUpPanel.Visible = true;
+            VerifyPanel.Visible = false;
+        }
     }
 
 

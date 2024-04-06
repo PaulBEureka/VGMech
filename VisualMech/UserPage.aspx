@@ -58,7 +58,10 @@
                                 </div>
                                 <div class='col-sm-9 text-secondary'>
                                     <asp:TextBox ID='InputUsername' runat='server' CssClass='form-control'></asp:TextBox>
+                                    <asp:Label ID = "UsernameValidatorlbl" Text="" runat="server" ForeColor="Red" Font-Size="Small" Visible="false" />
+                                
                                 </div>
+                                    
                             </div>
                             <hr />
                             <div class='row mb-3'>
@@ -66,7 +69,10 @@
                                     <h6 class='mb-0'>Email</h6>
                                 </div>
                                 <div class='col-sm-9 text-secondary'>
-                                    <asp:TextBox ID='InputEmail' runat='server' CssClass='form-control'></asp:TextBox>
+                                    <asp:TextBox ID='InputEmail' runat='server' ClientIDMode="Static" CssClass='form-control'></asp:TextBox>
+                                    
+                                    <asp:Label ID = "EmailValidatorlbl" Text="" runat="server" ForeColor="Red" Font-Size="Small" Visible="false" />
+                            
                                 </div>
                             </div>
                             <hr />
@@ -81,9 +87,12 @@
                             <hr />
                         </asp:Panel>
                         <div class="row">
-                          <div class="col-sm-12 d-grid">
-                            <asp:Button ID="ConfirmBtn" Text="Confirm Change" runat="server" Visible="false" OnClick="ConfirmBtn_Click" OnClientClick="return confirm('Are you sure you want to commit any changes?');" CssClass="mx-auto comment_button my-2 bg-danger" />
-                        </div>
+                            <div class="col-sm-12 d-grid">
+                                <asp:Label ID = "OTPlbl" Text="Confirm email with the OTP sent" runat="server" ForeColor="Black" Visible="false" CssClass="mx-auto" />
+                                <asp:TextBox ID='OTPtb' runat='server' CssClass='form-control mx-auto' Placeholder="Type OTP here" Visible ="false" ></asp:TextBox>
+                                <asp:Label ID = "OTPValidator" Text="Invalid OTP" runat="server" ForeColor="Red" Font-Size="Small" Visible="false" CssClass="mx-auto" />
+                                <asp:Button ID="ConfirmBtn" Text="Confirm Change" runat="server" Visible="false" OnClick="ConfirmBtn_Click" CssClass="mx-auto comment_button my-2 bg-danger" />
+                            </div>
                         </div>
                       <div class="row">
                         <div class="col-sm-12">
@@ -181,6 +190,9 @@
 
             return true;
         };
+
+
+        
 
         
     </script>
