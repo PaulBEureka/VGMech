@@ -58,6 +58,8 @@
                                 </div>
                                 <div class='col-sm-9 text-secondary'>
                                     <asp:TextBox ID='InputUsername' runat='server' CssClass='form-control'></asp:TextBox>
+                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator5" Display="Dynamic" Font-Size="Small" runat="server" ControlToValidate="InputUsername" ErrorMessage="Required field" ForeColor="Red"></asp:RequiredFieldValidator>
+                                    
                                     <asp:Label ID = "UsernameValidatorlbl" Text="" runat="server" ForeColor="Red" Font-Size="Small" Visible="false" />
                                 
                                 </div>
@@ -70,7 +72,8 @@
                                 </div>
                                 <div class='col-sm-9 text-secondary'>
                                     <asp:TextBox ID='InputEmail' runat='server' ClientIDMode="Static" CssClass='form-control'></asp:TextBox>
-                                    
+                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator4" Display="Dynamic" Font-Size="Small" runat="server" ControlToValidate="InputEmail" ErrorMessage="Required field" ForeColor="Red"></asp:RequiredFieldValidator>
+                                        
                                     <asp:Label ID = "EmailValidatorlbl" Text="" runat="server" ForeColor="Red" Font-Size="Small" Visible="false" />
                             
                                 </div>
@@ -86,6 +89,104 @@
                             </div>
                             <hr />
                         </asp:Panel>
+
+
+
+                      <asp:Panel ID="ChangePasswordPanel" runat="server" Visible="false">
+                          <div class='row mb-3'>
+                                <div class='col'>
+                                    <asp:Button ID="CancelChangePassBtn" CausesValidation="false" Text="Back" runat="server" OnClick="CancelChangePassBtn_Click" CssClass="comment_button my-2 bg-danger" />
+                                </div>
+                         </div>
+
+                          <asp:Panel ID="VerifyPassPanel" runat="server">
+                              <div class='row mb-3'>
+                                    <div class='col d-grid'>
+                                        <h6 class='mb-0 mx-auto'>To verify, please enter your current password</h6>
+                                    </div>
+                             </div>
+                              <div class='row mb-3'>
+                                    <div class='col-sm-3'>
+                                        <h6 class='mb-0'>Current Password</h6>
+                                    </div>
+                                    <div class='col-sm-9 text-secondary'>
+                                        <asp:TextBox ID='CurrentPasstb' runat='server' CssClass='form-control'></asp:TextBox>
+                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="CurrentPasstb" ErrorMessage="Required field" ForeColor="Red" Font-Size="Small" CssClass="ml-2" Display="Dynamic"></asp:RequiredFieldValidator>
+                                        
+                                        <br />
+                                        <asp:Label ID = "CurrentPassValidatorLbl" Text="" runat="server" ForeColor="Red" Font-Size="Small" Visible="false" />
+                                
+                                    </div>
+                             </div>
+                             <hr />
+                             <div class='row mb-3'>
+                                    <div class='col d-grid'>
+                                        <asp:Button ID="VerifyBtn" Text="Verify Password" runat="server" OnClick="VerifyBtn_Click" CssClass="mx-auto comment_button my-2 bg-danger" />
+                                    </div>
+                             </div>
+
+                          </asp:Panel>
+                         
+                          <asp:Panel ID="NewPasswordPanel" runat="server" Visible ="false">
+                              <div class='row mb-3'>
+                                    <div class='col d-grid'>
+                                        <h6 class='mb-0 mx-auto'>Choose a strong password and don't reuse it for other accounts.</h6>
+                                    </div>
+                             </div>
+                             <div class='row mb-3'>
+                                    <div class='col-sm-3'>
+                                        <h6 class='mb-0'>New Password</h6>
+                                    </div>
+                                    <div class='col-sm-9 text-secondary'>
+                                        <asp:TextBox ID='NewPasswordTb' runat='server' CssClass='form-control'></asp:TextBox>
+                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator1" Display="Dynamic" Font-Size="Small" runat="server" ControlToValidate="NewPasswordTb" ErrorMessage="Required field" ForeColor="Red"></asp:RequiredFieldValidator>
+                                        <br />
+                                        <asp:RegularExpressionValidator ID="RegularExpressionValidatorPassword" Display="Dynamic" runat="server"
+                                            ControlToValidate="NewPasswordTb"
+                                            ErrorMessage="Password must contain at least one uppercase letter, one lowercase letter, one digit, one special character, and be at least 8 characters long."
+                                            ValidationExpression="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$"
+                                            ForeColor="Red"
+                                            Font-Size="Small">
+
+                                        </asp:RegularExpressionValidator>
+                                    </div>
+                             </div>
+                             <hr />
+                             <div class='row mb-3'>
+                                    <div class='col-sm-3'>
+                                        <h6 class='mb-0'>Confirm New Password</h6>
+                                    </div>
+                                    <div class='col-sm-9 text-secondary'>
+                                        <asp:TextBox ID='ConNewPasswordTb' runat='server' CssClass='form-control'></asp:TextBox>
+                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" Display="Dynamic" Font-Size="Small" ControlToValidate="ConNewPasswordTb" ErrorMessage="Required field" ForeColor="Red"></asp:RequiredFieldValidator>
+                                        <br />
+                                        <asp:CompareValidator ID="CompareValidatorPassword" Display="Dynamic" runat="server"
+                                            ControlToValidate="ConNewPasswordTb"
+                                            ControlToCompare="NewPasswordTb"
+                                            ErrorMessage="Passwords do not match."
+                                            ForeColor="Red"
+                                            Font-Size="Small">
+
+                                        </asp:CompareValidator>
+                                    </div>
+                             </div>
+                             <hr />
+                             <div class='row mb-3'>
+                                <div class='col d-grid'>
+                                    <asp:Button ID="UpdatePassBtn" Text="Change Password" runat="server" OnClick="UpdatePassBtn_Click" CssClass="mx-auto comment_button my-2 bg-danger" />
+                                </div>
+                             </div>
+                             <div class='row mb-3'>
+                                    <div class='col d-grid'>
+                                        <asp:Label ID = "PassUpdateLbl" CssClass="mx-auto" Text="" runat="server" ForeColor="Green" Font-Size="Medium" Visible="false" />
+                                
+                                    </div>
+                             </div>
+                          </asp:Panel>
+
+                      </asp:Panel>
+
+
                         <div class="row">
                             <div class="col-sm-12 d-grid">
                                 <asp:Label ID = "OTPlbl" Text="Confirm email with the OTP sent" runat="server" ForeColor="Black" Visible="false" CssClass="mx-auto" />

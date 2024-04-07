@@ -34,7 +34,6 @@ namespace VisualMech
                 FROM UserTable 
                 WHERE UserTable.username = @Username";
 
-                string result = "";
 
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
@@ -78,8 +77,6 @@ namespace VisualMech
                                         
                                         
 
-                                        
-
                                     }
                                 }
                                 else
@@ -91,8 +88,7 @@ namespace VisualMech
                     }
                     catch (Exception ex)
                     {
-                        result = ex.Message;
-                        Response.Write(result);
+                        Response.Write(ex.Message);
                     }
                 }
             }

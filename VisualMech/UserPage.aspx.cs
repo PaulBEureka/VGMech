@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Services;
@@ -410,10 +411,6 @@ namespace VisualMech
             ConfirmBtn.Visible = false;
         }
 
-        protected void ChangePassBtn_Click(object sender, EventArgs e)
-        {
-
-        }
 
         protected void ConfirmBtn_Click(object sender, EventArgs e)
         {
@@ -513,7 +510,6 @@ namespace VisualMech
 
                     connection.Close();
 
-                    //GetUserInfos();
 
 
                     lblMessage.Text = "User information successfully updated";
@@ -536,5 +532,147 @@ namespace VisualMech
 
         }
 
+        private bool VerifyPassword(string input)
+        {
+            string query = $@"
+                SELECT password
+                FROM UserTable 
+                WHERE UserTable.user_id = @UserID";
+
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@UserID", Session["Current_ID"]);
+
+                        connection.Open();
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                reader.Read();
+                                string password = reader.GetString(reader.GetOrdinal("password"));
+
+                                PasswordHasher passwordHasher = new PasswordHasher();
+
+                                bool isMatch = passwordHasher.VerifyPassword(input, password);
+
+                                if (!isMatch)
+                                {
+                                    return false;
+                                }
+                                else
+                                {
+                                    return true;
+                                }
+                            }
+                            else
+                            {
+                                Response.Write("No user data found");
+                                return false;
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Response.Write(ex.Message);
+                    return false;
+                }
+            }
+        }
+
+        protected void ChangePassBtn_Click(object sender, EventArgs e)
+        {
+            ChangePasswordPanel.Visible = true;
+            UserInfosEditPanel.Visible = false;
+            UserInfosLit.Visible = false;
+            EditBtn.Visible = false;
+            ChangePassBtn.Visible = false;
+        }
+
+        protected void VerifyBtn_Click(object sender, EventArgs e)
+        {
+
+            if (!VerifyPassword(CurrentPasstb.Text))
+            {
+                CurrentPassValidatorLbl.Text = "Incorrect password";
+                CurrentPassValidatorLbl.Visible = true;
+            }
+            else
+            {
+                VerifyPassPanel.Visible = false;
+                NewPasswordPanel.Visible = true;
+            }
+        }
+            
+
+
+        protected void CancelChangePassBtn_Click(object sender, EventArgs e)
+        {
+            ChangePasswordPanel.Visible = false;
+            EditBtn.Visible = true;
+            ChangePassBtn.Visible = true;
+            UserInfosLit.Visible = true;
+            VerifyPassPanel.Visible = true;
+            NewPasswordPanel.Visible = false;
+            PassUpdateLbl.Visible = false;
+            CurrentPassValidatorLbl.Visible = false;
+            UpdatePassBtn.Visible = true;
+            CurrentPasstb.Text = null;
+            NewPasswordTb.Text = null;
+            ConNewPasswordTb.Text = null;
+        }
+
+
+        protected void UpdatePassBtn_Click(object sender, EventArgs e)
+        {
+            if (VerifyPassword(NewPasswordTb.Text)) //New pass is same with the current
+            {
+                PassUpdateLbl.Text = "Inputted new password is same with the current one";
+                PassUpdateLbl.Visible = true;
+            }
+            else
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    try
+                    {
+                        connection.Open();
+
+                        string updateQuery = "UPDATE usertable SET password = @NewPassword WHERE user_id = @UserId";
+
+                        using (MySqlCommand command = new MySqlCommand(updateQuery, connection))
+                        {
+                            PasswordHasher passwordHasher = new PasswordHasher();
+                            string hashPassword = passwordHasher.HashPassword(NewPasswordTb.Text.ToString());
+
+                            command.Parameters.AddWithValue("@NewPassword", hashPassword);
+                            command.Parameters.AddWithValue("@UserId", Session["Current_ID"]);
+                            command.ExecuteNonQuery();
+                        }
+
+                        connection.Close();
+
+                        PassUpdateLbl.Text = "Password Successfully Updated";
+                        PassUpdateLbl.Visible = true;
+                        UpdatePassBtn.Visible = false;
+
+                    }
+                    catch (Exception ex)
+                    {
+                        PassUpdateLbl.Text = "Error: " + ex;
+                        PassUpdateLbl.Visible = true;
+
+                    }
+                }
+            }
+
+            
+        
+        }
     }
 }

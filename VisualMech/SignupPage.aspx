@@ -12,13 +12,14 @@
                         <div class="d-grid">                        
                             <img src="Images/VGM_logo.png" alt="imgpng" class="img-fluid m-auto" style="width:100px; height:100px" />
                             <h5 style="color: white; padding-bottom:10px; text-align:left">New Username: <asp:TextBox ID="New_Username_tb" runat="server" Width="348px"></asp:TextBox>
-                                <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="New_Username_tb" ErrorMessage="*" ForeColor="White"></asp:RequiredFieldValidator>
+                                <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" Display="Dynamic" ControlToValidate="New_Username_tb" ErrorMessage="*" ForeColor="White"></asp:RequiredFieldValidator>
                                 <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server"
                                     ControlToValidate="New_Username_tb"
                                     ErrorMessage="Username must be 1-15 characters long."
                                     ValidationExpression="^.{1,15}$"
                                     ForeColor="White"
-                                     Font-Size="Small">
+                                     Font-Size="Small"
+                                     Display="Dynamic">
                                 </asp:RegularExpressionValidator>
                                 <br />
                                 <asp:Label runat="server" ID="taken_lbl" Text ="Username already taken" Font-Size="Small" ForeColor="White" Visible="false">
@@ -29,8 +30,8 @@
                             </h5>        
                         
                             <h5 style="color: white; padding-bottom:10px; text-align:left">Email: <asp:TextBox ID="Email_tb" runat="server" Width="348px"></asp:TextBox>
-                                <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ControlToValidate="Email_tb" ErrorMessage="*" ForeColor="White"></asp:RequiredFieldValidator>
-                                <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server"
+                                <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" Display="Dynamic" ControlToValidate="Email_tb" ErrorMessage="*" ForeColor="White"></asp:RequiredFieldValidator>
+                                <asp:RegularExpressionValidator ID="RegularExpressionValidator2" Display="Dynamic" runat="server"
                                     ControlToValidate="Email_tb"
                                     ErrorMessage="Invalid email format"
                                     ValidationExpression="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
@@ -48,8 +49,8 @@
 
 
                             <h5 style="color: white; padding-bottom:10px; text-align:left">New Password: <asp:TextBox ID="New_Password_tb" runat="server" Width="348px" TextMode="Password"></asp:TextBox>
-                                <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="New_Password_tb" ErrorMessage="*" ForeColor="White"></asp:RequiredFieldValidator>
-                                <asp:RegularExpressionValidator ID="RegularExpressionValidatorPassword" runat="server"
+                                <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" Display="Dynamic" ControlToValidate="New_Password_tb" ErrorMessage="*" ForeColor="White"></asp:RequiredFieldValidator>
+                                <asp:RegularExpressionValidator ID="RegularExpressionValidatorPassword" Display="Dynamic" runat="server"
                                     ControlToValidate="New_Password_tb"
                                     ErrorMessage="Password must contain at least one uppercase letter, one lowercase letter, one digit, one special character, and be at least 8 characters long."
                                     ValidationExpression="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$"
@@ -60,8 +61,8 @@
                         
                             </h5>
                             <h5 style="color: white; padding-bottom:10px; text-align:left">Confirm Password: <asp:TextBox ID="Confirm_Password_tb" runat="server" Width="348px" TextMode="Password"></asp:TextBox>
-                                <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="Confirm_Password_tb" ErrorMessage="*" ForeColor="White"></asp:RequiredFieldValidator>
-                                <asp:CompareValidator ID="CompareValidatorPassword" runat="server"
+                                <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" Display="Dynamic" ControlToValidate="Confirm_Password_tb" ErrorMessage="*" ForeColor="White"></asp:RequiredFieldValidator>
+                                <asp:CompareValidator ID="CompareValidatorPassword" runat="server" Display="Dynamic"
                                     ControlToValidate="Confirm_Password_tb"
                                     ControlToCompare="New_Password_tb"
                                     ErrorMessage="Passwords do not match."
