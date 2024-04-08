@@ -214,7 +214,7 @@ namespace VisualMech
 
         private void GetUserInfos()
         {
-            string query = @"SELECT * FROM usertable WHERE user_id = @UserId;";
+            string query = @"SELECT * FROM user WHERE user_id = @UserId;";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -496,7 +496,7 @@ namespace VisualMech
                 {
                     connection.Open();
 
-                    string updateQuery = "UPDATE usertable SET username = @Username, email = @Email, about_me = @AboutMe WHERE user_id = @UserId";
+                    string updateQuery = "UPDATE user SET username = @Username, email = @Email, about_me = @AboutMe WHERE user_id = @UserId";
 
                     using (MySqlCommand command = new MySqlCommand(updateQuery, connection))
                     {
@@ -536,8 +536,8 @@ namespace VisualMech
         {
             string query = $@"
                 SELECT password
-                FROM UserTable 
-                WHERE UserTable.user_id = @UserID";
+                FROM user 
+                WHERE user.user_id = @UserID";
 
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
@@ -643,7 +643,7 @@ namespace VisualMech
                     {
                         connection.Open();
 
-                        string updateQuery = "UPDATE usertable SET password = @NewPassword WHERE user_id = @UserId";
+                        string updateQuery = "UPDATE user SET password = @NewPassword WHERE user_id = @UserId";
 
                         using (MySqlCommand command = new MySqlCommand(updateQuery, connection))
                         {
@@ -673,6 +673,31 @@ namespace VisualMech
 
             
         
+        }
+
+        protected void ManageBtn_Click(object sender, EventArgs e)
+        {
+            customFile.Visible = true;
+            EditBtn.Visible = true;
+            ChangePassBtn.Visible = true;
+            UploadBtn.Visible = true;
+            ExitManageBtn.Visible = true;
+            ManageBtn.Visible = false;
+        }
+
+        protected void ExitManageBtn_Click(object sender, EventArgs e)
+        {
+            ExitManageBtn.Visible = false;
+            ManageBtn.Visible = true;
+            customFile.Visible = false;
+            EditBtn.Visible = false;
+            ChangePassBtn.Visible = false;
+            UploadBtn.Visible = false;
+            UserInfosEditPanel.Visible = false;
+            ChangePasswordPanel.Visible = false;
+            UserInfosLit.Visible = true;
+            CancelEditBtn.Visible = false;
+            ConfirmBtn.Visible = false;
         }
     }
 }

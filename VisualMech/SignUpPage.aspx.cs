@@ -76,7 +76,7 @@ namespace VisualMech
                 {
                     connection.Open();
 
-                    string insertQuery = "INSERT INTO UserTable (username, password, email) VALUES (@Username, @Password, @Email)";
+                    string insertQuery = "INSERT INTO user (username, password, email) VALUES (@Username, @Password, @Email)";
                     using (MySqlCommand command = new MySqlCommand(insertQuery, connection))
                     {
                         PasswordHasher passwordHasher = new PasswordHasher();
@@ -107,7 +107,7 @@ namespace VisualMech
 
         private void LoginUser()
         {
-            string selectQuery = "SELECT user_id, username, email FROM UserTable WHERE username = @Username";
+            string selectQuery = "SELECT user_id, username, email FROM user WHERE username = @Username";
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 connection.Open();

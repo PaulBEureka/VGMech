@@ -13,7 +13,7 @@ namespace VisualMech.Classes
 
         public static bool CheckUsername(string username)
         {
-            string query = "SELECT COUNT(*) FROM UserTable WHERE username = @Username";
+            string query = "SELECT COUNT(*) FROM user WHERE username = @Username";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -29,7 +29,7 @@ namespace VisualMech.Classes
 
         public static bool CheckEmail(string email)
         {
-            string query = "SELECT COUNT(*) FROM UserTable WHERE email = @Email";
+            string query = "SELECT COUNT(*) FROM user WHERE email = @Email";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {

@@ -48,9 +48,10 @@ namespace VisualMech
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                string query = "SELECT *, UserTable.username FROM GameRecordTable " +
-                               "INNER JOIN UserTable ON GameRecordTable.user_id = UserTable.user_id " +
-                               "WHERE game_title = 'Block Breaker' ORDER BY game_score DESC LIMIT 5;";
+                string query = $@"SELECT *, user.username, avatar.avatar_path FROM game_record 
+                               INNER JOIN user ON game_record.user_id = user.user_id 
+                               INNER JOIN avatar ON user.user_id = avatar.user_id
+                               WHERE game_record.game_title = 'Block Breaker' ORDER BY game_record.game_score DESC LIMIT 5";
 
                 using (MySqlCommand command = new MySqlCommand(query, connection))
                 {
@@ -65,38 +66,35 @@ namespace VisualMech
                             string username = reader["username"].ToString();
                             string ranking_date = reader["ranking_date"].ToString();
                             string score = reader["game_score"].ToString();
+                            string avatarPath = reader["avatar_path"].ToString();
+                            string dateString = DateTime.Parse(ranking_date).ToString("M/d/yyyy");
 
-                            DateTime dateTime;
-                            if (DateTime.TryParse(ranking_date, out dateTime))
-                            {
-                                string dateString = dateTime.ToString("M/d/yyyy");
-
-                                allLeaderboardsString += $@"<div class=""row mt-3"" >
-                                                        <div class=""col-md-1 d-grid"">
-                                                            <p class=""fw-bolder text-white fs-3 my-3"">{rankingNum.ToString()}.</p>
-                                                        </div>
-                                                        <div class=""col-md-1 image-container"">
-                                                            <img src=""Images/person_icon_white.png"" alt="""" class=""rounded-circle"" width=""60"" height=""60"">
-                                                        </div>
-                                                        <div class=""col-md-9 leaderboard_white_rec_round"">
-                                                            <div class=""row"">
-                                                                <div class = ""col-4 my-3"">
-                                                                    <p class=""fw-bolder text-start"">{username.ToUpper()}</p>
-                                                                </div>
-                                                                <div class ="" col-4 my-3"">
-                                                                    <p class=""fw-bolder text-end"">{dateString}</p>
-                                                                </div>
-                                                                <div class ="" col-4 my-3"">
-                                                                    <p class=""fw-bolder text-end"">{score} pts</p>
-                                                                </div>
+                            allLeaderboardsString += $@"<div class=""row mt-3"" >
+                                                    <div class=""col-md-1 d-grid"">
+                                                        <p class=""fw-bolder text-white fs-3 my-3"">{rankingNum.ToString()}.</p>
+                                                    </div>
+                                                    <div class=""col-md-1 image-container"">
+                                                        <img src=""{avatarPath}"" alt="""" class=""rounded-circle"" width=""60"" height=""60"">
+                                                    </div>
+                                                    <div class=""col-md-9 leaderboard_white_rec_round"">
+                                                        <div class=""row"">
+                                                            <div class = ""col-4 my-3"">
+                                                                <p class=""fw-bolder text-start"">{username.ToUpper()}</p>
+                                                            </div>
+                                                            <div class ="" col-4 my-3"">
+                                                                <p class=""fw-bolder text-end"">{dateString}</p>
+                                                            </div>
+                                                            <div class ="" col-4 my-3"">
+                                                                <p class=""fw-bolder text-end"">{score} pts</p>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div>
-                                                        <hr / class=""text-white"">
-                                                    </div>";
-                                rankingNum++;
-                            }
+                                                </div>
+                                                <div>
+                                                    <hr / class=""text-white"">
+                                                </div>";
+                            rankingNum++;
+                            
                         }
                     }
                 }
@@ -118,10 +116,10 @@ namespace VisualMech
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 string query = $@"
-            SELECT c1.*, UserTable.username, Avatar.avatar_path 
-            FROM CommentTable c1
-            INNER JOIN UserTable ON c1.user_id = UserTable.user_id 
-            INNER JOIN Avatar ON UserTable.user_id = Avatar.user_id
+            SELECT c1.*, user.username, avatar.avatar_path 
+            FROM comment c1
+            INNER JOIN user ON c1.user_id = user.user_id 
+            INNER JOIN avatar ON user.user_id = avatar.user_id
             WHERE c1.mechanic_title = '{mechanicTitle}'
         ";
 
@@ -135,11 +133,13 @@ namespace VisualMech
                         {
                             int commentId = reader.GetInt32("comment_id");
                             string username = reader["username"].ToString();
-                            DateTime sqlDate = (DateTime)reader["comment_date"];
+                            string rawDate = reader["comment_date"].ToString();
                             string raw_comment = reader["comment"].ToString();
                             int? parentCommentId = reader.IsDBNull(reader.GetOrdinal("parent_comment_id")) ? (int?)null : reader.GetInt32(reader.GetOrdinal("parent_comment_id"));
                             int userId = reader.GetInt32("user_id");
 
+                            
+                            DateTime commentDate = DateTime.Parse(rawDate);
 
                             string comment = MakeNameBold(raw_comment);
                             string commentAvatarPath = reader["avatar_path"].ToString();
@@ -149,7 +149,7 @@ namespace VisualMech
                                 Comment parentComment = commentList.FirstOrDefault(c => c.CommentId == parentCommentId);
                                 if (parentComment != null)
                                 {
-                                    parentComment.RepliesList.Add(new Comment(commentId, username, sqlDate, comment, commentAvatarPath));
+                                    parentComment.RepliesList.Add(new Comment(commentId, username, commentDate, comment, commentAvatarPath));
                                 }
                                 else
                                 {
@@ -158,7 +158,7 @@ namespace VisualMech
                             }
                             else
                             {
-                                commentList.Add(new Comment(commentId, username, sqlDate, comment, commentAvatarPath));
+                                commentList.Add(new Comment(commentId, username, commentDate, comment, commentAvatarPath));
                             }
 
 

@@ -17,6 +17,12 @@
         <div class="container">
             <div class="main-body">
               <div class="row gutters-sm">
+                <div class="col-md-12">
+                    <asp:Button ID="ManageBtn" Text="Manage account" runat="server" OnClick="ManageBtn_Click" CssClass="comment_button my-2 bg-danger" />
+                    <asp:Button ID="ExitManageBtn" Text="Public layout" CausesValidation="false" Visible="false" runat="server" OnClick="ExitManageBtn_Click" CssClass="comment_button my-2 bg-danger" />
+                
+                </div>            
+
                 <div class="col-md-4 mb-3">
                   <div class="card_user">
                     <div class="card-body-user">
@@ -28,9 +34,9 @@
                             <asp:Literal ID="UsernameLit" runat="server"></asp:Literal>
                           
 
-                            <asp:FileUpload ID="customFile" runat="server" CssClass="form-control" Accept=".jpg, .jpeg, .png, .gif" />
+                            <asp:FileUpload ID="customFile" runat="server" CssClass="form-control" Visible="false" Accept=".jpg, .jpeg, .png, .gif" />
                             
-                            <asp:Button ID="UploadBtn" Text="Change Avatar" runat="server" OnClick="UploadBtn_Click" CssClass="comment_button my-2 bg-danger" />
+                            <asp:Button ID="UploadBtn" Text="Change Avatar" Visible="false" runat="server" OnClick="UploadBtn_Click" CssClass="comment_button my-2 bg-danger" />
                             <br />
                             <asp:Label ID = "lblMessage" Text="Error" runat="server" ForeColor="Green" Visible="false" />
                             
@@ -197,10 +203,10 @@
                         </div>
                       <div class="row">
                         <div class="col-sm-12">
-                          <asp:Button ID="EditBtn" Text="Edit" runat="server" OnClick="EditBtn_Click" CssClass="comment_button my-2 bg-danger" />
+                          <asp:Button ID="EditBtn" Text="Edit" runat="server" OnClick="EditBtn_Click" CssClass="comment_button my-2 bg-danger" Visible="false"/>
                           <asp:Button ID="CancelEditBtn" Text="Cancel Edit" runat="server" OnClick="EditBtn_ClickBack" Visible="false" CssClass="comment_button my-2 bg-danger" />
                              
-                          <asp:Button ID="ChangePassBtn" Text="Change Password" runat="server" OnClick="ChangePassBtn_Click" CssClass="comment_button my-2 bg-danger" />
+                          <asp:Button ID="ChangePassBtn" Text="Change Password" runat="server" OnClick="ChangePassBtn_Click" Visible="false" CssClass="comment_button my-2 bg-danger" />
                                     
                         
                         </div>
