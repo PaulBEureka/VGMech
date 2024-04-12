@@ -30,6 +30,7 @@ namespace VisualMech
         {
             string leaderboardsData = await RetrieveLeaderboardsDataAsync();
             Clients.All.updateLeaderboards(leaderboardsData);
+            
         }
 
 
@@ -37,9 +38,8 @@ namespace VisualMech
         {
             info = stringArr;
             string[] commentsData = await RetrieveCommentsData();
-            Clients.All.updateComments(commentsData);
+            Clients.All.sendComments(commentsData);
         }
-
         
 
         private async Task<string> RetrieveLeaderboardsDataAsync()

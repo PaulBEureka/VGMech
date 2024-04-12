@@ -16,11 +16,15 @@ namespace VisualMech
 
         protected void btnCurrentUser_Click(object sender, EventArgs e)
         {
+
+
             Session["CurrentUser"] = null;
             Session["Current_ID"] = null;
             Session["sessionCaptcha"] = null;
             Session["CurrentActivation"] = null;
             Session["CurrentEmail"] = null;
+
+            Session["Message"] = "User Successfully logged out";
             Response.Redirect("HomePage.aspx");
         }
 

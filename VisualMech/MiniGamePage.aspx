@@ -2,7 +2,6 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
     <webopt:bundlereference runat="server" path="~/Content/css" />
-    <link rel="stylesheet" href="/Content/custom_styles.css">
     
     <script src="Scripts/jquery-3.4.1.js"></script>
     <script src="Scripts/jquery.signalR-2.4.3.js"></script>

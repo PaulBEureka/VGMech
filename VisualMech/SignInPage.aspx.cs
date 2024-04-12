@@ -19,7 +19,7 @@ namespace VisualMech
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            
         }
 
         protected void Login_btn_Click(object sender, EventArgs e)
@@ -72,6 +72,7 @@ namespace VisualMech
                                         Session["CurrentUser"] = username;
                                         Session["Current_ID"] = user_id;
                                         Session["CurrentEmail"] = email;
+                                        Session["Message"] = $@"Welcome to VGMech, {username}";
                                         
                                         Response.Redirect("HomePage.aspx");
                                         

@@ -16,6 +16,7 @@ using System.Web.UI.WebControls;
 using VisualMech.Classes;
 using VisualMech.Content.Classes;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace VisualMech
 {
@@ -512,9 +513,27 @@ namespace VisualMech
 
 
 
-                    lblMessage.Text = "User information successfully updated";
-                    lblMessage.Visible = true;
-                    lblMessage.ForeColor = System.Drawing.Color.Green;
+                    string script = $@"
+                            toastr.options = {{
+                              ""closeButton"": false,
+                              ""debug"": false,
+                              ""newestOnTop"": false,
+                              ""progressBar"": false,
+                              ""positionClass"": ""toast-top-right"",
+                              ""preventDuplicates"": false,
+                              ""onclick"": null,
+                              ""showDuration"": ""300"",
+                              ""hideDuration"": ""1000"",
+                              ""timeOut"": ""10000"",
+                              ""extendedTimeOut"": ""1000"",
+                              ""showEasing"": ""swing"",
+                              ""hideEasing"": ""linear"",
+                              ""showMethod"": ""fadeIn"",
+                              ""hideMethod"": ""fadeOut""
+                            }}
+                            toastr['success']('User data successfully updated');
+                        ";
+                    ClientScript.RegisterClientScriptBlock(this.GetType(), "MyScript", script, true);
 
                     Response.Redirect(Request.RawUrl);
 
@@ -523,9 +542,27 @@ namespace VisualMech
                 }
                 catch (Exception ex)
                 {
-                    lblMessage.Text = "Error uploading file: " + ex.Message;
-                    lblMessage.Visible = true;
-                    lblMessage.ForeColor = System.Drawing.Color.Red;
+                    string script = $@"
+                            toastr.options = {{
+                              ""closeButton"": false,
+                              ""debug"": false,
+                              ""newestOnTop"": false,
+                              ""progressBar"": false,
+                              ""positionClass"": ""toast-top-right"",
+                              ""preventDuplicates"": false,
+                              ""onclick"": null,
+                              ""showDuration"": ""300"",
+                              ""hideDuration"": ""1000"",
+                              ""timeOut"": ""10000"",
+                              ""extendedTimeOut"": ""1000"",
+                              ""showEasing"": ""swing"",
+                              ""hideEasing"": ""linear"",
+                              ""showMethod"": ""fadeIn"",
+                              ""hideMethod"": ""fadeOut""
+                            }}
+                            toastr['error']('Error: {ex.ToString()}', 'Error');
+                        ";
+                    ClientScript.RegisterClientScriptBlock(this.GetType(), "MyScript", script, true);
 
                 }
             }
@@ -682,7 +719,9 @@ namespace VisualMech
             ChangePassBtn.Visible = true;
             UploadBtn.Visible = true;
             ExitManageBtn.Visible = true;
+            DeleteAccManageBtn.Visible = true;
             ManageBtn.Visible = false;
+            
         }
 
         protected void ExitManageBtn_Click(object sender, EventArgs e)
@@ -698,6 +737,67 @@ namespace VisualMech
             UserInfosLit.Visible = true;
             CancelEditBtn.Visible = false;
             ConfirmBtn.Visible = false;
+            DeleteAccManageBtn.Visible = false;
+            DeleteAccPanel.Visible = false;
+            VerifyDeletePanel.Visible = false;
+            ConfirmDeletePanel.Visible = false;
         }
+
+
+        protected void VerifyPassDelBtn_Click(object sender, EventArgs e)
+        {
+            if (!VerifyPassword(VerifyPassDelTb.Text))
+            {
+                VerifyPassValidatorLbl.Text = "Incorrect password";
+                VerifyPassValidatorLbl.Visible = true;
+            }
+            else
+            {
+                VerifyDeletePanel.Visible = false;
+                ConfirmDeletePanel.Visible = true;
+            }
+        }
+
+        protected void DeleteAccManageBtn_Click(object sender, EventArgs e)
+        {
+            UserInfosLit.Visible = false;
+            DeleteAccPanel.Visible = true;
+            EditBtn.Visible = false;
+            ChangePassBtn.Visible = false;
+        }
+
+        protected void DeleteAccBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    string deleteQuery = "DELETE FROM user WHERE user_id = @UserId";
+                    using (MySqlCommand command = new MySqlCommand(deleteQuery, connection))
+                    {
+                        command.Parameters.AddWithValue("@UserId", Session["Current_ID"].ToString());
+                        command.ExecuteNonQuery();
+                    }
+
+                    connection.Close();
+
+                    Session["CurrentUser"] = null;
+                    Session["Current_ID"] = null;
+                    Session["sessionCaptcha"] = null;
+                    Session["CurrentActivation"] = null;
+                    Session["CurrentEmail"] = null;
+                    Session["Message"] = $@"Account Successfully Deleted";
+
+                    Response.Redirect("HomePage.aspx");
+                }
+            }
+            catch (Exception ex)
+            {
+                Response.Write(ex.Message);
+            }
+        }
+
     }
 }

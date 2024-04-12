@@ -3,14 +3,10 @@
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
     <webopt:bundlereference runat="server" path="~/Content/css" />
     
-    <link rel="stylesheet" href="/Content/custom_styles.css">
-    
-    
-    
     <script src="/Content/custom.js"></script>
     <main>
-
-
+        
+       
         <div class="row align-self-center my-5 signin_background signin_rectangle_2 d-grid m-auto">
             <div class="row align-self-center signin_rectangle m-auto signin_padding">
                     <div class="d-grid">                        

@@ -2,7 +2,6 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
     <webopt:bundlereference runat="server" path="~/Content/css" />
-    <link rel="stylesheet" href="/Content/custom_styles.css">
     <script src="Scripts/jquery-3.4.1.js"></script>
     <script src="Scripts/jquery.signalR-2.4.3.js"></script>
     <script src="signalr/hubs"></script>
@@ -20,6 +19,7 @@
                 <div class="col-md-12">
                     <asp:Button ID="ManageBtn" Text="Manage account" runat="server" OnClick="ManageBtn_Click" CssClass="comment_button my-2 bg-danger" />
                     <asp:Button ID="ExitManageBtn" Text="Public layout" CausesValidation="false" Visible="false" runat="server" OnClick="ExitManageBtn_Click" CssClass="comment_button my-2 bg-danger" />
+                    <asp:Button ID="DeleteAccManageBtn" Text="Delete Account" CausesValidation="false" runat="server" Visible="false" OnClick="DeleteAccManageBtn_Click" CssClass="comment_button my-2 bg-danger" />
                 
                 </div>            
 
@@ -108,15 +108,15 @@
                           <asp:Panel ID="VerifyPassPanel" runat="server">
                               <div class='row mb-3'>
                                     <div class='col d-grid'>
-                                        <h6 class='mb-0 mx-auto'>To verify, please enter your current password</h6>
+                                        <h6 class='mb-0 mx-auto'>To continue, first verify it’s you</h6>
                                     </div>
                              </div>
                               <div class='row mb-3'>
                                     <div class='col-sm-3'>
-                                        <h6 class='mb-0'>Current Password</h6>
+                                        <h6 class='mb-0'>Enter Password</h6>
                                     </div>
                                     <div class='col-sm-9 text-secondary'>
-                                        <asp:TextBox ID='CurrentPasstb' runat='server' CssClass='form-control'></asp:TextBox>
+                                        <asp:TextBox ID='CurrentPasstb' runat='server' CssClass='form-control' TextMode="Password"></asp:TextBox>
                                         <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="CurrentPasstb" ErrorMessage="Required field" ForeColor="Red" Font-Size="Small" CssClass="ml-2" Display="Dynamic"></asp:RequiredFieldValidator>
                                         
                                         <br />
@@ -127,7 +127,7 @@
                              <hr />
                              <div class='row mb-3'>
                                     <div class='col d-grid'>
-                                        <asp:Button ID="VerifyBtn" Text="Verify Password" runat="server" OnClick="VerifyBtn_Click" CssClass="mx-auto comment_button my-2 bg-danger" />
+                                        <asp:Button ID="VerifyBtn" Text="Verify" runat="server" OnClick="VerifyBtn_Click" CssClass="mx-auto comment_button my-2 bg-danger" />
                                     </div>
                              </div>
 
@@ -144,7 +144,7 @@
                                         <h6 class='mb-0'>New Password</h6>
                                     </div>
                                     <div class='col-sm-9 text-secondary'>
-                                        <asp:TextBox ID='NewPasswordTb' runat='server' CssClass='form-control'></asp:TextBox>
+                                        <asp:TextBox ID='NewPasswordTb' TextMode="Password" runat='server' CssClass='form-control'></asp:TextBox>
                                         <asp:RequiredFieldValidator ID="RequiredFieldValidator1" Display="Dynamic" Font-Size="Small" runat="server" ControlToValidate="NewPasswordTb" ErrorMessage="Required field" ForeColor="Red"></asp:RequiredFieldValidator>
                                         <br />
                                         <asp:RegularExpressionValidator ID="RegularExpressionValidatorPassword" Display="Dynamic" runat="server"
@@ -163,7 +163,7 @@
                                         <h6 class='mb-0'>Confirm New Password</h6>
                                     </div>
                                     <div class='col-sm-9 text-secondary'>
-                                        <asp:TextBox ID='ConNewPasswordTb' runat='server' CssClass='form-control'></asp:TextBox>
+                                        <asp:TextBox ID='ConNewPasswordTb' TextMode="Password" runat='server' CssClass='form-control'></asp:TextBox>
                                         <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" Display="Dynamic" Font-Size="Small" ControlToValidate="ConNewPasswordTb" ErrorMessage="Required field" ForeColor="Red"></asp:RequiredFieldValidator>
                                         <br />
                                         <asp:CompareValidator ID="CompareValidatorPassword" Display="Dynamic" runat="server"
@@ -192,7 +192,71 @@
 
                       </asp:Panel>
 
-
+                      <asp:Panel ID="DeleteAccPanel" runat="server" Visible="false">
+                            
+                          <asp:Panel ID="VerifyDeletePanel" runat="server">
+                       
+                              <div class='row mb-3'>
+                                        <div class='col d-grid'>
+                                            <h6 class='mb-0 mx-auto'>To continue, first verify it’s you</h6>
+                                        </div>
+                                 </div>
+                                <div class='row mb-3'>
+                                        <div class='col-sm-3'>
+                                            <h6 class='mb-0'>Enter Password</h6>
+                                        </div>
+                                        <div class='col-sm-9 text-secondary'>
+                                            <asp:TextBox ID='VerifyPassDelTb' runat='server' TextMode="Password" CssClass='form-control'></asp:TextBox>
+                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator6" runat="server" ControlToValidate="VerifyPassDelTb" ErrorMessage="Required field" ForeColor="Red" Font-Size="Small" CssClass="ml-2" Display="Dynamic"></asp:RequiredFieldValidator>
+                                        
+                                            <br />
+                                            <asp:Label ID = "VerifyPassValidatorLbl" Text="" runat="server" ForeColor="Red" Font-Size="Small" Visible="false" />
+                                
+                                        </div>
+                                 </div>
+                                 <hr />
+                                 <div class='row mb-3'>
+                                        <div class='col d-grid'>
+                                            <asp:Button ID="VerifyPassDelBtn" Text="Verify" runat="server" OnClick="VerifyPassDelBtn_Click" CssClass="mx-auto comment_button my-2 bg-danger" />
+                                        </div>
+                                 </div>
+                           </asp:Panel>
+                      
+                          <asp:Panel ID="ConfirmDeletePanel" runat="server" Visible="false">
+                       
+                              <div class='row mb-3'>
+                                        <div class='col'>
+                                            <h5 class='mb-0 fw-bold'>Please read this carefully</h5>
+                                        </div>
+                                 </div>
+                                <div class='row mb-3'>
+                                        <div class='col'>
+                                            <p class='mb-0'>You're trying to delete your VGMech account, all progress, comments, email notifications, and 
+                                                associated contents. You'll no longer be able to access any of those information, and your account and data will be lost.
+                                            </p>
+                                        </div>
+                                        
+                                 </div>
+                                 <br />
+                                 <div class='row mb-3'>
+                                        <div class='col form-check' >
+                                            <asp:CheckBox runat="server" ID="AckDelCheckbox" ClientIDMode="Static" Text="Yes, I want to permanently delete this VGMech Account and all its data."/>
+                                            <br />
+                                            <asp:CustomValidator ID="AccDelValidator" runat="server" 
+                                                ErrorMessage="Please confirm that you wish to delete this VGMech Account."
+                                                Font-Size="Small" ForeColor="Red"
+                                                ClientValidationFunction = "ValidateCheckBox"></asp:CustomValidator>
+                                        </div>
+                                        
+                                 </div>
+                                 <hr />
+                                 <div class='row mb-3'>
+                                        <div class='col d-grid'>
+                                            <asp:Button ID="DeleteAccBtn" Text="Delete Account" runat="server" OnClick="DeleteAccBtn_Click" CssClass="mx-auto comment_button my-2 bg-danger" />
+                                        </div>
+                                 </div>
+                           </asp:Panel>
+                      </asp:Panel>
                         <div class="row">
                             <div class="col-sm-12 d-grid">
                                 <asp:Label ID = "OTPlbl" Text="Confirm email with the OTP sent" runat="server" ForeColor="Black" Visible="false" CssClass="mx-auto" />
@@ -299,7 +363,13 @@
         };
 
 
-        
+        function ValidateCheckBox(sender, args) {
+            if (document.getElementById("AckDelCheckbox").checked == true) {
+                args.IsValid = true;
+            } else {
+                args.IsValid = false;
+            }
+        }
 
         
     </script>
