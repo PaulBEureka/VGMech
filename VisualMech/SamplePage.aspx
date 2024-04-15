@@ -20,7 +20,7 @@
             <asp:Literal ID="gameMechLit" runat="server"></asp:Literal>
             <!-- Comment Section layout -->
 
-            <div class="row m-auto gameMech-layout-padding">
+            <div class="row m-auto gameMech-layout-padding mt-5">
                 <div class="container d-grid">
                     <div class="gameMech-outer-box m-auto d-grid">
                         <div class="container m-0 mx-auto d-grid">
@@ -175,7 +175,6 @@
         
 
         function onError(response) {
-            alert("An error occurred while posting comment.");
             toastr.options = {
                 "closeButton": false,
                 "debug": false,
@@ -205,6 +204,56 @@
             document.getElementById(parentString).value = null;
         }
 
+
+        function onSuccess2(response) {
+            PageMethods.get_Comments(onSuccess3);
+
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "10000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+
+            toastr['info']('Order of comment changed to: ' + response);
+        }
+
+
+
+        function onError2(response) {
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "10000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+
+            toastr['error']('An error occurred while changing comment order', 'Error');
+        }
+
+
         function innerReply_Click(parentCommentId, commentID) {
             var parentString = "replybox-" + commentID.toString();
             var message = document.getElementById(parentString).value; 
@@ -214,7 +263,7 @@
         }
 
         function handleItemClick(order) {
-            PageMethods.changeCommentOrder(order, onSuccess);
+            PageMethods.changeCommentOrder(order, onSuccess2, onError2);
         }
 
 

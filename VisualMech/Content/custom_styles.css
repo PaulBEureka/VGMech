@@ -1,24 +1,19 @@
 ﻿
 /*Master page styles Homepage*/
-.black-space {
-    min-height: 20px;
-    background-color: black;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-html {
-    scroll-behavior: smooth; 
-}
 
 .highlight {
     background-color: yellow;
 }
 
+
+.navbar-toggler {
+    background-color:white;
+}
+
 .top-gradient-red {
     background: rgb(91,7,21);
     background: linear-gradient(180deg, rgba(91,7,21,1) 0%, rgba(149,37,56,1) 53%, rgba(91,7,21,1) 100%);
-    min-height: 250px;
+    min-height: 350px;
     width: 100%;
     box-sizing: border-box;
 }
@@ -36,7 +31,7 @@ html {
 }
 
 .white-link:hover {
-    color: black;
+    color: gray;
 }
 
 .nav-cus{
@@ -44,12 +39,22 @@ html {
 }
 
 
+.nav-bg {
+    background-color: rgba(0, 0, 0, 0.48);
+}
+
 /*Home Page Styles*/
 
 .main-home-color {
     background-color: #c2c1c1;
 }
 
+
+.main_wrap {
+    margin-left: 0px;
+    margin-right: 0px;
+    overflow:hidden;
+}
 .carousel-img{
     height: 400px;
     border-color:black;
@@ -277,22 +282,15 @@ body {
 
 /*Footer Styles*/
 
-.footer-background {
-    min-height: 500px;
-    align-items:center;
-    text-align:center;
-}
-
 .footer_logo{
-    width:170px;
+    width:150px;
     height:150px;
-    margin-top: 60px;
 }
 
-
-.footer_container {
-    margin-top: 70px;
+.footer-background {
+    background-color: rgba(91, 7, 21, 1);
 }
+
 
 .logo-custom{
     color:white;
@@ -475,7 +473,7 @@ body {
 }
 
 .signup_padding{
-    padding-top: 10px;
+    padding-top: 30px;
 }
 
 .signin_rectangle {
@@ -499,7 +497,7 @@ body {
 }
 
 .signin_padding {
-    padding-top: 10px;
+    padding-top: 30px;
 }
 
 
@@ -683,7 +681,6 @@ body {
 
 /*UserPage Styles*/
 body {
-    margin-top: 20px;
     color: #1a202c;
     text-align: left;
     background-color: #e2e8f0;

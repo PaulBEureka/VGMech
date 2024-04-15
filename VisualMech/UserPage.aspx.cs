@@ -39,7 +39,31 @@ namespace VisualMech
             GetUserInfos();
             EditBtn.Click += EditBtn_Click;
 
-            
+            if (Session["Message"] != null && Session["CurrentUser"] != null)
+            {
+                string script = $@"
+                            toastr.options = {{
+                              ""closeButton"": false,
+                              ""debug"": false,
+                              ""newestOnTop"": false,
+                              ""progressBar"": false,
+                              ""positionClass"": ""toast-top-right"",
+                              ""preventDuplicates"": false,
+                              ""onclick"": null,
+                              ""showDuration"": ""300"",
+                              ""hideDuration"": ""1000"",
+                              ""timeOut"": ""10000"",
+                              ""extendedTimeOut"": ""1000"",
+                              ""showEasing"": ""swing"",
+                              ""hideEasing"": ""linear"",
+                              ""showMethod"": ""fadeIn"",
+                              ""hideMethod"": ""fadeOut""
+                            }}
+                            toastr['success']('{Session["Message"].ToString()}', 'Notification');
+                    ";
+                ClientScript.RegisterClientScriptBlock(this.GetType(), "MyScript", script, true);
+                Session["Message"] = null;
+            }
         }
 
         protected void UploadBtn_Click(object sender, EventArgs e)
@@ -64,6 +88,7 @@ namespace VisualMech
                     customFile.SaveAs(filePath);
 
                     string avatarPath = "Avatars/" + fileName;
+                    Session["Message"] = "User avatar successfully updated";
                     UpdateAvatarPathInDatabase(avatarPath);
                 }
                 catch (Exception ex)
@@ -102,6 +127,8 @@ namespace VisualMech
                     }
 
                     connection.Close();
+
+                    
 
                     Response.Redirect(Request.RawUrl);
 
@@ -510,30 +537,7 @@ namespace VisualMech
                     }
 
                     connection.Close();
-
-
-
-                    string script = $@"
-                            toastr.options = {{
-                              ""closeButton"": false,
-                              ""debug"": false,
-                              ""newestOnTop"": false,
-                              ""progressBar"": false,
-                              ""positionClass"": ""toast-top-right"",
-                              ""preventDuplicates"": false,
-                              ""onclick"": null,
-                              ""showDuration"": ""300"",
-                              ""hideDuration"": ""1000"",
-                              ""timeOut"": ""10000"",
-                              ""extendedTimeOut"": ""1000"",
-                              ""showEasing"": ""swing"",
-                              ""hideEasing"": ""linear"",
-                              ""showMethod"": ""fadeIn"",
-                              ""hideMethod"": ""fadeOut""
-                            }}
-                            toastr['success']('User data successfully updated');
-                        ";
-                    ClientScript.RegisterClientScriptBlock(this.GetType(), "MyScript", script, true);
+                    Session["Message"] = "User information successfully updated";
 
                     Response.Redirect(Request.RawUrl);
 
@@ -694,9 +698,7 @@ namespace VisualMech
 
                         connection.Close();
 
-                        PassUpdateLbl.Text = "Password Successfully Updated";
-                        PassUpdateLbl.Visible = true;
-                        UpdatePassBtn.Visible = false;
+                        Session["Message"] = "User password successfully updated";
 
                     }
                     catch (Exception ex)
@@ -788,7 +790,7 @@ namespace VisualMech
                     Session["sessionCaptcha"] = null;
                     Session["CurrentActivation"] = null;
                     Session["CurrentEmail"] = null;
-                    Session["Message"] = $@"Account Successfully Deleted";
+                    Session["Message"] = "Account Successfully Deleted";
 
                     Response.Redirect("HomePage.aspx");
                 }
