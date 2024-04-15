@@ -1,11 +1,14 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
+using System.Web.Script.Serialization;
 
 namespace VisualMech.Content.Classes
 {
-    public class Card
+    public class LearnCard
     {
         public string CardID { get; set; }
         public string ImageSource { get; set; }
@@ -105,8 +108,59 @@ namespace VisualMech.Content.Classes
             </div>";
         }
 
-
-
+        
 
     }
+
+
+    public class CardManager
+    {
+        private List<LearnCard> cards = new List<LearnCard>();
+        private readonly string filePath;
+        private JavaScriptSerializer serializer;
+
+        public CardManager(string fileName)
+        {
+            this.filePath = HttpContext.Current.Server.MapPath($"~/Jsons/{fileName}");
+            this.serializer = new JavaScriptSerializer();
+
+            if (!File.Exists(filePath))
+            {
+                // Handle the case where the file doesn't exist
+                throw new FileNotFoundException($"File '{filePath}' not found.");
+            }
+
+            LoadCards();
+        }
+
+        private void LoadCards()
+        {
+            if (File.Exists(filePath))
+            {
+                string json = File.ReadAllText(filePath);
+                cards = serializer.Deserialize<List<LearnCard>>(json);
+            }
+        }
+
+        private void SaveCards()
+        {
+            string json = serializer.Serialize(cards);
+            File.WriteAllText(filePath, json);
+        }
+
+        public void AddCard(LearnCard card)
+        {
+            cards.Add(card);
+            SaveCards();
+        }
+
+        public List<LearnCard> GetAllCards()
+        {
+            return cards;
+        }
+    }
+
+
+
+
 }

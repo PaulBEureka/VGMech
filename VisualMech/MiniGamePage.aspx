@@ -39,36 +39,12 @@
                         <div>
                             <hr / class="text-white">
                         </div>
-
-                        <!-- LEADERBOARD SECTION LAYOUT -->
-                        <!-- THINGS TO DO:
-                            1. Add dynamic display in leaderboards depending on the number of top players
-                            2. Connect to databse
-                            3. Perform queries to get top 5
-                            4. Query to update databse when new top player is recorded
-                            5. Perform method to update leaderboard onced done playing-->
                         <div class="container m-auto my-5 mt-0">
-
-
                             <div id="leaderboardSection">
-                                <!-- Existing comments will be dynamically added here -->
+                                <!-- Existing game record will be dynamically added here -->
                             </div>
-
-                            
-
-                            
-
-                            
-
-
-
-                            
-
                         </div>
             </div>
-
-
-
 
 
 

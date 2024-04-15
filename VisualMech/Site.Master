@@ -109,7 +109,7 @@
         <!-- Footer layout -->
 
         <footer class="footer-background">
-            <div class="container">
+            <div class="container pt-3">
 
                 <div class="row d-block text-center">
                     <div class="col">
@@ -137,9 +137,12 @@
                             <a class="fa-brands fa-facebook-messenger  fa-2xl my-1 brand_custom"></a>
                         </div>
                     </div>
+
+                    
+                <hr class="text-white pb-3" />
+
                 </div>
 
-                
                         
                 
                

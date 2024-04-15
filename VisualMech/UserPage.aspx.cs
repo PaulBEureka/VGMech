@@ -26,7 +26,7 @@ namespace VisualMech
         private string sessionEmail;
         private string sessionAboutMe;
         private List<string> visitedPagesList = new List<string>();
-        private List<Card> tempCardList;
+        private List<LearnCard> tempCardList;
         private int totalLearnPages;
         private int totalVisitedPages;
 
@@ -34,7 +34,7 @@ namespace VisualMech
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            tempCardList = Session["CardList"] as List<Card>;
+            tempCardList = Session["CardList"] as List<LearnCard>;
 
             GetUserInfos();
             EditBtn.Click += EditBtn_Click;
@@ -354,7 +354,7 @@ namespace VisualMech
                                 visitedPagesList.Add(mechanicTitle);
 
 
-                                foreach (Card card in tempCardList)
+                                foreach (LearnCard card in tempCardList)
                                 {
                                     if (card.Title.ToUpper() == mechanicTitle.ToUpper())
                                     {
@@ -383,13 +383,13 @@ namespace VisualMech
         {
             string content = "";
 
-            List<string> titleList = (Session["CardList"] as List<Card>).Select(card => card.Title).ToList();
+            List<string> titleList = (Session["CardList"] as List<LearnCard>).Select(card => card.Title).ToList();
 
             titleList = titleList.Except(visitedPagesList).ToList();
 
             foreach(string title in titleList)
             {
-                foreach (Card card in tempCardList)
+                foreach (LearnCard card in tempCardList)
                 {
                     if (card.Title.ToUpper() == title.ToUpper())
                     {

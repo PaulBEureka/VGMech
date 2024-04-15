@@ -23,7 +23,7 @@ namespace VisualMech
         public static List<Comment> comments = new List<Comment>();
         public static string cardTitle = "";
         private static string order = "Newest";
-        public static List<Card> cardList;
+        public static List<LearnCard> cardList;
 
         public static string Order
         {
@@ -34,11 +34,11 @@ namespace VisualMech
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            cardList = Session["CardList"] as List<Card>;
+            cardList = Session["CardList"] as List<LearnCard>;
             int cardInt = (int)Session["LearnId"];
 
             int temp = 0;
-            foreach (Card card in cardList)
+            foreach (LearnCard card in cardList)
             {
                 if (temp == cardInt)
                 {

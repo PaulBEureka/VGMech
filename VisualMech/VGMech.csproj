@@ -605,6 +605,7 @@
     <Content Include="UserPage.aspx" />
     <Content Include="Content\toastr.scss" />
     <Content Include="Content\toastr.less" />
+    <Content Include="Jsons\Learn.json" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -645,8 +646,8 @@
   <ItemGroup>
     <Compile Include="Classes\EmailSender.cs" />
     <Compile Include="Classes\InputValidator.cs" />
-    <Compile Include="MyHub.cs" />
-    <Compile Include="Classes\Card.cs" />
+    <Compile Include="Classes\MyHub.cs" />
+    <Compile Include="Classes\LearnCard.cs" />
     <Compile Include="Classes\Comment.cs" />
     <Compile Include="Classes\PasswordHasher.cs" />
     <Compile Include="Global.asax.cs">
@@ -740,7 +741,6 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup Condition="$(VisualStudioVersion) == '17.0'">
     <Reference Include="Microsoft.Data.Tools.Schema.Sql, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>$(SSDTPath)\Microsoft.Data.Tools.Schema.Sql.dll</HintPath>
