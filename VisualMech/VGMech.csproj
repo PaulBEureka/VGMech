@@ -606,6 +606,7 @@
     <Content Include="Content\toastr.scss" />
     <Content Include="Content\toastr.less" />
     <Content Include="Jsons\Learn.json" />
+    <Content Include="Jsons\MiniGame.json" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -644,8 +645,10 @@
     <Content Include="Site.Mobile.Master" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\CardManager.cs" />
     <Compile Include="Classes\EmailSender.cs" />
     <Compile Include="Classes\InputValidator.cs" />
+    <Compile Include="Classes\MiniGameCard.cs" />
     <Compile Include="Classes\MyHub.cs" />
     <Compile Include="Classes\LearnCard.cs" />
     <Compile Include="Classes\Comment.cs" />

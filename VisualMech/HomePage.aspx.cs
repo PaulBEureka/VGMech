@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using VisualMech.Classes;
 using VisualMech.Content.Classes;
 
 namespace VisualMech
@@ -12,25 +13,38 @@ namespace VisualMech
     public partial class _Default : Page
     {
         
-        private string cardString = "";
-        private CardManager cardManager = new CardManager("Learn.json");
+        private string learnCardString = "", miniGameCardString = "";
+        private readonly CardManager<LearnCard> learnCardManager = new CardManager<LearnCard>("Learn.json");
+        private readonly CardManager<MiniGameCard> miniGameCardManager = new CardManager<MiniGameCard>("MiniGame.json");
+        private static List<LearnCard> learnCardList;
+        private static List<MiniGameCard> miniGameCardList;
 
 
         protected void Page_Load(object sender, EventArgs e)
         {
 
-            List<LearnCard> cardList = cardManager.GetAllCards();
+            learnCardList = learnCardManager.GetAllCards();
+            miniGameCardList = miniGameCardManager.GetAllCards();
 
-            foreach (LearnCard card in cardList)
+            foreach (LearnCard card in learnCardList)
             {
-                cardString += card.GetCardHtml();
+                learnCardString += card.GetCardHtml();
             }
 
-            Session["CardList"] = cardList;
+            foreach(MiniGameCard card in miniGameCardList)
+            {
+                miniGameCardString += card.GetCardHtml();
+            }
+
+
+            Session["CardList"] = learnCardList;
+            Session["MiniGameCardList"] = miniGameCardList;
 
             if (!IsPostBack)
             {
-                litCardHtml.Text = cardString;
+                litCardHtml.Text = learnCardString;
+                litCardMiniGameHtml.Text = miniGameCardString;
+
                 if (Session["Message"] != null && Session["CurrentUser"] == null) 
                 {
                     string script = $@"
@@ -82,6 +96,10 @@ namespace VisualMech
                     Session["Message"] = null;
                 }
             }
+        
+        
+            
+        
         }
 
 
@@ -95,6 +113,18 @@ namespace VisualMech
                 context.Session["LearnId"] = cardId;
             }
         }
+
+        [WebMethod]
+        public static void ProcessIT2(int cardId)
+        {
+            HttpContext context = HttpContext.Current;
+
+            if (context != null)
+            {
+                context.Session["MiniGameId"] = cardId;
+            }
+        }
+
     }
 
 }

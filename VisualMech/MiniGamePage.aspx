@@ -14,40 +14,24 @@
     <main>
         <section class="gameMech-bgColor d-grid">
             <!-- MINI GAME LAYOUT -->
-            <div class="row align-self-center mini_game_box m-auto my-5">
-                        <div class="row minigame_title text-center d-grid m-auto">
-                            <p class="text-white display-5 m-auto">BLOCK BREAKER</p>
-                        </div>
-                        
-                        <% if(Session["Current_ID"] != null) { %>
-                            <div class="row  center_custom m-auto my-5 mt-0" >
-                                <iframe src="http://localhost/unity/WebGl Build/index.html?current_id=<%= Session["Current_ID"] %>" class="mini_game_inner_box" scrolling="no"></iframe>
-                            </div>
-                        <% } else { %>
-                            <div class="row  center_custom m-auto my-5 mt-0 ">
-                                <button type="button" id="post_disbled" class="comment_button my-2 bg-danger w-100" onclick="sign_in_comment()">Sign in to play mini game :></button>
-                            </div>
-                        <% } %>
-                                    </div>
+            <asp:Literal ID="MiniGameLit" runat="server"></asp:Literal>
+            
 
             
             
             <div class="row align-self-center mini_game_box m-auto my-5">
-                        <div class="row minigame_title text-center d-grid m-auto">
-                            <p class="text-white display-5 m-auto">LEADERBOARD</p>
-                        </div>
-                        <div>
-                            <hr / class="text-white">
-                        </div>
-                        <div class="container m-auto my-5 mt-0">
-                            <div id="leaderboardSection">
-                                <!-- Existing game record will be dynamically added here -->
-                            </div>
-                        </div>
+                <div class="row minigame_title text-center d-grid m-auto">
+                    <p class="text-white display-5 m-auto">LEADERBOARD</p>
+                </div>
+                <div>
+                    <hr / class="text-white">
+                </div>
+                <div class="container m-auto my-5 mt-0">
+                    <div id="leaderboardSection">
+                        <!-- Existing game record will be dynamically added here -->
+                    </div>
+                </div>
             </div>
-
-
-
 
         </section>
 
@@ -56,38 +40,47 @@
     </main>
 
     <script>
-        // Add this code to your existing client-side JavaScript
-        $(function () {
-            var chat = $.connection.myHub;
+        
+        var chat = $.connection.myHub;
 
-            // Function to update leaderboards
-            function updateLeaderboards() {
-                chat.server.updateLeaderboards()
-                    .done(function () {
-                        console.log("Leaderboards updated successfully.");
-                    })
-                    .fail(function (error) {
-                        console.error("Error updating leaderboards: " + error);
-                    });
+        function updateLeaderboards(cardTitle) {
+            chat.server.updateLeaderboards(cardTitle)
+                .done(function () {
+                    console.log("Leaderboards updated successfully.");
+                })
+                .fail(function (error) {
+                    console.error("Error updating leaderboards: " + error);
+                });
+        }
+
+        chat.client.updateLeaderboards = function (leaderboardHTML) {
+            $('#leaderboardSection').html(leaderboardHTML[0]);
+            var ranking = leaderboardHTML[1];
+         
+            if (ranking != null) {
+                eval(ranking);
             }
+            
 
-            // Handle the updateLeaderboards message from the server
-            chat.client.updateLeaderboards = function (leaderboardHTML) {
-                // Update the leaderboard on the webpage
-                $('#leaderboardSection').html(leaderboardHTML);
-                console.log("Leaderboards updated.");
-            };
+            PageMethods.UpdateSessionInfo(leaderboardHTML[2], leaderboardHTML[3]);
+        };
 
-            $.connection.hub.start().done(function () {
-                console.log("SignalR connected.");
+        $.connection.hub.start().done(function () {
+            console.log("SignalR connected.");
 
-                // Initial call to update leaderboards
-                updateLeaderboards();
+            PageMethods.Get_Leaderboards(onSuccess4);
 
-                // Set interval to call updateLeaderboards every 10 seconds
-                setInterval(updateLeaderboards, 5000);
-            });
+            setInterval(function () {
+                PageMethods.Get_Leaderboards(onSuccess4);
+            }, 6000);
+
         });
+
+        function onSuccess4(response) {
+            updateLeaderboards(response);
+            
+        }
+        
 
 
         

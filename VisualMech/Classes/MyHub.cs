@@ -15,43 +15,49 @@ using MySql.Data.Types;
 using System.Text.RegularExpressions;
 using System.Data.SqlTypes;
 using System.Xml.Linq;
+using System.Web.UI;
+using System.Windows.Forms;
 
 namespace VisualMech
 {
     public class MyHub : Hub
     {
         private string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
+
         
-        string[] info;
-
-
-
-        public async Task UpdateLeaderboards()
+        public async Task UpdateLeaderboards(string[] miniGameInfo)
         {
-            string leaderboardsData = await RetrieveLeaderboardsDataAsync();
+            string[] leaderboardsData = await RetrieveLeaderboardsDataAsync(miniGameInfo);
             Clients.All.updateLeaderboards(leaderboardsData);
-            
         }
 
 
         public async Task UpdateComments(string[] stringArr)
         {
-            info = stringArr;
-            string[] commentsData = await RetrieveCommentsData();
+            string[] commentsData = await RetrieveCommentsData(stringArr);
             Clients.All.sendComments(commentsData);
         }
         
 
-        private async Task<string> RetrieveLeaderboardsDataAsync()
+        private async Task<string[]> RetrieveLeaderboardsDataAsync(string[] miniGameInfo)
         {
             string allLeaderboardsString = "";
+            string congratsScript = null;
+            string miniGameTitle = miniGameInfo[0];
+            string sessionPlayerName = miniGameInfo[1];
+            string currentRank = miniGameInfo[2];
+            string currrentScore = miniGameInfo[3];
+
+            string returnRank = null;
+            string returnScore = null;
+
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 string query = $@"SELECT *, user.username, avatar.avatar_path FROM game_record 
                                INNER JOIN user ON game_record.user_id = user.user_id 
                                INNER JOIN avatar ON user.user_id = avatar.user_id
-                               WHERE game_record.game_title = 'Block Breaker' ORDER BY game_record.game_score DESC LIMIT 5";
+                               WHERE game_record.game_title = '{miniGameTitle}' ORDER BY game_record.game_score DESC LIMIT 5";
 
                 using (MySqlCommand command = new MySqlCommand(query, connection))
                 {
@@ -93,19 +99,87 @@ namespace VisualMech
                                                 <div>
                                                     <hr / class=""text-white"">
                                                 </div>";
-                            rankingNum++;
                             
+                            
+                            
+
+                            if (username == sessionPlayerName) // Record in the database is the same with session user/player
+                            {
+                                int newScore = int.Parse(score);
+                                int currentScoreInt = int.Parse(currrentScore);
+                                int currentRankInt = int.Parse(currentRank);
+
+                                if (currrentScore != "0")
+                                {
+                                    if (newScore > currentScoreInt)
+                                    {
+                                        congratsScript = $@"
+                                            toastr.options = {{
+                                              ""closeButton"": false,
+                                              ""debug"": false,
+                                              ""newestOnTop"": false,
+                                              ""progressBar"": false,
+                                              ""positionClass"": ""toast-top-right"",
+                                              ""preventDuplicates"": false,
+                                              ""onclick"": null,
+                                              ""showDuration"": ""300"",
+                                              ""hideDuration"": ""1000"",
+                                              ""timeOut"": ""10000"",
+                                              ""extendedTimeOut"": ""1000"",
+                                              ""showEasing"": ""swing"",
+                                              ""hideEasing"": ""linear"",
+                                              ""showMethod"": ""fadeIn"",
+                                              ""hideMethod"": ""fadeOut""
+                                            }}
+                                            toastr['success']('You made a new personal highscore in {miniGameTitle}!', 'Congratulations, {username}!');
+                                    ";
+                                    }
+                                    else if (rankingNum < currentRankInt)
+                                    {
+                                        congratsScript = $@"
+                                            toastr.options = {{
+                                              ""closeButton"": false,
+                                              ""debug"": false,
+                                              ""newestOnTop"": false,
+                                              ""progressBar"": false,
+                                              ""positionClass"": ""toast-top-right"",
+                                              ""preventDuplicates"": false,
+                                              ""onclick"": null,
+                                              ""showDuration"": ""300"",
+                                              ""hideDuration"": ""1000"",
+                                              ""timeOut"": ""10000"",
+                                              ""extendedTimeOut"": ""1000"",
+                                              ""showEasing"": ""swing"",
+                                              ""hideEasing"": ""linear"",
+                                              ""showMethod"": ""fadeIn"",
+                                              ""hideMethod"": ""fadeOut""
+                                            }}
+                                            toastr['success']('Your rank in {miniGameTitle} increased!', 'Congratulations, {username}, you rank #{rankingNum}!');
+                                    ";
+                                    }
+
+                                }
+
+
+                                returnScore = score;
+                                returnRank = rankingNum.ToString();
+                            }
+
+                            
+
+                            rankingNum++;
                         }
                     }
                 }
             }
 
-            return allLeaderboardsString;
+            
+            return new string[4] { allLeaderboardsString, congratsScript, returnRank, returnScore };
         }
 
 
 
-        private async Task<string[]> RetrieveCommentsData()
+        private async Task<string[]> RetrieveCommentsData(string[] info)
         {
             List<Comment> commentList = new List<Comment>();
 

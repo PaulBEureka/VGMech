@@ -19,11 +19,10 @@ namespace VisualMech
 {
     public partial class WebForm1 : System.Web.UI.Page
     {
-        public static string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
-        public static List<Comment> comments = new List<Comment>();
-        public static string cardTitle = "";
+        private static string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
+        private static string cardTitle = "";
         private static string order = "Newest";
-        public static List<LearnCard> cardList;
+        private static List<LearnCard> cardList;
 
         public static string Order
         {
@@ -37,18 +36,11 @@ namespace VisualMech
             cardList = Session["CardList"] as List<LearnCard>;
             int cardInt = (int)Session["LearnId"];
 
-            int temp = 0;
-            foreach (LearnCard card in cardList)
-            {
-                if (temp == cardInt)
-                {
-                    cardTitle = card.Title;
-                    gameMechLit.Text = card.GetLearnHtml();
-                }
-                temp++;
-            }
-        
-            if(Session["Current_ID"] != null)
+            LearnCard selectedCard = cardList.FirstOrDefault(card => card.CardID == cardInt.ToString());
+            cardTitle = selectedCard.Title;
+            gameMechLit.Text = selectedCard.GetLearnHtml();
+
+            if (Session["Current_ID"] != null)
             {
                 recordVisitedPage();
             }

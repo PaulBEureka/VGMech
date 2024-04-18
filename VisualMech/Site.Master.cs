@@ -18,11 +18,7 @@ namespace VisualMech
         {
 
 
-            Session["CurrentUser"] = null;
-            Session["Current_ID"] = null;
-            Session["sessionCaptcha"] = null;
-            Session["CurrentActivation"] = null;
-            Session["CurrentEmail"] = null;
+            Session.Clear();
 
             Session["Message"] = "User Successfully logged out";
             Response.Redirect("HomePage.aspx");

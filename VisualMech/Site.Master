@@ -50,7 +50,7 @@
             <div class="container justify-content-center">
                 <img class="top-logo" src="Images/VGM_logo.png" alt=" ">
                 <div>
-                    <h1 class="display-3 fw-bolder text-light">VGMech</h1>
+                    <h1 class="display-3 fw-bolder text-light text-center">VGMech</h1>
                     <p class="text-light px-0 text-center m-0 fw-bold">Learn Game Mechanics Visually!</p>
                 </div>
             </div>

@@ -19,7 +19,8 @@
 }
 
 .top-logo {
-    width: 10%;
+    width: 120px;
+    height:120px
 }
 
 .margin-right-space {
@@ -235,9 +236,11 @@ body {
     
 }
 
-.square-bg {
-    width: 500px;
-    height: 500px; 
+
+
+.minigame_card {
+    width: 400px;
+    height: 400px; 
     background-color: white; 
     padding-bottom: 3em;
     padding-top:3em;
