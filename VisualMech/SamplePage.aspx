@@ -2,7 +2,6 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
     <webopt:bundlereference runat="server" path="~/Content/css" />
-    <link rel="stylesheet" href="/Content/custom_styles.css">
     <script src="Scripts/jquery-3.4.1.js"></script>
     <script src="Scripts/jquery.signalR-2.4.3.js"></script>
     <script src="signalr/hubs"></script>
@@ -21,7 +20,7 @@
             <asp:Literal ID="gameMechLit" runat="server"></asp:Literal>
             <!-- Comment Section layout -->
 
-            <div class="row m-auto gameMech-layout-padding">
+            <div class="row m-auto gameMech-layout-padding mt-5">
                 <div class="container d-grid">
                     <div class="gameMech-outer-box m-auto d-grid">
                         <div class="container m-0 mx-auto d-grid">
@@ -105,53 +104,168 @@
     </main>
 
     <script>
-        $(function () {
-            var chat = $.connection.myHub;
+        
+        var chat = $.connection.myHub;
 
-            // Function to update comments
-            function updateComments(cardTitle) {
-                chat.server.updateComments(cardTitle)
-                    .done(function () {
-                        console.log("Comments updated successfully.");
-                    })
-                    .fail(function (error) {
-                        console.error("Error updating comments: " + error);
-                    });
-            }
+        // Function to update comments
+        function updateComments(cardTitle) {
+            chat.server.updateComments(cardTitle)
+                .done(function () {
+                    console.log("Comments updated successfully.");
+                })
+                .fail(function (error) {
+                    console.error("Error updating comments: " + error);
+                });
+        }
 
-            // Handle the updateComments message from the server
-            chat.client.updateComments = function (commentHTML) {
-                var firstComment = commentHTML[0]; 
-                var secondComment = commentHTML[1]; 
+        // Handle the updateComments message from the server
+        chat.client.sendComments = function (commentHTML) {
+            var firstComment = commentHTML[0]; 
+            var secondComment = commentHTML[1]; 
 
-                // Update the comments on the webpage
-                $('#commentSection').html(commentHTML[0]);
-                $('#commentCountDiv').html(commentHTML[1]);
-                $('#sortByDiv').html(commentHTML[2]);
-            };
+            // Update the comments on the webpage
+            $('#commentSection').html(commentHTML[0]);
+            $('#commentCountDiv').html(commentHTML[1]);
+            $('#sortByDiv').html(commentHTML[2]);
+        };
 
-            $.connection.hub.start().done(function () {
-                console.log("SignalR connected.");
+        $.connection.hub.start().done(function () {
+            console.log("SignalR connected.");
 
-                PageMethods.get_Comments(onSuccess3);
+            PageMethods.get_Comments(onSuccess3);
 
-            });
-
-            function onSuccess3(response) {
-                updateComments(response);
-
-            }
-
-            
         });
 
-        function handleItemClick(order) {
-            PageMethods.changeCommentOrder(order, onSuccess4);
+        function onSuccess3(response) {
+            updateComments(response);
         }
 
-        function onSuccess4(response) {
-            window.location.href = window.location.pathname; // Redirect to the same page
+
+        function post_Click() {
+            var message = document.getElementById('commentbox').value; 
+
+            PageMethods.post_Click(message, onSuccess, onError);
+            document.getElementById('commentbox').value = null;
         }
+
+        function onSuccess(response) {
+            PageMethods.get_Comments(onSuccess3);
+
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "10000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+
+            toastr['success']('Your comment was posted successfully', 'Comment Posted');
+        }
+        
+        
+
+        function onError(response) {
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "10000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+
+            toastr['error']('An error occurred while posting your comment', 'Error');
+        }
+
+        function reply_Click(parentCommentId) {
+            var parentString = "replybox-" + parentCommentId.toString();
+            var message = document.getElementById(parentString).value; 
+
+            PageMethods.reply_Click(parentCommentId, message, onSuccess, onError);
+            document.getElementById(parentString).value = null;
+        }
+
+
+        function onSuccess2(response) {
+            PageMethods.get_Comments(onSuccess3);
+
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "10000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+
+            toastr['info']('Order of comment changed to: ' + response);
+        }
+
+
+
+        function onError2(response) {
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "10000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+
+            toastr['error']('An error occurred while changing comment order', 'Error');
+        }
+
+
+        function innerReply_Click(parentCommentId, commentID) {
+            var parentString = "replybox-" + commentID.toString();
+            var message = document.getElementById(parentString).value; 
+
+            PageMethods.innerReply_Click(parentCommentId, message, onSuccess, onError);
+            document.getElementById(parentString).value = null;
+        }
+
+        function handleItemClick(order) {
+            PageMethods.changeCommentOrder(order, onSuccess2, onError2);
+        }
+
 
         function toggleReplies(commentId) {
             var button = document.getElementById("toggle-replies-btn-" + commentId);

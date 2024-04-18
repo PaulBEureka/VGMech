@@ -3,7 +3,6 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
     <webopt:bundlereference runat="server" path="~/Content/css" />
-    <link rel="stylesheet" href="/Content/custom_styles.css">
     <script src="Scripts/jquery-3.4.1.js"></script>
     <script src="Scripts/jquery.signalR-2.4.3.js"></script>
     <script src="signalr/hubs"></script>
@@ -14,6 +13,7 @@
     
     <script src="/Content/custom.js"></script>
     <main id="content">
+
 
         <div class="main-home-color">
             <!-- Home page layout -->
@@ -88,21 +88,10 @@
             </div>
             
             <div class="container">
-                <div class="row my-3 py-5 justify-content-center text-center ">
-                    <div class="col-md-6 justify-content-center text-center mx-md-5 square-bg my-5 no_bg">
-                        <p class="fw-bolder h3 text-light">BLOCK BREAKER</p>
-                        <a class="btn w-100 h-100 rcorners2" href="MiniGamePage.aspx" role="button">
-                            <img src="Images/Mini_Game1_thumb.png" alt="buttonpng" class="img-fluid w-100 h-100 rounded_corners" />
-                        </a>
-
-                    </div>
-                    <div class="col-md-6 justify-content-center text-center mx-md-5 square-bg my-5 no_bg">
-                        <p class="fw-bolder h3 text-light">BLOCK BREAKER</p>
-                        <a class="btn w-100 h-100 rcorners2" href="MiniGamePage.aspx" role="button">
-                            <img src="Images/Mini_Game1_thumb.png" alt="buttonpng" class="img-fluid w-100 h-100 rounded_corners" />
-                        </a>
-
-                    </div>
+                <div class="row py-5 justify-content-center text-center ">
+                    <asp:Literal ID="litCardMiniGameHtml" runat="server"></asp:Literal>
+                    
+                    
                 </div>
             </div>
 
@@ -172,22 +161,35 @@
 
     <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', function () {
-            var cards = document.querySelectorAll('.card');
-            cards.forEach(function (card) {
+            var learnCards = document.querySelectorAll('.card');
+            learnCards.forEach(function (card) {
                 card.addEventListener('click', function () {
                     var cardId = this.getAttribute('data-card-id');
-                    console.log("Card ID: " + cardId);
                     HandleIT(cardId);
 
                 });
             });
+
+            var miniGameCards = document.querySelectorAll('.minigame_card');
+            miniGameCards.forEach(function (cardmini) {
+                cardmini.addEventListener('click', function () {
+                    var cardId = this.getAttribute('data-card-id');
+                    HandleIT2(cardId);
+
+                });
+            });
+
+
         });
 
 
         function HandleIT(cardId) {
             PageMethods.ProcessIT(cardId);
-
         }  
+
+        function HandleIT2(cardId) {
+            PageMethods.ProcessIT2(cardId);
+        } 
 
     </script>
 

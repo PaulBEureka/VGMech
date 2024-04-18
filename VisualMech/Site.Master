@@ -7,6 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%: Page.Title %> VGMech</title>
+    
 
     <script src="Scripts/jquery-3.4.1.js"></script>
     <script src="Scripts/jquery.signalR-2.4.3.js"></script>
@@ -14,18 +15,15 @@
     
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
 
-    
+   
 
     <webopt:bundlereference runat="server" path="~/Content/css" />
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-    <link rel="stylesheet" href="/Content/custom_styles.css">
 
-    
     
     
     <script src="/Content/custom.js"></script>
-
-    
+     <script src="/Scripts/toastr.js"></script>
 </head>
 <body >
     <form runat="server">
@@ -48,43 +46,47 @@
             </Scripts>
         </asp:ScriptManager>
 
-        <div class="black-space"></div>
-        <div class="top-gradient-red navbar nav-width">
+        <div  class="top-gradient-red navbar nav-width">
             <div class="container justify-content-center">
                 <img class="top-logo" src="Images/VGM_logo.png" alt=" ">
                 <div>
-                    <h1 class="display-3 fw-bolder text-light">VGMech</h1>
+                    <h1 class="display-3 fw-bolder text-light text-center">VGMech</h1>
                     <p class="text-light px-0 text-center m-0 fw-bold">Learn Game Mechanics Visually!</p>
                 </div>
             </div>
        </div>
+        
 
-        <nav class="navbar navbar-expand-lg bg-danger fixed-top navbar-dark">
+        <nav class="navbar navbar-expand-lg nav-bg fixed-top">
             <div class="container-fluid mx-5">
                 <button class="navbar-toggler"type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls = "navbarTogglerDemo02" aria-expanded = "false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse justify-content-between" id="navbarTogglerDemo02">
+                <div class="collapse navbar-collapse justify-content-between " id="navbarTogglerDemo02">
                     <ul class="navbar-nav mb-3 mb-lg-0">
                         <li class="nav-item mx-3"><a class="nav-link white-link" href="HomePage.aspx#homepage">Home</a></li>
                         <li class="nav-item mx-3"><a class="nav-link white-link" href="HomePage.aspx#game cards">Learn</a></li>
                         <li class="nav-item mx-3"><a class="nav-link white-link" href="HomePage.aspx#mini games">Compete</a></li>
                         <li class="nav-item mx-3"><a class="nav-link white-link" href="HomePage.aspx#about us">About Us</a></li>
                     </ul>
-                    <% if (Session["CurrentUser"] == null) { %>
-                    <ul class="navbar-nav">
-                        <li class="nav-item"><a class="nav-link white-link" href="SignInPage.aspx">Sign in | Sign up</a></li>
-                    </ul>
+                    
+                    <% if (Session["CurrentUser"] != null) { %>
+                        <div class="dropdown">
+                            <a class="text-white dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                                <%# Session["CurrentUser"] ?? "Default Name" %>
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <li><asp:Button runat="server" class="dropdown-item" PostBackUrl="~/UserPage.aspx" Text="User Profile" CausesValidation="false"></asp:Button></li>
+                                <li><asp:Button runat="server" class="dropdown-item" Text="Log Out" OnClick="btnCurrentUser_Click" CausesValidation="false"></asp:Button></li>
+                                
+                            </ul>
+                        </div>
                     <% } else { %>
-                    <div class="dropdown">
-                        <a class="text-white dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                            <%# Session["CurrentUser"] ?? "Default Name" %>
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <li><asp:Button runat="server" class="dropdown-item" href="#" Text="Log Out" OnClick="btnCurrentUser_Click" CausesValidation="false"></asp:Button></li>
+                        <ul class="navbar-nav">
+                            <li class="nav-item"><a class="nav-link white-link" href="SignInPage.aspx">Sign in | Sign up</a></li>
                         </ul>
-                    </div>
                     <% } %>
+
                 </div>
             </div>
         </nav>
@@ -98,7 +100,7 @@
 
 
 
-        <div>
+        <div class="main_wrap">
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
             
@@ -106,45 +108,49 @@
 
         <!-- Footer layout -->
 
-        <footer class="footer-background bg-danger">
-            <div class="row d-grid">
-                
-                    <div class="col-sm-9 m-auto center_custom m-0">
-                        <div class="row center_custom">
-                            <img class="footer_logo" src="Images/VGM_logo.png" alt="Logo">
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="col-sm-9 m-auto">
-                        <div class="row">
-                            <p class="text-light footer_container fw-bolder">Join our community!</p>
-                        </div>
-                        <div class="row ">
-                            <div class="col">
-                                
-                                <a class="fa-brands fa-telegram fa-2xl my-1 brand_custom" ></a>
-                                
-                                <a class="fa-brands fa-discord fa-2xl my-1 brand_custom"></a>
-                            </div>                            
-                        </div>
-                        <div class="row">
-                            <p class="text-light footer_container fw-bolder">Stay tuned</p>
-                        </div>
-                        <div class="row ">
-                            <div class="col">
-                                <a class="fa-brands fa-facebook fa-2xl my-1 brand_custom"></a>
-                                <a class="fa-brands fa-twitter  fa-2xl my-1 brand_custom"></a>
-                                <a class="fa-brands fa-facebook-messenger  fa-2xl my-1 brand_custom"></a>
-                            </div>                            
-                        </div>
-                        
-                    </div>
-                
+        <footer class="footer-background">
+            <div class="container pt-3">
 
+                <div class="row d-block text-center">
+                    <div class="col">
+                        <img class="footer_logo" src="Images/VGM_logo.png" alt="Logo">
+                    </div>
+                </div>
+
+                <div class="row text-center" >
+                    <div class="col-6">
+                        <div class="row align-content-center justify-content-center">
+                            <p class="text-light fw-bolder">Join our community!</p>
+                        </div>
+                        <div class="row align-content-center justify-content-center">
+                            <a class="fa-brands fa-telegram fa-2xl my-1 brand_custom" ></a>
+                            <a class="fa-brands fa-discord fa-2xl my-1 brand_custom"></a>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="row align-content-center justify-content-center">
+                            <p class="text-light fw-bolder">Stay tuned</p>
+                        </div>
+                        <div class="row align-content-center justify-content-center">
+                            <a class="fa-brands fa-facebook fa-2xl my-1 brand_custom"></a>
+                            <a class="fa-brands fa-twitter  fa-2xl my-1 brand_custom"></a>
+                            <a class="fa-brands fa-facebook-messenger  fa-2xl my-1 brand_custom"></a>
+                        </div>
+                    </div>
+
+                    
+                <hr class="text-white pb-3" />
+
+                </div>
+
+                        
+                
+               
             </div>
         </footer>
     </form>
+
+
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/Scripts/bootstrap.js") %>
     </asp:PlaceHolder>

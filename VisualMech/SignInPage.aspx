@@ -3,16 +3,12 @@
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
     <webopt:bundlereference runat="server" path="~/Content/css" />
     
-    <link rel="stylesheet" href="/Content/custom_styles.css">
-    
-    
-    
     <script src="/Content/custom.js"></script>
     <main>
-
-
-        <div class="row align-self-center my-5 signup_background signup_rectangle_2 d-grid m-auto">
-            <div class="row align-self-center signup_rectangle m-auto signup_padding">
+        
+       
+        <div class="row align-self-center mx-auto signin_background signin_rectangle_2 d-grid my-5">
+            <div class="row align-self-center signin_rectangle m-auto signin_padding">
                     <div class="d-grid">                        
                         <img src="Images/VGM_logo.png" alt="imgpng" class="img-fluid m-auto" style="width:100px; height:100px" />
                         <h5 style="color: white; padding-bottom:10px; text-align:left">Username: <asp:TextBox ID="Username_tb" runat="server" Width="348px"></asp:TextBox>

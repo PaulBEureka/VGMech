@@ -15,42 +15,49 @@ using MySql.Data.Types;
 using System.Text.RegularExpressions;
 using System.Data.SqlTypes;
 using System.Xml.Linq;
+using System.Web.UI;
+using System.Windows.Forms;
 
 namespace VisualMech
 {
     public class MyHub : Hub
     {
         private string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
+
         
-        string[] info;
-
-
-
-        public async Task UpdateLeaderboards()
+        public async Task UpdateLeaderboards(string[] miniGameInfo)
         {
-            string leaderboardsData = await RetrieveLeaderboardsDataAsync();
+            string[] leaderboardsData = await RetrieveLeaderboardsDataAsync(miniGameInfo);
             Clients.All.updateLeaderboards(leaderboardsData);
         }
 
 
         public async Task UpdateComments(string[] stringArr)
         {
-            info = stringArr;
-            string[] commentsData = await RetrieveCommentsData();
-            Clients.All.updateComments(commentsData);
+            string[] commentsData = await RetrieveCommentsData(stringArr);
+            Clients.All.sendComments(commentsData);
         }
-
         
 
-        private async Task<string> RetrieveLeaderboardsDataAsync()
+        private async Task<string[]> RetrieveLeaderboardsDataAsync(string[] miniGameInfo)
         {
             string allLeaderboardsString = "";
+            string congratsScript = null;
+            string miniGameTitle = miniGameInfo[0];
+            string sessionPlayerName = miniGameInfo[1];
+            string currentRank = miniGameInfo[2];
+            string currrentScore = miniGameInfo[3];
+
+            string returnRank = null;
+            string returnScore = null;
+
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                string query = "SELECT *, UserTable.username FROM GameRecordTable " +
-                               "INNER JOIN UserTable ON GameRecordTable.user_id = UserTable.user_id " +
-                               "WHERE game_title = 'Block Breaker' ORDER BY game_score DESC LIMIT 5;";
+                string query = $@"SELECT *, user.username, avatar.avatar_path FROM game_record 
+                               INNER JOIN user ON game_record.user_id = user.user_id 
+                               INNER JOIN avatar ON user.user_id = avatar.user_id
+                               WHERE game_record.game_title = '{miniGameTitle}' ORDER BY game_record.game_score DESC LIMIT 5";
 
                 using (MySqlCommand command = new MySqlCommand(query, connection))
                 {
@@ -65,49 +72,114 @@ namespace VisualMech
                             string username = reader["username"].ToString();
                             string ranking_date = reader["ranking_date"].ToString();
                             string score = reader["game_score"].ToString();
+                            string avatarPath = reader["avatar_path"].ToString();
+                            string dateString = DateTime.Parse(ranking_date).ToString("M/d/yyyy");
 
-                            DateTime dateTime;
-                            if (DateTime.TryParse(ranking_date, out dateTime))
-                            {
-                                string dateString = dateTime.ToString("M/d/yyyy");
-
-                                allLeaderboardsString += $@"<div class=""row mt-3"" >
-                                                        <div class=""col-md-1 d-grid"">
-                                                            <p class=""fw-bolder text-white fs-3 my-3"">{rankingNum.ToString()}.</p>
-                                                        </div>
-                                                        <div class=""col-md-1 image-container"">
-                                                            <img src=""Images/person_icon_white.png"" alt="""" class=""rounded-circle"" width=""60"" height=""60"">
-                                                        </div>
-                                                        <div class=""col-md-9 leaderboard_white_rec_round"">
-                                                            <div class=""row"">
-                                                                <div class = ""col-4 my-3"">
-                                                                    <p class=""fw-bolder text-start"">{username.ToUpper()}</p>
-                                                                </div>
-                                                                <div class ="" col-4 my-3"">
-                                                                    <p class=""fw-bolder text-end"">{dateString}</p>
-                                                                </div>
-                                                                <div class ="" col-4 my-3"">
-                                                                    <p class=""fw-bolder text-end"">{score} pts</p>
-                                                                </div>
+                            allLeaderboardsString += $@"<div class=""row mt-3"" >
+                                                    <div class=""col-md-1 d-grid"">
+                                                        <p class=""fw-bolder text-white fs-3 my-3"">{rankingNum.ToString()}.</p>
+                                                    </div>
+                                                    <div class=""col-md-1 image-container"">
+                                                        <img src=""{avatarPath}"" alt="""" class=""rounded-circle"" width=""60"" height=""60"">
+                                                    </div>
+                                                    <div class=""col-md-9 leaderboard_white_rec_round"">
+                                                        <div class=""row"">
+                                                            <div class = ""col-4 my-3"">
+                                                                <p class=""fw-bolder text-start"">{username.ToUpper()}</p>
+                                                            </div>
+                                                            <div class ="" col-4 my-3"">
+                                                                <p class=""fw-bolder text-end"">{dateString}</p>
+                                                            </div>
+                                                            <div class ="" col-4 my-3"">
+                                                                <p class=""fw-bolder text-end"">{score} pts</p>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div>
-                                                        <hr / class=""text-white"">
-                                                    </div>";
-                                rankingNum++;
+                                                </div>
+                                                <div>
+                                                    <hr / class=""text-white"">
+                                                </div>";
+                            
+                            
+                            
+
+                            if (username == sessionPlayerName) // Record in the database is the same with session user/player
+                            {
+                                int newScore = int.Parse(score);
+                                int currentScoreInt = int.Parse(currrentScore);
+                                int currentRankInt = int.Parse(currentRank);
+
+                                if (currrentScore != "0")
+                                {
+                                    if (newScore > currentScoreInt)
+                                    {
+                                        congratsScript = $@"
+                                            toastr.options = {{
+                                              ""closeButton"": false,
+                                              ""debug"": false,
+                                              ""newestOnTop"": false,
+                                              ""progressBar"": false,
+                                              ""positionClass"": ""toast-top-right"",
+                                              ""preventDuplicates"": false,
+                                              ""onclick"": null,
+                                              ""showDuration"": ""300"",
+                                              ""hideDuration"": ""1000"",
+                                              ""timeOut"": ""10000"",
+                                              ""extendedTimeOut"": ""1000"",
+                                              ""showEasing"": ""swing"",
+                                              ""hideEasing"": ""linear"",
+                                              ""showMethod"": ""fadeIn"",
+                                              ""hideMethod"": ""fadeOut""
+                                            }}
+                                            toastr['success']('You made a new personal highscore in {miniGameTitle}!', 'Congratulations, {username}!');
+                                    ";
+                                    }
+                                    else if (rankingNum < currentRankInt)
+                                    {
+                                        congratsScript = $@"
+                                            toastr.options = {{
+                                              ""closeButton"": false,
+                                              ""debug"": false,
+                                              ""newestOnTop"": false,
+                                              ""progressBar"": false,
+                                              ""positionClass"": ""toast-top-right"",
+                                              ""preventDuplicates"": false,
+                                              ""onclick"": null,
+                                              ""showDuration"": ""300"",
+                                              ""hideDuration"": ""1000"",
+                                              ""timeOut"": ""10000"",
+                                              ""extendedTimeOut"": ""1000"",
+                                              ""showEasing"": ""swing"",
+                                              ""hideEasing"": ""linear"",
+                                              ""showMethod"": ""fadeIn"",
+                                              ""hideMethod"": ""fadeOut""
+                                            }}
+                                            toastr['success']('Your rank in {miniGameTitle} increased!', 'Congratulations, {username}, you rank #{rankingNum}!');
+                                    ";
+                                    }
+
+                                }
+
+
+                                returnScore = score;
+                                returnRank = rankingNum.ToString();
                             }
+
+                            
+
+                            rankingNum++;
                         }
                     }
                 }
             }
 
-            return allLeaderboardsString;
+            
+            return new string[4] { allLeaderboardsString, congratsScript, returnRank, returnScore };
         }
 
 
 
-        private async Task<string[]> RetrieveCommentsData()
+        private async Task<string[]> RetrieveCommentsData(string[] info)
         {
             List<Comment> commentList = new List<Comment>();
 
@@ -118,9 +190,10 @@ namespace VisualMech
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 string query = $@"
-            SELECT c1.*, UserTable.username 
-            FROM CommentTable c1
-            INNER JOIN UserTable ON c1.user_id = UserTable.user_id 
+            SELECT c1.*, user.username, avatar.avatar_path 
+            FROM comment c1
+            INNER JOIN user ON c1.user_id = user.user_id 
+            INNER JOIN avatar ON user.user_id = avatar.user_id
             WHERE c1.mechanic_title = '{mechanicTitle}'
         ";
 
@@ -134,21 +207,23 @@ namespace VisualMech
                         {
                             int commentId = reader.GetInt32("comment_id");
                             string username = reader["username"].ToString();
-                            DateTime sqlDate = (DateTime)reader["comment_date"];
+                            string rawDate = reader["comment_date"].ToString();
                             string raw_comment = reader["comment"].ToString();
                             int? parentCommentId = reader.IsDBNull(reader.GetOrdinal("parent_comment_id")) ? (int?)null : reader.GetInt32(reader.GetOrdinal("parent_comment_id"));
+                            int userId = reader.GetInt32("user_id");
 
-
+                            
+                            DateTime commentDate = DateTime.Parse(rawDate);
 
                             string comment = MakeNameBold(raw_comment);
-
+                            string commentAvatarPath = reader["avatar_path"].ToString();
 
                             if (parentCommentId != null)
                             {
                                 Comment parentComment = commentList.FirstOrDefault(c => c.CommentId == parentCommentId);
                                 if (parentComment != null)
                                 {
-                                    parentComment.RepliesList.Add(new Comment(commentId, username, sqlDate, comment));
+                                    parentComment.RepliesList.Add(new Comment(commentId, username, commentDate, comment, commentAvatarPath));
                                 }
                                 else
                                 {
@@ -157,7 +232,7 @@ namespace VisualMech
                             }
                             else
                             {
-                                commentList.Add(new Comment(commentId, username, sqlDate, comment));
+                                commentList.Add(new Comment(commentId, username, commentDate, comment, commentAvatarPath));
                             }
 
 
@@ -232,7 +307,7 @@ namespace VisualMech
                             <div class=""comment mt-4 float-left"" >
                                 <div class=""row"">
                                     <div class=""col-1 text-end"">
-                                        <img src= ""Images/person_icon.png"" alt="""" class=""rounded-circle"" width=""40"" height=""40"">
+                                        <img src= ""{replyComment.AvatarPath}"" alt="""" class=""rounded-circle"" width=""40"" height=""40"">
                                     </div>
                                     <div class =""col-11"">
                                         <div class=""row"">
@@ -291,7 +366,7 @@ namespace VisualMech
                     <div class=""comment mt-4 float-left"" >
                         <div class=""row"">
                             <div class=""col-1 text-end"">
-                                <img src= ""Images/person_icon.png"" alt="""" class=""rounded-circle"" width=""40"" height=""40"">
+                                <img src= ""{comment.AvatarPath}"" alt="""" class=""rounded-circle"" width=""40"" height=""40"">
                             </div>
                             <div class =""col-11"">
                                 <div class=""row"">
@@ -379,5 +454,7 @@ namespace VisualMech
 
             return formattedComment;
         }
+    
+        
     }
 }

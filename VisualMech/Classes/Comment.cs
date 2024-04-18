@@ -12,14 +12,16 @@ namespace VisualMech.Classes
         public DateTime DateCommented { get; set; }
         public string CommentContent { get; set; }
         public List<Comment> RepliesList { get; set; }
+        public string AvatarPath { get; set; }
 
-        public Comment(int commentId, string username, DateTime dateCommented,string commentcontent)
+        public Comment(int commentId, string username, DateTime dateCommented,string commentcontent, string avatarPath)
         {
             CommentId = commentId;
             Username = username;
             DateCommented = dateCommented;
             CommentContent = commentcontent;
             RepliesList = new List<Comment>();
+            AvatarPath = avatarPath;
         }
 
 

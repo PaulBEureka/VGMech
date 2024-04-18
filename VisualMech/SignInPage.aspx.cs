@@ -19,7 +19,7 @@ namespace VisualMech
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            
         }
 
         protected void Login_btn_Click(object sender, EventArgs e)
@@ -31,10 +31,9 @@ namespace VisualMech
 
                 string query = $@"
                 SELECT *
-                FROM UserTable 
-                WHERE UserTable.username = @Username";
+                FROM user 
+                WHERE user.username = @Username";
 
-                string result = "";
 
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
@@ -56,6 +55,7 @@ namespace VisualMech
                                     int user_id = reader.GetInt32(reader.GetOrdinal("user_id"));
                                     string username = reader.GetString(reader.GetOrdinal("username"));
                                     string password = reader.GetString(reader.GetOrdinal("password"));
+                                    string email = reader.GetString(reader.GetOrdinal("email"));
 
                                     PasswordHasher passwordHasher = new PasswordHasher();
 
@@ -71,9 +71,13 @@ namespace VisualMech
 
                                         Session["CurrentUser"] = username;
                                         Session["Current_ID"] = user_id;
-
-
+                                        Session["CurrentEmail"] = email;
+                                        Session["Message"] = $@"Welcome to VGMech, {username}";
+                                        
                                         Response.Redirect("HomePage.aspx");
+                                        
+                                        
+
                                     }
                                 }
                                 else
@@ -85,8 +89,7 @@ namespace VisualMech
                     }
                     catch (Exception ex)
                     {
-                        result = ex.Message;
-                        Response.Write(result);
+                        Response.Write(ex.Message);
                     }
                 }
             }
@@ -97,5 +100,8 @@ namespace VisualMech
                 captchacode.Text = "";
             }
         }
+
+        
+    
     }
 }
