@@ -36,9 +36,15 @@ namespace VisualMech
             cardList = Session["CardList"] as List<LearnCard>;
             int cardInt = (int)Session["LearnId"];
 
-            LearnCard selectedCard = cardList.FirstOrDefault(card => card.CardID == cardInt.ToString());
-            cardTitle = selectedCard.Title;
-            gameMechLit.Text = selectedCard.GetLearnHtml();
+
+            foreach (LearnCard selectedCard in cardList)
+            {
+                if (selectedCard.CardID == cardInt.ToString())
+                {
+                    cardTitle = selectedCard.Title;
+                    gameMechLit.Text = selectedCard.GetLearnHtml();
+                }
+            }
 
             if (Session["Current_ID"] != null)
             {
