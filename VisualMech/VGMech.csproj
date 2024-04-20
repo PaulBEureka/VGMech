@@ -538,6 +538,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AdminLoginPage.aspx" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-grid.rtl.css" />
@@ -649,6 +650,13 @@
     <Content Include="Site.Mobile.Master" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdminLoginPage.aspx.cs">
+      <DependentUpon>AdminLoginPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminLoginPage.aspx.designer.cs">
+      <DependentUpon>AdminLoginPage.aspx</DependentUpon>
+    </Compile>
     <Compile Include="AdminSite.Master.cs">
       <DependentUpon>AdminSite.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
