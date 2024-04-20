@@ -9,6 +9,8 @@
     <title><%: Page.Title %> VGMech</title>
     
     <script src="Scripts/jquery-3.4.1.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+
 
     <script src="https://kit.fontawesome.com/d7d0e3dd38.js" crossorigin="anonymous"></script>
 
@@ -19,45 +21,54 @@
     <!-- Custom styles for this template-->
     <webopt:bundlereference runat="server" path="~/Content/css" />
     <link href="~/Content/sb-admin-2.min.css" rel="stylesheet">
+    <script src="/Scripts/toastr.js"></script>
     
 </head>
 <body>
     <form runat="server">
+        <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true"> </asp:ScriptManager>
 
         <!-- Page Wrapper -->
         <div id="wrapper">
                 <!-- Sidebar -->
-                <div class="navbar-nav bg-gradient bg-danger sidebar sidebar-dark accordion" id="accordionSidebar">
+                <ul class="navbar-nav bg-gradient bg-danger sidebar sidebar-dark accordion" id="accordionSidebar">
 
                     <!-- Sidebar - Brand -->
-                    <div class="sidebar-brand d-flex align-items-center justify-content-center my-3" href="index.html">
-                        <div>
-                            <img class="w-75 h-75 sidebar-brand-icon" src="Images/VGM_logo.png" alt="Logo">
-                        </div>
-                        <div class="sidebar-brand-text mx-1">VGMech Admin</div>
-                    </div>
+                    <li>
+                        <a class="sidebar-brand d-flex align-items-center justify-content-center my-3" href="AdminDashboard.aspx">
+                            <div>
+                                <img class="w-75 h-75 sidebar-brand-icon" src="Images/VGM_logo.png" alt="Logo">
+                            </div>
+                            <div class="sidebar-brand-text mx-1">VGMech Admin</div>
+                        </a>
+                    </li>
 
                     <!-- Divider -->
-                    <hr class="sidebar-divider my-3">
+                    <li>
+                        <hr class="sidebar-divider my-3">
+                    </li>
+                    
 
                     <!-- Nav Item - Dashboard -->
-                    <div class="nav-item active">
-                        <a class="nav-link" href="index.html">
+                    <li class="nav-item">
+                        <a class="nav-link" href="AdminDashboard.aspx">
                             <i class="fa-solid fa-gauge-simple-high"></i>
                             <span>Dashboard</span>
                         </a>
-                    </div>
+                    </li>
 
-                    <!-- Divider -->
-                    <hr class="sidebar-divider">
+                    <li>
+                        <!-- Divider -->
+                        <hr class="sidebar-divider">
+                    </li>
 
                     <!-- Heading -->
-                    <div class="sidebar-heading">
+                    <li class="sidebar-heading">
                         Interface
-                    </div>
+                    </li>
 
                     <!-- Nav Item - Pages Collapse Menu -->
-                    <div class="nav-item">
+                    <li class="nav-item">
                         <a class="nav-link collapsed dropdown-toggle" href="#" data-bs-toggle="collapse" data-bs-target="#collapseTwo"
                             aria-expanded="true" aria-controls="collapseTwo">
                             <i class="fas fa-fw fa-cog"></i>
@@ -66,14 +77,13 @@
                         <div  class="collapse" id="collapseTwo" aria-labelledby="headingTwo" data-bs-parent="#accordionSidebar">
                             <div class="bg-white py-2 collapse-inner rounded">
                                 <h6 class="collapse-header">Custom Components:</h6>
-                                <a class="collapse-item" href="buttons.html">Buttons</a>
-                                <a class="collapse-item" href="cards.html">Cards</a>
+                                <a class="collapse-item" href="AdminCardPage.aspx">Cards</a>
                             </div>
                         </div>
-                    </div>
+                    </li>
 
                     <!-- Nav Item - Utilities Collapse Menu -->
-                    <div class="nav-item">
+                    <li class="nav-item">
                         <a class="nav-link collapsed dropdown-toggle" href="#" data-bs-toggle="collapse" data-bs-target="#collapseUtilities"
                             aria-expanded="true" aria-controls="collapseUtilities">
                             <i class="fas fa-fw fa-wrench"></i>
@@ -83,55 +93,27 @@
                             data-bs-parent="#accordionSidebar">
                             <div class="bg-white py-2 collapse-inner rounded">
                                 <h6 class="collapse-header">Custom Utilities:</h6>
-                                <a class="collapse-item" href="utilities-color.html">Colors</a>
-                                <a class="collapse-item" href="utilities-border.html">Borders</a>
-                                <a class="collapse-item" href="utilities-animation.html">Animations</a>
-                                <a class="collapse-item" href="utilities-other.html">Other</a>
+                                <a class="collapse-item" href="AdminLearners.aspx">Manage Learners</a>
                             </div>
                         </div>
-                    </div>
+                    </li>
 
-                    <!-- Divider -->
-                    <hr class="sidebar-divider">
+                    <li>
+                        <!-- Divider -->
+                        <hr class="sidebar-divider">
+                    </li>
 
-                    <!-- Heading -->
-                    <div class="sidebar-heading">
-                        Addons
-                    </div>
+                    
 
-                    <!-- Nav Item - Pages Collapse Menu -->
-                    <div class="nav-item">
-                        <a class="nav-link collapsed dropdown-toggle" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages"
-                            aria-expanded="true" aria-controls="collapsePages">
-                            <i class="fas fa-fw fa-folder"></i>
-                            <span>Pages</span>
-                        </a>
-                        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-bs-parent="#accordionSidebar">
-                            <div class="bg-white py-2 collapse-inner rounded">
-                                <h6 class="collapse-header">Login Screens:</h6>
-                                <a class="collapse-item" href="login.html">Login</a>
-                                <a class="collapse-item" href="register.html">Register</a>
-                                <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
-                                <div class="collapse-divider"></div>
-                                <h6 class="collapse-header">Other Pages:</h6>
-                                <a class="collapse-item" href="404.html">404 Page</a>
-                                <a class="collapse-item" href="blank.html">Blank Page</a>
-                            </div>
+                    <li class="text-center d-none d-md-inline">
+                        <!-- Sidebar Toggler (Sidebar) -->
+                        <div class="text-center d-none d-md-inline">
+                            <button class="rounded-circle border-0" type="button" id="sidebarToggle"></button>
                         </div>
-                    </div>
-
-                
-
-                    <!-- Divider -->
-                    <hr class="sidebar-divider d-none d-md-block">
-
-                    <!-- Sidebar Toggler (Sidebar) -->
-                    <div class="text-center d-none d-md-inline">
-                        <button class="rounded-circle border-0" type="button" id="sidebarToggle"></button>
-                    </div>
+                    </li>
 
 
-                </div>
+                </ul>
                 <!-- End of Sidebar -->
 
                 <!-- Content Wrapper -->
@@ -153,35 +135,24 @@
 
                                 <li class="topbar-divider d-none d-sm-block"></li>
 
-                                <!-- Nav Item - User Information -->
-                                <li class="nav-item dropdown no-arrow">
-                                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                
+
+                                <li class="dropdown nav-item">
+                                    <a class="text-white dropdown-toggle nav-link" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                                         <span class="mr-2 small text-black">Admin Username here</span>
                                         <img class="img-profile rounded-circle"
                                             src="Images/person_icon.png">
                                     </a>
-                                    <!-- Dropdown - User Information -->
-                                    <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                        aria-labelledby="userDropdown">
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                            Profile
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                            Settings
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                            Activity Log
-                                        </a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                                            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                            Logout
-                                        </a>
-                                    </div>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                        <li>
+                                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                                                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                                Logout
+                                            </a>
+
+                                        </li>
+                                       
+                                    </ul>
                                 </li>
 
                             </ul>
@@ -205,9 +176,9 @@
             <!-- End of Page Wrapper -->
 
             <!-- Scroll to Top Button-->
-            <a class="scroll-to-top rounded" href="#page-top">
+            <button class="scroll-to-top rounded" onclick="topFunction()" type="button" id="myBtn" >
                 <i class="fas fa-angle-up"></i>
-            </a>
+            </button>
 
             <!-- Logout Modal-->
             <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -216,14 +187,14 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <button class="close" type="button" data-bs-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">×</span>
                             </button>
                         </div>
                         <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                         <div class="modal-footer">
-                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                            <a class="btn btn-primary" href="login.html">Logout</a>
+                            <a class="btn btn-secondary" data-bs-dismiss="modal">Cancel</a>
+                            <a class="btn btn-danger" href="">Logout</a>
                         </div>
                     </div>
                 </div>
@@ -246,6 +217,63 @@
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/Scripts/bootstrap.js") %>
     </asp:PlaceHolder>
+
+    <script type="text/javascript">
+        let mybutton = document.getElementById("myBtn");
+        window.onscroll = function () { scrollFunction() };
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                mybutton.style.display = "block";
+            } else {
+                mybutton.style.display = "none";
+            }
+        }
+
+        function topFunction() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            // Get the current page URL
+            const currentPageUrl = window.location.href;
+
+            // Get all the navigation items
+            const navItems = document.querySelectorAll(".nav-item");
+
+            // Loop through each navigation item and compare its href with the current page URL
+            navItems.forEach(function (item) {
+                const itemHref = item.querySelector("a").getAttribute("href");
+
+                // Check if the current page URL matches the item's href
+                if (currentPageUrl.includes(itemHref)) {
+                    item.classList.add("active");
+                }
+            });
+        });
+
+        $(document).ready(function () {
+            // Loop through each top-level navigation item
+            $('#accordionSidebar').find('li.nav-item').each(function () {
+                // Check if the current page URL contains the href of the top-level navigation item
+                const href = $(this).find('a.nav-link').attr('href');
+                if (window.location.pathname.indexOf(href) > -1) {
+                    $(this).addClass('active');
+                }
+
+                // Check if the current page URL matches any of the nested item hrefs
+                $(this).find('.collapse-item').each(function () {
+                    const nestedHref = $(this).attr('href');
+                    if (window.location.pathname.indexOf(nestedHref) > -1) {
+                        $(this).closest('li.nav-item').addClass('active');
+                    }
+                });
+            });
+        });
+
+        
+    </script>
     
     
 </body>

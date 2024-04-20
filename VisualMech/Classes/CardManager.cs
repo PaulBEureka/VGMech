@@ -48,6 +48,12 @@ namespace VisualMech.Classes
             SaveCards();
         }
 
+        public void RemoveCard(T card)
+        {
+            cards.Remove(card);
+            SaveCards();
+        }
+
         public List<T> GetAllCards()
         {
             return cards;

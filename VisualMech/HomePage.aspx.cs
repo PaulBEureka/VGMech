@@ -19,7 +19,6 @@ namespace VisualMech
         private static List<LearnCard> learnCardList;
         private static List<MiniGameCard> miniGameCardList;
 
-
         protected void Page_Load(object sender, EventArgs e)
         {
 
@@ -103,27 +102,7 @@ namespace VisualMech
         }
 
 
-        [WebMethod]
-        public static void ProcessIT(int cardId)
-        {
-            HttpContext context = HttpContext.Current;
-
-            if (context != null)
-            {
-                context.Session["LearnId"] = cardId;
-            }
-        }
-
-        [WebMethod]
-        public static void ProcessIT2(int cardId)
-        {
-            HttpContext context = HttpContext.Current;
-
-            if (context != null)
-            {
-                context.Session["MiniGameId"] = cardId;
-            }
-        }
+        
 
     }
 

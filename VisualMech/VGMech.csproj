@@ -607,9 +607,10 @@
     <Content Include="Content\toastr.less" />
     <Content Include="Jsons\Learn.json" />
     <Content Include="Jsons\MiniGame.json" />
-    <Content Include="AdminPanel.aspx" />
     <Content Include="AdminSite.Master" />
-    <Content Include="Dashboard.aspx" />
+    <Content Include="AdminDashboard.aspx" />
+    <Content Include="AdminCardPage.aspx" />
+    <Content Include="AdminLearners.aspx" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -655,6 +656,7 @@
     <Compile Include="AdminSite.Master.designer.cs">
       <DependentUpon>AdminSite.Master</DependentUpon>
     </Compile>
+    <Compile Include="Classes\Card.cs" />
     <Compile Include="Classes\CardManager.cs" />
     <Compile Include="Classes\EmailSender.cs" />
     <Compile Include="Classes\InputValidator.cs" />
@@ -738,19 +740,26 @@
     <Compile Include="UserPage.aspx.designer.cs">
       <DependentUpon>UserPage.aspx</DependentUpon>
     </Compile>
-    <Compile Include="AdminPanel.aspx.cs">
-      <DependentUpon>AdminPanel.aspx</DependentUpon>
+    <Compile Include="AdminDashboard.aspx.cs">
+      <DependentUpon>AdminDashboard.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="AdminPanel.aspx.designer.cs">
-      <DependentUpon>AdminPanel.aspx</DependentUpon>
+    <Compile Include="AdminDashboard.aspx.designer.cs">
+      <DependentUpon>AdminDashboard.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Dashboard.aspx.cs">
-      <DependentUpon>Dashboard.aspx</DependentUpon>
+    <Compile Include="AdminCardPage.aspx.cs">
+      <DependentUpon>AdminCardPage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Dashboard.aspx.designer.cs">
-      <DependentUpon>Dashboard.aspx</DependentUpon>
+    <Compile Include="AdminCardPage.aspx.designer.cs">
+      <DependentUpon>AdminCardPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminLearners.aspx.cs">
+      <DependentUpon>AdminLearners.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminLearners.aspx.designer.cs">
+      <DependentUpon>AdminLearners.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

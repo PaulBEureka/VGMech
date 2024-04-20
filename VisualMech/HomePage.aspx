@@ -159,40 +159,6 @@
     </main>
     <script src="https://kit.fontawesome.com/d7d0e3dd38.js" crossorigin="anonymous"></script>
 
-    <script type="text/javascript">
-        document.addEventListener('DOMContentLoaded', function () {
-            var learnCards = document.querySelectorAll('.card');
-            learnCards.forEach(function (card) {
-                card.addEventListener('click', function () {
-                    var cardId = this.getAttribute('data-card-id');
-                    HandleIT(cardId);
-
-                });
-            });
-
-            var miniGameCards = document.querySelectorAll('.minigame_card');
-            miniGameCards.forEach(function (cardmini) {
-                cardmini.addEventListener('click', function () {
-                    var cardId = this.getAttribute('data-card-id');
-                    HandleIT2(cardId);
-
-                });
-            });
-
-
-        });
-
-
-        function HandleIT(cardId) {
-            PageMethods.ProcessIT(cardId);
-        }  
-
-        function HandleIT2(cardId) {
-            PageMethods.ProcessIT2(cardId);
-        } 
-
-    </script>
-
 
 
     <script src="/Content/custom.js"></script>
