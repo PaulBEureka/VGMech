@@ -61,6 +61,7 @@ namespace VisualMech
                             }}
                             toastr['success']('{Session["Message"].ToString()}', 'Notification');
                     ";
+                
                 ClientScript.RegisterClientScriptBlock(this.GetType(), "MyScript", script, true);
                 Session["Message"] = null;
             }
@@ -359,7 +360,7 @@ namespace VisualMech
                                     if (card.Title.ToUpper() == mechanicTitle.ToUpper())
                                     {
                                         Debug.WriteLine(mechanicTitle.ToUpper());
-                                        content += $@"<li class=""list-group-item"">Date visited: {visitedDateTime} <br /><a class=""learn-link"" href=""SamplePage.aspx"" data-card-id =""{card.CardID}"">{mechanicTitle}</a></li>";
+                                        content += $@"<li class=""list-group-item"">Date visited: {visitedDateTime} <br /><a class=""learn-link"" href=""SamplePage.aspx?Learn={card.CardID}"">{mechanicTitle}</a></li>";
                                     }
                                 }
                                 totalVisitedPages++;
@@ -393,24 +394,13 @@ namespace VisualMech
                 {
                     if (card.Title.ToUpper() == title.ToUpper())
                     {
-                        content += $@"<li class=""list-group-item""><a href=""SamplePage.aspx"" class=""learn-link"" data-card-id =""{card.CardID}"">{title.ToUpper()}</a></li>";
+                        content += $@"<li class=""list-group-item""><a href=""SamplePage.aspx?Learn={card.CardID}"" class=""learn-link"" data-card-id =""{card.CardID}"">{title.ToUpper()}</a></li>";
                     }
                 }
             }
 
             return content;
 
-        }
-
-        [WebMethod]
-        public static void ProcessLink(int linkId)
-        {
-            HttpContext context = HttpContext.Current;
-
-            if (context != null)
-            {
-                context.Session["LearnId"] = linkId;
-            }
         }
 
         protected void EditBtn_Click(object sender, EventArgs e)

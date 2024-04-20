@@ -33,19 +33,22 @@ namespace VisualMech
 
         protected void Page_Load(object sender, EventArgs e)
         {
+
             cardList = Session["CardList"] as List<LearnCard>;
-            int cardInt = (int)Session["LearnId"];
 
-
-            foreach (LearnCard selectedCard in cardList)
+            if (!IsPostBack)
             {
-                if (selectedCard.CardID == cardInt.ToString())
+                if (Request.QueryString["Learn"] != null)
                 {
+                    string learnID = Request.QueryString["Learn"];
+
+                    LearnCard selectedCard = cardList.FirstOrDefault(card => card.CardID == learnID);
                     cardTitle = selectedCard.Title;
-                    gameMechLit.Text = selectedCard.GetLearnHtml();
+                    gameMechLit.Text = selectedCard.GetContentHtml();
                 }
             }
 
+            
             if (Session["Current_ID"] != null)
             {
                 recordVisitedPage();
@@ -332,6 +335,7 @@ namespace VisualMech
                     Response.Write(ex.Message); 
                 }
             }
+        
         }
 
 

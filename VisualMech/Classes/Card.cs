@@ -9,6 +9,7 @@ namespace VisualMech.Classes
     {
         public abstract string GetCardHtml();
         public abstract string GetContentHtml(string sessionUserID = null);
+        public abstract string GetAdminCardPreviewHtml();
 
 
     }

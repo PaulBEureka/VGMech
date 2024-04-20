@@ -733,8 +733,18 @@ body {
     box-shadow: none !important;
 }
 
-
-
 .learn-link{
     font-weight:normal;
 }
+
+
+
+
+/*Admin styles*/
+
+.thicker-line-10 {
+    border-top: 1px solid #000000 !important;
+    opacity: .7 !important;
+    
+}
+

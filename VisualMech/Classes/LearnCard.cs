@@ -5,10 +5,11 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Script.Serialization;
+using VisualMech.Classes;
 
 namespace VisualMech.Content.Classes
 {
-    public class LearnCard
+    public class LearnCard: Card
     {
         public string CardID { get; set; }
         public string ImageSource { get; set; }
@@ -25,11 +26,11 @@ namespace VisualMech.Content.Classes
 
 
         
-        public string GetCardHtml()
+        public override string GetCardHtml()
         {
             return $@"
             <li class=""align-content-center justify-content-center m-auto"" >
-                <a href=""SamplePage.aspx"" class=""card"" data-card-id =""{CardID}"">
+                <a href=""SamplePage.aspx?Learn={CardID}"" class=""card"">
                     <img src=""{ImageSource}"" class=""card__image"" alt="""" />
                     <div class=""card__overlay"">
                         <div class=""card__header"">
@@ -47,7 +48,7 @@ namespace VisualMech.Content.Classes
             </li>";
         }
 
-        public string GetLearnHtml()
+        public override string GetContentHtml(string sessionUserID = null)
         {
             return $@"
             <div  class=""row text-center "">
@@ -108,8 +109,28 @@ namespace VisualMech.Content.Classes
             </div>";
         }
 
-        
 
+        public override string GetAdminCardPreviewHtml()
+        {
+            return $@"
+            <div class=""align-content-center justify-content-center m-auto py-3 "" >
+                <a class=""card shadow"">
+                    <img src=""{ImageSource}"" class=""card__image"" alt="""" />
+                    <div class=""card__overlay"">
+                        <div class=""card__header"">
+                            <svg class=""card__arc"" xmlns=""http://www.w3.org/2000/svg""></svg>
+                            <img class=""card__thumb"" src=""{ThumbSource}"" alt="""" />
+                            <div class=""card__header-text"">
+                                <h3 class=""card__title"">{Title}</h3>
+                                <span class=""card__status"">Click to learn</span>
+                            </div>
+                        </div>
+                        <p class=""fw-bolder card__title_description"">Description:</p>
+                        <p class=""card__description"">{Description}</p>
+                    </div>
+                </a>
+            </div>";
+        }
     }
 
 

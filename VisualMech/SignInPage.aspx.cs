@@ -32,7 +32,7 @@ namespace VisualMech
                 string query = $@"
                 SELECT *
                 FROM user 
-                WHERE user.username = @Username";
+                WHERE user.username = @Username and role = 'user'";
 
 
                 using (MySqlConnection connection = new MySqlConnection(connectionString))

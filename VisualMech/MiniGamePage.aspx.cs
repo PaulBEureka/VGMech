@@ -29,23 +29,28 @@ namespace VisualMech
         {
 
             miniGameCardList = Session["MiniGameCardList"] as List<MiniGameCard>;
-            int cardInt = (int)Session["MiniGameId"];
 
-            MiniGameCard selectedCard = miniGameCardList.FirstOrDefault(card => card.CardID == cardInt.ToString());
-            cardTitle = selectedCard.Title;
-            
-
-            if (Session["Current_ID"] != null)
+            if (!IsPostBack)
             {
-                MiniGameLit.Text = selectedCard.GetMiniGameHtml(Session["Current_ID"].ToString());
-                sessionPlayer = Session["CurrentUser"].ToString();
-                //recordVisitedPage() May be added to record played games;
-            }
-            else
-            {
-                MiniGameLit.Text = selectedCard.GetMiniGameHtml();
-            }
+                if (Request.QueryString["MiniGame"] != null)
+                {
+                    string MiniGameID = Request.QueryString["MiniGame"];
 
+                    MiniGameCard selectedCard = miniGameCardList.FirstOrDefault(card => card.CardID == MiniGameID);
+                    cardTitle = selectedCard.Title;
+
+                    if (Session["Current_ID"] != null)
+                    {
+                        MiniGameLit.Text = selectedCard.GetContentHtml(Session["Current_ID"].ToString());
+                        sessionPlayer = Session["CurrentUser"].ToString();
+                        //recordVisitedPage() May be added to record played games;
+                    }
+                    else
+                    {
+                        MiniGameLit.Text = selectedCard.GetContentHtml();
+                    }
+                }
+            }
 
 
             if (Session["Message"] != null)
