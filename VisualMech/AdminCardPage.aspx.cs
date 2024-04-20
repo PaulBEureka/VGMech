@@ -148,6 +148,7 @@ namespace VisualMech
             File.Delete(Server.MapPath(selectedCard.ThumbSource));
 
             miniGameCardManager.RemoveCard(selectedCard);
+            //Implement in another layout
         }
 
         protected void CreateMiniBtn_Click(object sender, EventArgs e)
