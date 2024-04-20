@@ -46,8 +46,8 @@
             <h3 class="text-black">Add Learn Card</h3>
         </div>
         <div class="row text-center">
-            <asp:Label ID="SuccessLbl" runat="server" Visible="false" Text="Adding of Learn Card is successful!" CssClass="display-6 text-success fw-bold"></asp:Label>
-            <asp:Label ID="ErrorLbl" runat="server" Visible="false" Text="Error occurred" CssClass=" display-6 text-warning fw-bold"></asp:Label>
+            <asp:Label ID="SuccessLbl" runat="server" Visible="false" Text="Adding of Learn Card is successful!" CssClass="fs-5 text-success fw-bold"></asp:Label>
+            <asp:Label ID="ErrorLbl" runat="server" Visible="false" Text="Error occurred" CssClass="fs-5 text-warning fw-bold"></asp:Label>
         </div>
         <div class="row">
                 <div class="col-md-6 mb-3">
@@ -176,8 +176,8 @@
             <h3 class="text-black">Add Minigame Card</h3>
         </div>
         <div class="row text-center">
-            <asp:Label ID="SuccessLbl2" runat="server" Visible="false" Text="Adding of Minigame Card is successful!" CssClass="display-6 text-success fw-bold"></asp:Label>
-            <asp:Label ID="ErrorLbl2" runat="server" Visible="false" Text="Error occurred" CssClass=" display-6 text-warning fw-bold"></asp:Label>
+            <asp:Label ID="SuccessLbl2" runat="server" Visible="false" Text="Adding of Minigame Card is successful!" CssClass="fs-5 text-success fw-bold"></asp:Label>
+            <asp:Label ID="ErrorLbl2" runat="server" Visible="false" Text="Error occurred" CssClass="fs-5 text-warning fw-bold"></asp:Label>
         </div>
         <div class="row">
                 <div class="col-md-6 mb-3">
