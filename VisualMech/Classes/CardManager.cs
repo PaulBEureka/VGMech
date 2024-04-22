@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using System.Web.Script.Serialization;
+using VisualMech.Content.Classes;
 
 namespace VisualMech.Classes
 {
     public class CardManager<T>
     {
-        private List<T> cards = new List<T>();
+        public static List<T> cards = new List<T>();
         private readonly string filePath;
         private JavaScriptSerializer serializer;
 
@@ -32,11 +34,33 @@ namespace VisualMech.Classes
             if (File.Exists(filePath))
             {
                 string json = File.ReadAllText(filePath);
+
                 cards = serializer.Deserialize<List<T>>(json);
+
+                
+                foreach (T card in cards)
+                {
+                    PropertyInfo[] properties = typeof(T).GetProperties();
+                    foreach (PropertyInfo property in properties)
+                    {
+                        if (property.PropertyType == typeof(string))
+                        {
+                            string value = (string)property.GetValue(card);
+                            if (value != null)
+                            {
+                                property.SetValue(card, HttpUtility.HtmlDecode(value));
+                            }
+                        }
+                    }
+                }
             }
         }
 
-        private void SaveCards()
+
+        
+
+
+        public void SaveCards()
         {
             string json = serializer.Serialize(cards);
             File.WriteAllText(filePath, json);
@@ -56,6 +80,27 @@ namespace VisualMech.Classes
 
         public List<T> GetAllCards()
         {
+            return cards;
+        }
+
+
+        public List<T> GetAllCardAsLiteral()
+        {
+            foreach (T card in cards)
+            {
+                PropertyInfo[] properties = typeof(T).GetProperties();
+                foreach (PropertyInfo property in properties)
+                {
+                    if (property.PropertyType == typeof(string))
+                    {
+                        string value = (string)property.GetValue(card);
+                        if (value != null)
+                        {
+                            property.SetValue(card, HttpUtility.HtmlEncode(value));
+                        }
+                    }
+                }
+            }
             return cards;
         }
     }

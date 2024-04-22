@@ -1,5 +1,10 @@
-﻿using System;
+﻿using Google.Protobuf.WellKnownTypes;
+using MySql.Data.MySqlClient;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -12,6 +17,7 @@ namespace VisualMech
 {
     public partial class WebForm6 : System.Web.UI.Page
     {
+        private static string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
         private readonly CardManager<LearnCard> learnCardManager = new CardManager<LearnCard>("Learn.json");
         private readonly CardManager<MiniGameCard> miniGameCardManager = new CardManager<MiniGameCard>("MiniGame.json");
 
@@ -32,39 +38,48 @@ namespace VisualMech
             List<LearnCard> tempLearnList = learnCardManager.GetAllCards();
             List<MiniGameCard> tempMinigameList = miniGameCardManager.GetAllCards();
 
-            foreach(LearnCard card in tempLearnList)
+            foreach (LearnCard card in tempLearnList)
             {
                 tempLearnString += card.GetAdminCardPreviewHtml();
             }
 
-            foreach(MiniGameCard card in tempMinigameList)
+            foreach (MiniGameCard card in tempMinigameList)
             {
                 tempMinigameString += card.GetAdminCardPreviewHtml();
             }
 
 
 
-            return new string[] {tempLearnString, tempMinigameString };
+            return new string[] { tempLearnString, tempMinigameString };
         }
 
         protected void AddLearnBtn_Click(object sender, EventArgs e)
         {
             PreviewCardPanel.Visible = false;
             AddLearnPanel.Visible = true;
+            SuccessLbl.Visible = false;
+            ErrorLbl.Visible = false;
+            BackBtn.Visible = true;
+            ClearTextboxes();
         }
 
         protected void AddMiniBtn_Click(object sender, EventArgs e)
         {
             PreviewCardPanel.Visible = false;
             AddMinigamePanel.Visible = true;
+            SuccessLbl2.Visible = false;
+            ErrorLbl2.Visible = false;
+            BackBtn.Visible = true;
+            ClearTextboxes();
         }
 
         protected void CreateLearnBtn_Click(object sender, EventArgs e)
         {
-            string title = TitleInput.Text.ToUpper(); 
-            string bgPath = SaveImage(BgInputFile, ErrorLbl); 
-            string iconpath = SaveImage(IconInputFile, ErrorLbl); 
-            string description = ReplaceNewlinesWithHtmlBreaks(DecriptionInput.Text); 
+
+            string title = TitleInput.Text.ToUpper();
+            string bgPath = SaveImage(BgInputFile, ErrorLbl);
+            string iconpath = SaveImage(IconInputFile, ErrorLbl);
+            string description = ReplaceNewlinesWithHtmlBreaks(DecriptionInput.Text);
             string unityLink = UnityLinkInput.Text;
             string genre = ReplaceNewlinesWithHtmlBreaks(CommonGenreInput.Text);
             string variation = ReplaceNewlinesWithHtmlBreaks(VariationInput.Text);
@@ -72,7 +87,7 @@ namespace VisualMech
             string controls = ReplaceNewlinesWithHtmlBreaks(ControlInput.Text);
             string codeSample = ReplaceNewlinesWithHtmlBreaks(CodeSampleInput.Text);
 
-            if(bgPath != null && iconpath != null)
+            if (bgPath != null && iconpath != null)
             {
                 LearnCard newLearnCard = new LearnCard
                 {
@@ -153,6 +168,7 @@ namespace VisualMech
 
         protected void CreateMiniBtn_Click(object sender, EventArgs e)
         {
+
             string title = TitleInputMini.Text.ToUpper();
             string bgPath = SaveImage(BgInputFileMini, ErrorLbl2);
             string unityLink = UnityLinkInputMini.Text;
@@ -170,6 +186,225 @@ namespace VisualMech
                 miniGameCardManager.AddCard(newMinigameCard);
                 SuccessLbl2.Visible = true;
             }
+        }
+
+        protected void EditLearnBtn_Click(object sender, EventArgs e)
+        {
+            PreviewCardPanel.Visible = false;
+            EditLearnPanel.Visible = true;
+            BackBtn.Visible = true;
+            ShowLearnData();
+        }
+
+        protected void EditMiniBtn_Click(object sender, EventArgs e)
+        {
+            PreviewCardPanel.Visible = false;
+            EditMiniPanel.Visible = true;
+            BackBtn.Visible = true;
+            ShowMiniData();
+        }
+
+        protected void LearnGridView_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            LearnGridView.EditIndex = e.NewEditIndex;
+            ShowLearnData();
+        }
+
+        protected void LearnGridView_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            LearnGridView.EditIndex = -1;
+            ShowLearnData();
+        }
+
+        protected void ShowLearnData()
+        {
+
+            List<LearnCard> learnList = learnCardManager.GetAllCardAsLiteral();
+
+            LearnGridView.DataSource = learnList;
+            LearnGridView.DataBind();
+        }
+
+        
+        protected void LearnGridView_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+            GridViewRow row = LearnGridView.Rows[e.RowIndex];
+            string cardID = ((Label)row.FindControl("lblCardID")).Text;
+            string imageSource = ((TextBox)row.FindControl("txtImageSource")).Text;
+            string thumbSource = ((TextBox)row.FindControl("txtThumbSource")).Text;
+            string title = ((TextBox)row.FindControl("txtTitle")).Text;
+            string description = ((TextBox)row.FindControl("txtDescription")).Text;
+            string unityLink = ((TextBox)row.FindControl("txtUnityLink")).Text;
+            string codeText = ((TextBox)row.FindControl("txtCodeText")).Text;
+            string commonGenres = ((TextBox)row.FindControl("txtCommonGenres")).Text;
+            string possibleVariations = ((TextBox)row.FindControl("txtPossibleVariations")).Text;
+            string possibleCombinations = ((TextBox)row.FindControl("txtPossibleCombinations")).Text;
+            string interactiveControls = ((TextBox)row.FindControl("txtInteractiveControls")).Text;
+
+
+            LearnCard cardToUpdate = learnCardManager.GetAllCardAsLiteral().Find(c => c.CardID == cardID);
+            if (cardToUpdate != null)
+            {
+                cardToUpdate.ImageSource = imageSource;
+                cardToUpdate.ThumbSource = thumbSource;
+                cardToUpdate.Title = title;
+                cardToUpdate.Description = HttpUtility.HtmlEncode(description);
+                cardToUpdate.UnityLink = HttpUtility.HtmlEncode(unityLink);
+                cardToUpdate.CodeText = HttpUtility.HtmlEncode(codeText);
+                cardToUpdate.CommonGenres = HttpUtility.HtmlEncode(commonGenres);
+                cardToUpdate.PossibleVariations = HttpUtility.HtmlEncode(possibleVariations);
+                cardToUpdate.PossibleCombinations = HttpUtility.HtmlEncode(possibleCombinations);
+                cardToUpdate.InteractiveControls = HttpUtility.HtmlEncode(interactiveControls);
+            }
+
+
+            learnCardManager.SaveCards();
+
+            LearnGridView.EditIndex = -1;
+            ShowLearnData();
+        }
+
+        protected void LearnGridView_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                TableCell cell = e.Row.Cells[0];
+
+                foreach (Control control in cell.Controls)
+                {
+                    if (control is LinkButton)
+                    {
+                        LinkButton button = (LinkButton)control;
+                        if (button.CommandName == "Delete")
+                        {
+                            string cardID = LearnGridView.DataKeys[e.Row.RowIndex]["CardID"].ToString();
+                            button.OnClientClick = "return confirmDelete('" + cardID + "');";
+                        }
+                    }
+                }
+            }
+        }
+
+        protected void LearnGridView_RowDeleting(object sender, GridViewDeleteEventArgs e)
+        {
+            string cardID = LearnGridView.DataKeys[e.RowIndex].Value.ToString();
+            RemoveLearnCard(cardID);
+            ShowLearnData();
+        }
+
+        protected void BackBtn_Click(object sender, EventArgs e)
+        {
+            EditLearnPanel.Visible = false;
+            EditMiniPanel.Visible = false;
+            AddLearnPanel.Visible = false;
+            AddMinigamePanel.Visible = false;
+
+            PreviewCardPanel.Visible = true;
+            BackBtn.Visible = false;
+        }
+    
+        protected void ClearTextboxes()
+        {
+            foreach (Control control in Page.Controls)
+            {
+                if (control is TextBox)
+                {
+                    ((TextBox)control).Text = "";
+                }
+                if (control.HasControls())
+                {
+                    ClearTextBoxesChild(control);
+                }
+            }
+        }
+
+        protected void ClearTextBoxesChild(Control parent)
+        {
+            foreach (Control control in parent.Controls)
+            {
+                if (control is TextBox)
+                {
+                    ((TextBox)control).Text = "";
+                }
+                if (control.HasControls())
+                {
+                    ClearTextBoxesChild(control);
+                }
+            }
+        }
+
+
+        protected void ShowMiniData()
+        {
+
+            List<MiniGameCard> miniList = miniGameCardManager.GetAllCardAsLiteral();
+
+            MiniGridView.DataSource = miniList;
+            MiniGridView.DataBind();
+        }
+
+        protected void MiniGridView_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            MiniGridView.EditIndex = -1;
+            ShowMiniData();
+        }
+
+        protected void MiniGridView_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            MiniGridView.EditIndex = e.NewEditIndex;
+            ShowMiniData();
+        }
+
+        protected void MiniGridView_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+            GridViewRow row = MiniGridView.Rows[e.RowIndex];
+            string cardID = ((Label)row.FindControl("lblCardIDMini")).Text;
+            string thumbSource = ((TextBox)row.FindControl("txtThumbSourceMini")).Text;
+            string title = ((TextBox)row.FindControl("txtTitleMini")).Text;
+            string unityLink = ((TextBox)row.FindControl("txtUnityLinkMini")).Text;
+
+
+            MiniGameCard cardToUpdate = miniGameCardManager.GetAllCardAsLiteral().Find(c => c.CardID == cardID);
+            if (cardToUpdate != null)
+            {
+                cardToUpdate.ThumbSource = thumbSource;
+                cardToUpdate.Title = title;
+                cardToUpdate.UnityLink = HttpUtility.HtmlEncode(unityLink);
+            }
+
+
+            miniGameCardManager.SaveCards();
+
+            MiniGridView.EditIndex = -1;
+            ShowMiniData();
+        }
+
+        protected void MiniGridView_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                TableCell cell = e.Row.Cells[0];
+
+                foreach (Control control in cell.Controls)
+                {
+                    if (control is LinkButton)
+                    {
+                        LinkButton button = (LinkButton)control;
+                        if (button.CommandName == "Delete")
+                        {
+                            string cardID = MiniGridView.DataKeys[e.Row.RowIndex]["CardID"].ToString();
+                            button.OnClientClick = "return confirmDelete('" + cardID + "');";
+                        }
+                    }
+                }
+            }
+        }
+
+        protected void MiniGridView_RowDeleting(object sender, GridViewDeleteEventArgs e)
+        {
+            string cardID = MiniGridView.DataKeys[e.RowIndex].Value.ToString();
+            RemoveMinigameCard(cardID);
+            ShowMiniData();
         }
     }
 }
