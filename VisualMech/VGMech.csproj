@@ -601,6 +601,8 @@
     <Content Include="SamplePage.aspx" />
     <Content Include="MiniGamePage.aspx" />
     <Content Include="Captcha.aspx" />
+    <Content Include="Scripts\chart.js" />
+    <Content Include="Scripts\chart.min.js" />
     <Content Include="Scripts\toastr.js" />
     <Content Include="Scripts\toastr.min.js" />
     <Content Include="UserPage.aspx" />

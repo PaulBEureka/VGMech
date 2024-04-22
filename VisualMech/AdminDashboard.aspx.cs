@@ -1,9 +1,13 @@
 ﻿using MySql.Data.MySqlClient;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
+using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using VisualMech.Classes;
@@ -14,13 +18,92 @@ namespace VisualMech
     public partial class WebForm5 : System.Web.UI.Page
     {
         private static string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
-        private readonly CardManager<LearnCard> learnCardManager = new CardManager<LearnCard>("Learn.json");
+        private static readonly CardManager<LearnCard> learnCardManager = new CardManager<LearnCard>("Learn.json");
         private readonly CardManager<MiniGameCard> miniGameCardManager = new CardManager<MiniGameCard>("MiniGame.json");
+        private string[] colorArr = new string[7] // Must be updated to accomodate increase of learn cards
+            {
+                "rgba(255, 99, 132, 0.2)",
+                "rgba(255, 159, 64, 0.2)",
+                "rgba(255, 205, 86, 0.2)",
+                "rgba(75, 192, 192, 0.2)",
+                "rgba(54, 162, 235, 0.2)",
+                "rgba(153, 102, 255, 0.2)",
+                "rgba(201, 203, 207, 0.2)"
+            };
+
+        private string[] backColorArr = new string[7] // Must be updated to accomodate increase of learn cards
+        {
+                "rgba(255, 99, 132)",
+                "rgba(255, 159, 64)",
+                "rgba(255, 205, 86)",
+                "rgba(75, 192, 192)",
+                "rgba(54, 162, 235)",
+                "rgba(153, 102, 255)",
+                "rgba(201, 203, 207)"
+        };
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            InformationCardsPanel.Text = GenerateCardInfos();
+            
+
+            if (!IsPostBack)
+            {
+                InformationCardsPanel.Text = GenerateCardInfos();
+            }
         }
+
+        protected string GetChartData()
+        {
+            List<object[]> chartData = new List<object[]>();
+            List<string> backgroundColors = new List<string>();
+
+            int temp = 0;
+            foreach (LearnCard card in learnCardManager.GetAllCards())
+            {
+                string query = @"SELECT COUNT(*) AS TotalVisits FROM visited_pages WHERE mechanic_title = @Title";
+
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@Title", card.Title);
+                        connection.Open();
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                long totalVisitsValue = reader.IsDBNull(reader.GetOrdinal("TotalVisits")) ? 0 : reader.GetInt64(reader.GetOrdinal("TotalVisits"));
+                                string totalVisits = totalVisitsValue.ToString();
+
+                                chartData.Add(new object[] { card.Title, totalVisits, colorArr[temp], backColorArr[temp] });
+                            }
+                        }
+                    }
+                }
+                temp++;
+            }
+
+            var jsonData = new
+            {
+                labels = chartData.Select(data => data[0]),
+                datasets = new[]
+                {
+                    new
+                    {
+                        label = "Total Visits per Learn Mechanic",
+                        data = chartData.Select(data => data[1]),
+                        backgroundColor = chartData.Select(data => data[2]),
+                        borderColor = chartData.Select(data => data[3]),
+                        borderWidth = 1
+                    }
+                }
+            };
+
+            return JsonConvert.SerializeObject(jsonData);
+        }
+
+        
+
 
         private string GenerateCardInfos()
         {
@@ -28,7 +111,7 @@ namespace VisualMech
             string userCount = GetTotalUsers();
 
             //Total Users
-            temp += $@"<div class=""col-xl-3 col-md-6 mb-4"">
+            temp += $@"<div class=""col-xl-3 col-md-6 mb-4 pe-5"">
                             <div class=""card border-left-primary shadow h-100 py-2"">
                                 <div class=""card-body"">
                                     <div class=""row no-gutters align-items-center"">
@@ -48,7 +131,7 @@ namespace VisualMech
             //Total Learn Cards
             int learnCount = learnCardManager.GetAllCards().Count;
 
-            temp += $@"<div class=""col-xl-3 col-md-6 mb-4"">
+            temp += $@"<div class=""col-xl-3 col-md-6 mb-4 pe-5"">
                             <div class=""card border-left-success shadow h-100 py-2"">
                                 <div class=""card-body"">
                                     <div class=""row no-gutters align-items-center"">
@@ -68,7 +151,7 @@ namespace VisualMech
             //Total Mini Game Cards
             int miniCount = miniGameCardManager.GetAllCards().Count;
 
-            temp += $@"<div class=""col-xl-3 col-md-6 mb-4"">
+            temp += $@"<div class=""col-xl-3 col-md-6 mb-4 pe-5"">
                             <div class=""card border-left-info  shadow h-100 py-2"">
                                 <div class=""card-body"">
                                     <div class=""row no-gutters align-items-center"">
@@ -89,7 +172,7 @@ namespace VisualMech
             //Total number of comments 
             string totalComments = GetTotalNumberComments();
 
-            temp += $@"<div class=""col-xl-3 col-md-6 mb-4"">
+            temp += $@"<div class=""col-xl-3 col-md-6 mb-4 pe-5"">
                             <div class=""card border-left-warning   shadow h-100 py-2"">
                                 <div class=""card-body"">
                                     <div class=""row no-gutters align-items-center"">
