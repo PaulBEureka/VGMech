@@ -12,10 +12,6 @@
     <div class="row">
         <asp:Literal runat="server" ID="InformationCardsPanel"></asp:Literal>
 
-
-
-        
-
     </div>
 
 

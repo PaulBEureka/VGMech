@@ -38,7 +38,7 @@
 
                                     <% if (Session["CurrentUser"] != null) { %>
                                     <div class="col-5 mb-1 d-flex d-grid">
-                                        <img src="Images/person_icon.png" alt="" class="rounded-circle" width="40" height="40">
+                                        <img src="<%# Session["CurrentAvatarPath"] ?? "Images/person_icon.png" %>" alt="" class="rounded-circle" width="40" height="40">
                                         <h5 class="ms-3 my-auto"><%# Session["CurrentUser"] ?? "Default Name" %></h5>
                                     </div>
 
