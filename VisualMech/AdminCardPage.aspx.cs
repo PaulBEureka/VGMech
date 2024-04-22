@@ -242,19 +242,19 @@ namespace VisualMech
             string interactiveControls = ((TextBox)row.FindControl("txtInteractiveControls")).Text;
 
 
-            LearnCard cardToUpdate = learnCardManager.GetAllCardAsLiteral().Find(c => c.CardID == cardID);
+            LearnCard cardToUpdate = learnCardManager.GetAllCards().Find(c => c.CardID == cardID);
             if (cardToUpdate != null)
             {
                 cardToUpdate.ImageSource = imageSource;
                 cardToUpdate.ThumbSource = thumbSource;
                 cardToUpdate.Title = title;
-                cardToUpdate.Description = HttpUtility.HtmlEncode(description);
-                cardToUpdate.UnityLink = HttpUtility.HtmlEncode(unityLink);
-                cardToUpdate.CodeText = HttpUtility.HtmlEncode(codeText);
-                cardToUpdate.CommonGenres = HttpUtility.HtmlEncode(commonGenres);
-                cardToUpdate.PossibleVariations = HttpUtility.HtmlEncode(possibleVariations);
-                cardToUpdate.PossibleCombinations = HttpUtility.HtmlEncode(possibleCombinations);
-                cardToUpdate.InteractiveControls = HttpUtility.HtmlEncode(interactiveControls);
+                cardToUpdate.Description = HttpUtility.HtmlDecode(description);
+                cardToUpdate.UnityLink = HttpUtility.HtmlDecode(unityLink);
+                cardToUpdate.CodeText = HttpUtility.HtmlDecode(codeText);
+                cardToUpdate.CommonGenres = HttpUtility.HtmlDecode(commonGenres);
+                cardToUpdate.PossibleVariations = HttpUtility.HtmlDecode(possibleVariations);
+                cardToUpdate.PossibleCombinations = HttpUtility.HtmlDecode(possibleCombinations);
+                cardToUpdate.InteractiveControls = HttpUtility.HtmlDecode(interactiveControls);
             }
 
 
@@ -364,12 +364,12 @@ namespace VisualMech
             string unityLink = ((TextBox)row.FindControl("txtUnityLinkMini")).Text;
 
 
-            MiniGameCard cardToUpdate = miniGameCardManager.GetAllCardAsLiteral().Find(c => c.CardID == cardID);
+            MiniGameCard cardToUpdate = miniGameCardManager.GetAllCards().Find(c => c.CardID == cardID);
             if (cardToUpdate != null)
             {
                 cardToUpdate.ThumbSource = thumbSource;
                 cardToUpdate.Title = title;
-                cardToUpdate.UnityLink = HttpUtility.HtmlEncode(unityLink);
+                cardToUpdate.UnityLink = HttpUtility.HtmlDecode(unityLink);
             }
 
 
