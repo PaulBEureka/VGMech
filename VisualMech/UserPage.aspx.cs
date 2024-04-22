@@ -145,7 +145,7 @@ namespace VisualMech
             }
         }
 
-        private string GetUserAvatarPath()
+        private string GetUserAvatarHtml()
         {
             string query = @"SELECT avatar_path FROM avatar WHERE user_id = @UserId;";
 
@@ -294,7 +294,7 @@ namespace VisualMech
                                       </div>
                                       <hr>";
 
-                                    UserAvatarLit.Text = GetUserAvatarPath();
+                                    UserAvatarLit.Text = GetUserAvatarHtml();
                                     UsernameLit.Text = $@"<h4>{Session["CurrentUser"]}</h4>";
                                     VisitedPagesLit.Text = GetVisitedPages();
                                     RecomenddedPagesLit.Text = GetRecommendedPages();

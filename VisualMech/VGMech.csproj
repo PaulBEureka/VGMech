@@ -675,6 +675,7 @@
     <Compile Include="Classes\LearnCard.cs" />
     <Compile Include="Classes\Comment.cs" />
     <Compile Include="Classes\PasswordHasher.cs" />
+    <Compile Include="Classes\UserDataGather.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

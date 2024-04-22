@@ -123,12 +123,14 @@ namespace VisualMech
                             int user_id = reader.GetInt32("user_id");
                             string username = reader.GetString("username");
                             string email = reader.GetString("email");
+                            RecordDefaultAvatar();
 
                             Session["CurrentUser"] = username;
                             Session["Current_ID"] = user_id;
                             Session["CurrentEmail"] = email;
+                            Session["CurrentAvatarPath"] = UserDataGather.GetUserAvatarPath(user_id.ToString());
                             Session["Message"] = $@"Welcome to VGMech, {username}";
-                            RecordDefaultAvatar();
+                            
                         }
                     }
                 }
