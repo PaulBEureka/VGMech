@@ -36,28 +36,9 @@ namespace VisualMech.Classes
                 string json = File.ReadAllText(filePath);
 
                 cards = serializer.Deserialize<List<T>>(json);
-
                 
-                foreach (T card in cards)
-                {
-                    PropertyInfo[] properties = typeof(T).GetProperties();
-                    foreach (PropertyInfo property in properties)
-                    {
-                        if (property.PropertyType == typeof(string))
-                        {
-                            string value = (string)property.GetValue(card);
-                            if (value != null)
-                            {
-                                property.SetValue(card, HttpUtility.HtmlDecode(value));
-                            }
-                        }
-                    }
-                }
             }
         }
-
-
-        
 
 
         public void SaveCards()
