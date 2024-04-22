@@ -748,3 +748,16 @@ body {
     
 }
 
+.gridview-scrollable {
+    max-width: 900px; /* Adjust this value as needed */
+    overflow-x: auto;
+}
+
+    .gridview-scrollable th,
+    .gridview-scrollable td {
+        max-width: 300px;
+        max-height:100px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }

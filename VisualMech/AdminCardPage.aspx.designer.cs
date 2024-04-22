@@ -15,6 +15,15 @@ namespace VisualMech
     {
 
         /// <summary>
+        /// BackBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BackBtn;
+
+        /// <summary>
         /// PreviewCardPanel control.
         /// </summary>
         /// <remarks>
@@ -33,6 +42,15 @@ namespace VisualMech
         protected global::System.Web.UI.WebControls.Button AddLearnBtn;
 
         /// <summary>
+        /// EditLearnBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button EditLearnBtn;
+
+        /// <summary>
         /// LearnCardsPreviewLit control.
         /// </summary>
         /// <remarks>
@@ -49,6 +67,15 @@ namespace VisualMech
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button AddMiniBtn;
+
+        /// <summary>
+        /// EditMiniBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button EditMiniBtn;
 
         /// <summary>
         /// MinigameCardsPreviewLit control.
@@ -481,5 +508,41 @@ namespace VisualMech
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button CreateMiniBtn;
+
+        /// <summary>
+        /// EditLearnPanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel EditLearnPanel;
+
+        /// <summary>
+        /// LearnGridView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView LearnGridView;
+
+        /// <summary>
+        /// EditMiniPanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel EditMiniPanel;
+
+        /// <summary>
+        /// MiniGridView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView MiniGridView;
     }
 }
