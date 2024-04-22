@@ -28,7 +28,7 @@ namespace VisualMech
             string userCount = GetTotalUsers();
 
             //Total Users
-            temp += $@"<div class=""col-xl-3 col-md-6 mb-4"">
+            temp += $@"<div class=""col-xl-3 col-md-6 mb-4 pe-5"">
                             <div class=""card border-left-primary shadow h-100 py-2"">
                                 <div class=""card-body"">
                                     <div class=""row no-gutters align-items-center"">
@@ -48,7 +48,7 @@ namespace VisualMech
             //Total Learn Cards
             int learnCount = learnCardManager.GetAllCards().Count;
 
-            temp += $@"<div class=""col-xl-3 col-md-6 mb-4"">
+            temp += $@"<div class=""col-xl-3 col-md-6 mb-4 pe-5"">
                             <div class=""card border-left-success shadow h-100 py-2"">
                                 <div class=""card-body"">
                                     <div class=""row no-gutters align-items-center"">
@@ -68,7 +68,7 @@ namespace VisualMech
             //Total Mini Game Cards
             int miniCount = miniGameCardManager.GetAllCards().Count;
 
-            temp += $@"<div class=""col-xl-3 col-md-6 mb-4"">
+            temp += $@"<div class=""col-xl-3 col-md-6 mb-4 pe-5"">
                             <div class=""card border-left-info  shadow h-100 py-2"">
                                 <div class=""card-body"">
                                     <div class=""row no-gutters align-items-center"">
@@ -89,7 +89,7 @@ namespace VisualMech
             //Total number of comments 
             string totalComments = GetTotalNumberComments();
 
-            temp += $@"<div class=""col-xl-3 col-md-6 mb-4"">
+            temp += $@"<div class=""col-xl-3 col-md-6 mb-4 pe-5"">
                             <div class=""card border-left-warning   shadow h-100 py-2"">
                                 <div class=""card-body"">
                                     <div class=""row no-gutters align-items-center"">
