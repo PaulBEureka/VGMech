@@ -12,10 +12,14 @@ namespace VisualMech
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            
+            userLbl.Text = Session["CurrentUser"].ToString(); 
         }
 
+        protected void LogoutBtn_Click(object sender, EventArgs e)
+        {
+            Session.Clear();
+            Response.Redirect("AdminLoginPage.aspx");
+        }
 
-        
     }
 }

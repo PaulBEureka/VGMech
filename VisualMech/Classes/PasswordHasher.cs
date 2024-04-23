@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -24,5 +25,8 @@ namespace VisualMech.Classes
             // Verify the password against the hashed password
             return BCryptNet.Verify(password, hashedPassword);
         }
+
+
+        
     }
 }

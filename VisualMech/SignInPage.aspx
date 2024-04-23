@@ -11,11 +11,11 @@
             <div class="row align-self-center signin_rectangle m-auto signin_padding">
                     <div class="d-grid">                        
                         <img src="Images/VGM_logo.png" alt="imgpng" class="img-fluid m-auto" style="width:100px; height:100px" />
-                        <h5 style="color: white; padding-bottom:10px; text-align:left">Username: <asp:TextBox ID="Username_tb" runat="server" Width="348px"></asp:TextBox>
+                        <h5 style="color: white; padding-bottom:10px; text-align:left">Username: <asp:TextBox ID="Username_tb" runat="server" Width="348px" CssClass="form-control"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="Username_tb" ErrorMessage="*" ForeColor="White"></asp:RequiredFieldValidator>
                             <asp:Label Text ="No Username found" Visible="false" Font-Size="Small" ID="No_Username_lbl" runat="server"></asp:Label>
                         </h5>                
-                        <h5 style="color: white; padding-bottom:10px; text-align:left">Password: <asp:TextBox ID="Password_tb" runat="server" Width="348px" TextMode="Password"></asp:TextBox>
+                        <h5 style="color: white; padding-bottom:10px; text-align:left">Password: <asp:TextBox ID="Password_tb" runat="server" Width="348px" TextMode="Password" CssClass="form-control"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="Password_tb" ErrorMessage="*" ForeColor="White"></asp:RequiredFieldValidator>
                             <asp:Label Text ="Incorrect Password" Visible="false" Font-Size="Small" ID="Incorrect_lbl" runat="server"></asp:Label>
                         </h5>
@@ -23,7 +23,7 @@
                         <div class=" align-content-center text-center">
                             <asp:Image ID="captchaImage" runat="server" Height="40px" Width="150px" ImageUrl="~/Captcha.aspx" /><br />
                             <br />
-                            <asp:TextBox ID="captchacode" runat="server" Placeholder="Enter Captcha code"></asp:TextBox><br />
+                            <asp:TextBox ID="captchacode" runat="server" Placeholder="Enter Captcha code" CssClass="form-control"></asp:TextBox><br />
                             <asp:Label ID="lblCaptchaErrorMsg" runat="server" Text="" Font-Size="Small"></asp:Label><br />
                         </div>
                         <br />
