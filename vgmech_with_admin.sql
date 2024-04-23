@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 20, 2024 at 12:43 PM
+-- Generation Time: Apr 23, 2024 at 05:03 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -80,7 +80,8 @@ INSERT INTO `comment` (`comment_id`, `mechanic_title`, `comment`, `comment_date`
 (25, 'MOVEMENT MECHANIC', 'a', '2024-04-12 08:53:38', NULL, 74),
 (26, 'MOVEMENT MECHANIC', 'a', '2024-04-12 08:57:01', NULL, 74),
 (27, 'COLLECTING MECHANIC', 'gg', '2024-04-12 09:17:40', NULL, 74),
-(28, 'INTERACT MECHANIC', 'I am the first one', '2024-04-15 01:57:22', NULL, 74);
+(28, 'INTERACT MECHANIC', 'I am the first one', '2024-04-15 01:57:22', NULL, 74),
+(29, 'MOVEMENT MECHANIC', 'j', '2024-04-22 06:47:34', NULL, 74);
 
 -- --------------------------------------------------------
 
@@ -123,7 +124,8 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`user_id`, `username`, `password`, `email`, `about_me`, `role`) VALUES
-(74, 'hatdog', '$2a$10$8s0bgjNKXCZGJh.eXxsKAeH7g0Tj1q05AZs4bm/ICAgW3TgA..qdK', 'paul.pb331@gmail.com', 'Cute Dogez', 'user');
+(74, 'hatdog', '$2a$10$8s0bgjNKXCZGJh.eXxsKAeH7g0Tj1q05AZs4bm/ICAgW3TgA..qdK', 'paul.pb331@gmail.com', 'Cute Dogez', 'user'),
+(77, 'root', '$2a$10$udhbTveYQQTHxVjMgfzrOe5Axmbe3TVmMAnYgnyLEwQ3QydAxq6qa', NULL, NULL, 'admin');
 
 -- --------------------------------------------------------
 
@@ -201,7 +203,7 @@ ALTER TABLE `avatar`
 -- AUTO_INCREMENT for table `comment`
 --
 ALTER TABLE `comment`
-  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `game_record`
@@ -213,13 +215,13 @@ ALTER TABLE `game_record`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
 
 --
 -- AUTO_INCREMENT for table `visited_pages`
 --
 ALTER TABLE `visited_pages`
-  MODIFY `visit_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `visit_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- Constraints for dumped tables
