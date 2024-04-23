@@ -10,7 +10,7 @@
                 <div class="row align-self-center signup_rectangle m-auto signup_padding">
                         <div class="d-grid">                        
                             <img src="Images/VGM_logo.png" alt="imgpng" class="img-fluid m-auto" style="width:100px; height:100px" />
-                            <h5 style="color: white; padding-bottom:10px; text-align:left">New Username: <asp:TextBox ID="New_Username_tb" runat="server" Width="348px"></asp:TextBox>
+                            <h5 style="color: white; padding-bottom:10px; text-align:left">New Username: <asp:TextBox ID="New_Username_tb" runat="server" Width="348px" CssClass="form-control"></asp:TextBox>
                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" Display="Dynamic" ControlToValidate="New_Username_tb" ErrorMessage="*" ForeColor="White"></asp:RequiredFieldValidator>
                                 <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server"
                                     ControlToValidate="New_Username_tb"
@@ -28,7 +28,7 @@
 
                             </h5>        
                         
-                            <h5 style="color: white; padding-bottom:10px; text-align:left">Email: <asp:TextBox ID="Email_tb" runat="server" Width="348px"></asp:TextBox>
+                            <h5 style="color: white; padding-bottom:10px; text-align:left">Email: <asp:TextBox ID="Email_tb" runat="server" Width="348px" CssClass="form-control"></asp:TextBox>
                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" Display="Dynamic" ControlToValidate="Email_tb" ErrorMessage="*" ForeColor="White"></asp:RequiredFieldValidator>
                                 <asp:RegularExpressionValidator ID="RegularExpressionValidator2" Display="Dynamic" runat="server"
                                     ControlToValidate="Email_tb"
@@ -47,7 +47,7 @@
 
 
 
-                            <h5 style="color: white; padding-bottom:10px; text-align:left">New Password: <asp:TextBox ID="New_Password_tb" runat="server" Width="348px" TextMode="Password"></asp:TextBox>
+                            <h5 style="color: white; padding-bottom:10px; text-align:left">New Password: <asp:TextBox ID="New_Password_tb" CssClass="form-control" runat="server" Width="348px" TextMode="Password"></asp:TextBox>
                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" Display="Dynamic" ControlToValidate="New_Password_tb" ErrorMessage="*" ForeColor="White"></asp:RequiredFieldValidator>
                                 <asp:RegularExpressionValidator ID="RegularExpressionValidatorPassword" Display="Dynamic" runat="server"
                                     ControlToValidate="New_Password_tb"
@@ -59,7 +59,7 @@
                                 </asp:RegularExpressionValidator>
                         
                             </h5>
-                            <h5 style="color: white; padding-bottom:10px; text-align:left">Confirm Password: <asp:TextBox ID="Confirm_Password_tb" runat="server" Width="348px" TextMode="Password"></asp:TextBox>
+                            <h5 style="color: white; padding-bottom:10px; text-align:left">Confirm Password: <asp:TextBox ID="Confirm_Password_tb" CssClass="form-control" runat="server" Width="348px" TextMode="Password"></asp:TextBox>
                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" Display="Dynamic" ControlToValidate="Confirm_Password_tb" ErrorMessage="*" ForeColor="White"></asp:RequiredFieldValidator>
                                 <asp:CompareValidator ID="CompareValidatorPassword" runat="server" Display="Dynamic"
                                     ControlToValidate="Confirm_Password_tb"
@@ -76,7 +76,7 @@
                             <div class=" align-content-center text-center">
                                 <asp:Image ID="captchaImage" runat="server" Height="40px" Width="150px" ImageUrl="~/Captcha.aspx" /><br />
                                 <br />
-                                <asp:TextBox ID="captchacode" runat="server" Placeholder="Enter Captcha code"></asp:TextBox><br />
+                                <asp:TextBox ID="captchacode" runat="server" Placeholder="Enter Captcha code" CssClass="form-control"></asp:TextBox><br />
                                 <asp:Label ID="lblCaptchaErrorMsg" runat="server" Text="" Font-Size="Small" ForeColor="White"></asp:Label><br />
                             </div>
                             <br />

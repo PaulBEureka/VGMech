@@ -11,43 +11,52 @@ namespace VisualMech
 {
 
 
-    public partial class AdminSite
+    public partial class WebForm8
     {
 
         /// <summary>
-        /// ScriptManager1 control.
+        /// CurrentPassTb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.ScriptManager ScriptManager1;
+        protected global::System.Web.UI.WebControls.TextBox CurrentPassTb;
 
         /// <summary>
-        /// userLbl control.
+        /// NewPasswordTb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label userLbl;
+        protected global::System.Web.UI.WebControls.TextBox NewPasswordTb;
 
         /// <summary>
-        /// ContentPlaceHolder1 control.
+        /// submitErrorLbl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder ContentPlaceHolder1;
+        protected global::System.Web.UI.WebControls.Label submitErrorLbl;
 
         /// <summary>
-        /// LogoutBtn control.
+        /// submitSuccessLbl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button LogoutBtn;
+        protected global::System.Web.UI.WebControls.Label submitSuccessLbl;
+
+        /// <summary>
+        /// PassChangeBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button PassChangeBtn;
     }
 }

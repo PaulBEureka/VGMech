@@ -614,6 +614,7 @@
     <Content Include="AdminDashboard.aspx" />
     <Content Include="AdminCardPage.aspx" />
     <Content Include="AdminLearners.aspx" />
+    <Content Include="AdminChange.aspx" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -771,6 +772,13 @@
     </Compile>
     <Compile Include="AdminLearners.aspx.designer.cs">
       <DependentUpon>AdminLearners.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminChange.aspx.cs">
+      <DependentUpon>AdminChange.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminChange.aspx.designer.cs">
+      <DependentUpon>AdminChange.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

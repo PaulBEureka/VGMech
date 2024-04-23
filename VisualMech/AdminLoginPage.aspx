@@ -48,7 +48,12 @@
                     <br />
                     <div class="row text-start">
                         <label for="PasswordTb" class="form-label text-black">Password</label>
-                        <asp:TextBox ID="PasswordTb" runat="server" CssClass="form-control"></asp:TextBox>
+                        <asp:TextBox ID="PasswordTb" runat="server" CssClass="form-control" TextMode="Password"></asp:TextBox>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <asp:Label ID="InputLbl"  runat="server" CssClass="" ForeColor="Red" Text="" Visible="false" Width="358px"/>
+                        
                     </div>
                     <br />
                     <div class="row">
