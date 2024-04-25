@@ -76,7 +76,6 @@
 .intro-section-color {
     background: rgb(27,27,27);
     background: linear-gradient(90deg, rgba(27,27,27,1) 21%, rgba(103,101,101,1) 64%, rgba(197,197,197,1) 100%);
-    height:550px;
 }
 
 
@@ -322,8 +321,8 @@ body {
 }
 
 .gameMech-section-holders {
-    width: 670px;
-    height: 700px;
+    max-width: 670px;
+    max-height: 700px;
     background-color:  rgb(91,7,21);
     padding-bottom: 3em;
     padding-top: 3em;
@@ -331,7 +330,7 @@ body {
 
 .gameMech-code-holder {
     overflow: scroll;
-    width: 620px;
+    max-width: 620px;
     min-height:534px;
     height: 100%;
     background-color: white;
@@ -344,7 +343,7 @@ body {
 
 .gameMech-information-holder {
     background-color: rgb(91,7,21);
-    width: 86%;
+    max-width: 86%;
 }
 
 .gameMech-padding-text {
@@ -376,8 +375,8 @@ body {
 }
 
 .unityLayout {
-    width: 620px;
-    height: 380px;
+    max-width: 620px;
+    max-height: 380px;
     border:solid;
     border-width:5px;
     border-color:white;
@@ -415,9 +414,7 @@ body {
 
 
 .mini_game_inner_box{
-    width: 95%;
-    height:500px;
-    background:white;
+    background-color: lightgray;
 
 }
 

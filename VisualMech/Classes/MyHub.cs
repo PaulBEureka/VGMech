@@ -79,7 +79,7 @@ namespace VisualMech
                                                     <div class=""col-md-1 d-grid"">
                                                         <p class=""fw-bolder text-white fs-3 my-3"">{rankingNum.ToString()}.</p>
                                                     </div>
-                                                    <div class=""col-md-1 image-container"">
+                                                    <div class=""col-md-1 image-container me-3 mb-2"">
                                                         <img src=""{avatarPath}"" alt="""" class=""rounded-circle"" width=""60"" height=""60"">
                                                     </div>
                                                     <div class=""col-md-9 leaderboard_white_rec_round"">

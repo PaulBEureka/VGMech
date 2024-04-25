@@ -30,30 +30,31 @@
                     <div class="carousel-item active" data-bs-interval="5000">
                         <div class="row my-3 py-5">
                             <div class="col-md-6 justify-content-center text-center my-3 py-5 d-grid">
-                                <h1 class="display-3 text-center text-light fw-bolder m-auto">Redefining <br /> Learning of Game<br /> Mechanics!</h1>
+                                <p class="display-3 text-center text-light fw-bolder m-auto">Redefining <br /> Learning of Game<br /> Mechanics!</p>
                             </div>
-                            <div class="col-md-6 justify-content-center text-center">
-                                <img class="img-fluid" src="Images/game-mechanics-cover.png" alt=" " style="max-width: 100%; height: auto;">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-item" data-bs-interval="5000">
-                        <div class="row my-3 py-5">
-                            <div class="col-md-6 justify-content-center text-center">
-                                <img class="img-fluid" src="Images/game-mechanics-cover2.png" alt=" " style="max-width: 100%; height: auto;">
-                            </div>
-                            <div class="col-md-6 justify-content-center text-center my-3 py-5 d-grid">
-                                <h1 class="display-3 text-center text-light fw-bolder m-auto">Interactively learn<br />Each Game Mechanic!</h1>
+                            <div class="col-md-6 justify-content-center text-center ">
+                                <img class="ratio ratio-4x3 container-md" src="Images/game-mechanics-cover.png" alt=" ">
+                               
                             </div>
                         </div>
                     </div>
                     <div class="carousel-item" data-bs-interval="5000">
                         <div class="row my-3 py-5">
+                            <div class="col-md-6 justify-content-center text-center">
+                                <img class="ratio ratio-4x3 container-md" src="Images/game-mechanics-cover2.png" alt=" " >
+                            </div>
                             <div class="col-md-6 justify-content-center text-center my-3 py-5 d-grid">
-                                <h1 class="display-3 text-center text-light fw-bolder m-auto">Collaboratively learn<br />with other learners!</h1>
+                                <p class="display-3 text-center text-light fw-bolder m-auto">Interactively learn<br />Each Game Mechanic!</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-item" data-bs-interval="5000">
+                        <div class="row my-3 py-5">
+                            <div class="col-md-6 justify-content-center text-center my-3 py-5 d-grid">
+                                <p class="display-3 text-center text-light fw-bolder m-auto">Collaboratively learn<br />with other learners!</p>
                             </div>
                             <div class="col-md-6 justify-content-center text-center">
-                                <img class="img-fluid" src="Images/game-mechanics-cover3.png" alt=" " style="max-width: 100%; height: auto;">
+                                <img class="ratio ratio-4x3 container-md" src="Images/game-mechanics-cover3.png" alt=" ">
                             </div>
                         </div>
                     </div>

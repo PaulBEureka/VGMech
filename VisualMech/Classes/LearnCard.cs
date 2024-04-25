@@ -65,13 +65,13 @@ namespace VisualMech.Content.Classes
                             <h2 class=""text-light fw-bolder"">Interactive Demonstration</h2>
                             
                     </div>
-                        <div>
-                            <iframe src=""{UnityLink}"" class=""unityLayout"" scrolling=""no""></iframe>
-                        </div>
-                        <div>
-                            <h4 class=""text-light fw-bolder gameMech-padding-Title pb-3"">INTERACTIVE CONTROLS</h4>
-                            <p class=""text-light m-0 gameMech-padding-text fs-6"">{InteractiveControls}</p>
-                        </div>
+                    <div class=""ratio ratio-16x9 d-grid mb-3 pb-3"">
+                        <iframe src=""{UnityLink}"" class=""unityLayout m-auto"" allowfullscreen=""allowfullscreen"" title=""{Title.ToUpper()}"" scrolling=""no""></iframe>
+                    </div>
+                    <div>
+                        <h4 class=""text-light fw-bolder gameMech-padding-Title pb-3"">INTERACTIVE CONTROLS</h4>
+                        <p class=""text-light m-0 gameMech-padding-text fs-6"">{InteractiveControls}</p>
+                    </div>
                     </div>
                     <div class=""col-md-6 d-grid gameMech-section-holders mx-md-3 my-5 "">
                         <div class=""row"">
