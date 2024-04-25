@@ -68,13 +68,13 @@ namespace VisualMech
             }
         }
 
-        private void RegisterUser()
+        private async Task RegisterUserAsync()
         {
             try
             {
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
-                    connection.Open();
+                    await connection.OpenAsync();
 
                     string insertQuery = "INSERT INTO user (username, password, email) VALUES (@Username, @Password, @Email)";
                     using (MySqlCommand command = new MySqlCommand(insertQuery, connection))
@@ -85,18 +85,16 @@ namespace VisualMech
                         command.Parameters.AddWithValue("@Username", Session["tempUsername"].ToString());
                         command.Parameters.AddWithValue("@Password", hashPassword);
                         command.Parameters.AddWithValue("@Email", Session["tempEmail"].ToString());
-                        command.ExecuteNonQuery();
+                        await command.ExecuteNonQueryAsync();
                     }
 
                     connection.Close();
 
-                    Session["tempUsername"] = null;
-                    Session["tempPassword"] = null;
-                    Session["tempEmail"] = null;
+                    await LoginUserAsync();
 
-                    LoginUser();
+                    
 
-                    Response.Redirect("HomePage.aspx");
+                    
                 }
             }
             catch (Exception ex)
@@ -105,71 +103,73 @@ namespace VisualMech
             }
         }
 
-        private void LoginUser()
+        private async Task LoginUserAsync()
         {
-            string selectQuery = "SELECT user_id, username, email FROM user WHERE username = @Username";
+            string selectQuery = "SELECT user_id, username, email FROM user WHERE username = @Username and role = 'user'";
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                connection.Open();
+                await connection.OpenAsync();
 
                 using (MySqlCommand command = new MySqlCommand(selectQuery, connection))
                 {
-                    command.Parameters.AddWithValue("@Username", New_Username_tb.Text);
+                    command.Parameters.AddWithValue("@Username", Session["tempUsername"].ToString());
 
-                    using (MySqlDataReader reader = command.ExecuteReader())
+                    using (MySqlDataReader reader = (MySqlDataReader)await command.ExecuteReaderAsync())
                     {
                         if (reader.Read())
                         {
                             int user_id = reader.GetInt32("user_id");
                             string username = reader.GetString("username");
                             string email = reader.GetString("email");
-                            RecordDefaultAvatar();
 
                             Session["CurrentUser"] = username;
                             Session["Current_ID"] = user_id;
                             Session["CurrentEmail"] = email;
-                            Session["CurrentAvatarPath"] = UserDataGather.GetUserAvatarPath(user_id.ToString());
                             Session["Message"] = $@"Welcome to VGMech, {username}";
-                            
+
+                            await RecordDefaultAvatarAsync(user_id);
+                            Session["CurrentAvatarPath"] = UserDataGather.GetUserAvatarPath(user_id.ToString());
                         }
                     }
                 }
 
                 connection.Close();
             }
-
-                
         }
 
-        private void RecordDefaultAvatar()
+        private async Task RecordDefaultAvatarAsync(int userID)
         {
             string defaultAvatarPath = "Images/person_icon.png";
             string insertAvatarQuery = "INSERT INTO Avatar (user_id, avatar_path) VALUES (@UserId, @AvatarPath)";
 
-
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                connection.Open();
+                await connection.OpenAsync();
                 using (MySqlCommand command = new MySqlCommand(insertAvatarQuery, connection))
                 {
-                    command.Parameters.AddWithValue("@UserId", Session["Current_ID"]);
+                    command.Parameters.AddWithValue("@UserId", userID);
                     command.Parameters.AddWithValue("@AvatarPath", defaultAvatarPath);
-                    command.ExecuteNonQuery();
+                    await command.ExecuteNonQueryAsync();
                 }
                 connection.Close();
             }
 
-                
-        }      
+            Session["tempUsername"] = null;
+            Session["tempPassword"] = null;
+            Session["tempEmail"] = null;
 
-        
-        protected void OTPbtn_Click(object sender, EventArgs e)
+            Response.Redirect("HomePage.aspx");
+        }
+
+
+
+        protected async void OTPbtn_Click(object sender, EventArgs e)
         {
             if (EmailSender.OTP == OTPtb.Text)
             {
-                Session["CurrentActivation"] = "1";
                 EmailSender.OTP = null;
-                RegisterUser();
+                await RegisterUserAsync();
+
             }
             else
             {
