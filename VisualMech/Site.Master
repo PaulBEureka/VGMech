@@ -75,9 +75,10 @@
                             <a class="text-white dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                                 <%# Session["CurrentUser"] ?? "Default Name" %>
                             </a>
+                            <img src="<%# Session["CurrentAvatarPath"] ?? "Images/person_icon.png" %>" alt="" class="rounded-circle shadow" width="40" height="40">
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 <li><asp:Button runat="server" class="dropdown-item" PostBackUrl="~/UserPage.aspx" Text="User Profile" CausesValidation="false"></asp:Button></li>
-                                <li><asp:Button runat="server" class="dropdown-item" Text="Log Out" OnClick="btnCurrentUser_Click" CausesValidation="false"></asp:Button></li>
+                                <li><asp:Button runat="server" class="dropdown-item text-danger" Text="Log Out" OnClick="btnCurrentUser_Click" CausesValidation="false"></asp:Button></li>
                                 
                             </ul>
                         </div>
