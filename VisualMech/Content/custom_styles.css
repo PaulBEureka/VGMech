@@ -374,8 +374,6 @@ body {
 }
 
 .unityLayout {
-    max-width: 620px;
-    max-height: 380px;
     border:solid;
     border-width:5px;
     border-color:white;
