@@ -34,7 +34,6 @@
                             </div>
                             <div class="col-md-6 justify-content-center text-center ">
                                 <img class="ratio ratio-4x3 container-md" src="Images/game-mechanics-cover.png" alt=" ">
-                               
                             </div>
                         </div>
                     </div>
