@@ -37,9 +37,11 @@ namespace VisualMech.Classes
             if (sessionUserID != null)
             {
 
-                temp += $@"<div class=""row center_custom m-auto my-5 mt-0"" >
-                                <iframe src=""{UnityLink}?current_id={sessionUserID}"" class=""mini_game_inner_box"" scrolling=""no""></iframe>
-                            </div>";
+                temp += $@"<div class=""row d-grid m-auto my-5 mt-0"" >
+                                <div class=""ratio ratio-16x9 d-grid m-auto"">
+                                    <iframe src=""{UnityLink}?current_id={sessionUserID}"" allowfullscreen=""allowfullscreen"" title=""{Title.ToUpper()}"" class=""mini_game_inner_box m-auto"" scrolling=""no""></iframe>
+                                </div>
+                          </div>";
             }
             else
             {
