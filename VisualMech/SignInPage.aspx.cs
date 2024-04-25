@@ -72,6 +72,7 @@ namespace VisualMech
                                         Session["CurrentUser"] = username;
                                         Session["Current_ID"] = user_id;
                                         Session["CurrentEmail"] = email;
+
                                         Session["CurrentAvatarPath"] = UserDataGather.GetUserAvatarPath(user_id.ToString());
                                         
                                         Session["Message"] = $@"Welcome to VGMech, {username}";

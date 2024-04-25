@@ -129,7 +129,7 @@ namespace VisualMech
 
                     connection.Close();
 
-                    
+                    Session["CurrentAvatarPath"] = UserDataGather.GetUserAvatarPath(Session["Current_ID"].ToString());
 
                     Response.Redirect(Request.RawUrl);
 
@@ -166,7 +166,7 @@ namespace VisualMech
                                 if (!reader.IsDBNull(pathIndex)) 
                                 {
                                     string path = reader.GetString(pathIndex);
-                                    string imageHtml = $@"<img src=""{path}"" alt=""User"" class=""rounded-circle"" width=""150"">";
+                                    string imageHtml = $@"<img src=""{path}"" alt=""User"" class=""rounded-circle shadow"" width=""100"" height=""100"">";
 
                                     return imageHtml;
                                 }
