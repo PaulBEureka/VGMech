@@ -31,7 +31,6 @@
                                 <hr />
                             </div>
 
-                            <!--Per Comment Layout -->
                             <div class="row container d-grid">
                                     
                                                     
@@ -75,7 +74,7 @@
                                     
 
                                     <div class="row">
-                                        <div class="col pb-4 comment-section-size">
+                                        <div class="col pb-4 comment-section-size shadow">
                                             
                                             <div id="commentSection">
                                                 <!-- Existing comments will be dynamically added here -->
