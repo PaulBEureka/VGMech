@@ -397,7 +397,15 @@ namespace VisualMech
                 
             }
 
-            string commentCountString = commentCount.ToString() + " Comments";
+            string commentCountString;
+            if (commentCount <= 1 )
+            {
+                commentCountString = commentCount.ToString() + " comment";
+            }
+            else
+            {
+                commentCountString = commentCount.ToString() + " comments";
+            }
 
             string sortByFormat = $@"<div class=""dropdown"">
                                             <button class=""sortby_button"" type=""button"" id=""sortDropdown"" data-bs-toggle=""dropdown"" aria-expanded=""false"">
