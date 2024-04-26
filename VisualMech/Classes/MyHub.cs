@@ -190,7 +190,7 @@ namespace VisualMech
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 string query = $@"
-            SELECT c1.*, user.username, avatar.avatar_path 
+            SELECT c1.*, user.username, user.about_me ,avatar.avatar_path 
             FROM comment c1
             INNER JOIN user ON c1.user_id = user.user_id 
             INNER JOIN avatar ON user.user_id = avatar.user_id
@@ -211,6 +211,7 @@ namespace VisualMech
                             string raw_comment = reader["comment"].ToString();
                             int? parentCommentId = reader.IsDBNull(reader.GetOrdinal("parent_comment_id")) ? (int?)null : reader.GetInt32(reader.GetOrdinal("parent_comment_id"));
                             int userId = reader.GetInt32("user_id");
+                            string about_me = reader["about_me"].ToString();
 
                             
                             DateTime commentDate = DateTime.Parse(rawDate);
@@ -223,7 +224,7 @@ namespace VisualMech
                                 Comment parentComment = commentList.FirstOrDefault(c => c.CommentId == parentCommentId);
                                 if (parentComment != null)
                                 {
-                                    parentComment.RepliesList.Add(new Comment(commentId, username, commentDate, comment, commentAvatarPath));
+                                    parentComment.RepliesList.Add(new Comment(commentId, username, commentDate, comment, commentAvatarPath, about_me));
                                 }
                                 else
                                 {
@@ -232,7 +233,7 @@ namespace VisualMech
                             }
                             else
                             {
-                                commentList.Add(new Comment(commentId, username, commentDate, comment, commentAvatarPath));
+                                commentList.Add(new Comment(commentId, username, commentDate, comment, commentAvatarPath, about_me));
                             }
 
 
@@ -307,7 +308,8 @@ namespace VisualMech
                             <div class=""comment mt-4 float-left"" >
                                 <div class=""row"">
                                     <div class=""col-1 text-end"">
-                                        <img src= ""{replyComment.AvatarPath}"" alt="""" class=""rounded-circle"" width=""40"" height=""40"">
+                                        <img src= ""{replyComment.AvatarPath}"" alt="""" role=""button"" class=""rounded-circle"" width=""40"" height=""40"" data-bs-toggle=""popover"" title=""About {replyComment.Username}"" data-bs-content=""{replyComment.AboutMe}"">
+                                        
                                     </div>
                                     <div class =""col-11"">
                                         <div class=""row"">
@@ -366,7 +368,8 @@ namespace VisualMech
                     <div class=""comment mt-4 float-left"" >
                         <div class=""row"">
                             <div class=""col-1 text-end"">
-                                <img src= ""{comment.AvatarPath}"" alt="""" class=""rounded-circle"" width=""40"" height=""40"">
+                                <img src= ""{comment.AvatarPath}"" alt="""" role=""button"" class=""rounded-circle"" width=""40"" height=""40"" data-bs-toggle=""popover"" title=""About {comment.Username}"" data-bs-content=""{comment.AboutMe}"">
+                               
                             </div>
                             <div class =""col-11"">
                                 <div class=""row"">

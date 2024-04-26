@@ -77,8 +77,8 @@ namespace VisualMech.Content.Classes
                         <div class=""row"">
                             <h2 class=""text-light fw-bolder"">Coding Implementation</h2>
                             <div class=""col align-items-end text-end"">
-                                <button class=""copy_button text-end"" type=""button"" onclick=""copyCodeText()"">
-                                    <i class=""fa-solid fa-copy"" aria-hidden=""true""></i> Copy text
+                                <button class=""copy_button text-end"" type=""button"" onclick=""copyCodeText()"" data-bs-toggle=""tooltip"" data-bs-placement=""top"" title=""Copy to Clipboard"">
+                                    <i class=""fa-solid fa-copy"" aria-hidden=""true""></i> Copy code
                                 </button>
                             </div>
                         </div>

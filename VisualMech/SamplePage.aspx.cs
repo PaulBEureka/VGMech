@@ -45,6 +45,14 @@ namespace VisualMech
                     LearnCard selectedCard = cardList.FirstOrDefault(card => card.CardID == learnID);
                     cardTitle = selectedCard.Title;
                     gameMechLit.Text = selectedCard.GetContentHtml();
+
+                    string script = $@"
+                            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle=""tooltip""]'))
+                            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {{
+                                return new bootstrap.Tooltip(tooltipTriggerEl)
+                            }})
+                    ";
+                    ClientScript.RegisterClientScriptBlock(this.GetType(), "MyScript", script, true);
                 }
             }
 

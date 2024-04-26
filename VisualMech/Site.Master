@@ -13,9 +13,7 @@
     <script src="Scripts/jquery.signalR-2.4.3.js"></script>
     <script src="signalr/hubs"></script>
     
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
-
-   
+    <script src="Scripts/bootstrap.bundle.min.js"></script>
 
     <webopt:bundlereference runat="server" path="~/Content/css" />
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
@@ -75,7 +73,7 @@
                             <a class="text-white dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                                 <%# Session["CurrentUser"] ?? "Default Name" %>
                             </a>
-                            <img src="<%# Session["CurrentAvatarPath"] ?? "Images/person_icon.png" %>" alt="" class="rounded-circle shadow" width="40" height="40">
+                            <img src="<%# Session["CurrentAvatarPath"] ?? "Images/person_icon.png" %>" alt="" class="rounded-circle record_border shadow" width="40" height="40">
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 <li><asp:Button runat="server" class="dropdown-item" PostBackUrl="~/UserPage.aspx" Text="User Profile" CausesValidation="false"></asp:Button></li>
                                 <li><asp:Button runat="server" class="dropdown-item text-danger" Text="Log Out" OnClick="btnCurrentUser_Click" CausesValidation="false"></asp:Button></li>
@@ -151,10 +149,6 @@
         </footer>
     </form>
 
-
-    <asp:PlaceHolder runat="server">
-        <%: Scripts.Render("~/Scripts/bootstrap.js") %>
-    </asp:PlaceHolder>
 </body>
     
 </html>

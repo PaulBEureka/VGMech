@@ -76,7 +76,7 @@ namespace VisualMech
                 {
                     await connection.OpenAsync();
 
-                    string insertQuery = "INSERT INTO user (username, password, email) VALUES (@Username, @Password, @Email)";
+                    string insertQuery = "INSERT INTO user (username, password, email, about_me) VALUES (@Username, @Password, @Email, @AboutMe)";
                     using (MySqlCommand command = new MySqlCommand(insertQuery, connection))
                     {
                         PasswordHasher passwordHasher = new PasswordHasher();
@@ -85,6 +85,7 @@ namespace VisualMech
                         command.Parameters.AddWithValue("@Username", Session["tempUsername"].ToString());
                         command.Parameters.AddWithValue("@Password", hashPassword);
                         command.Parameters.AddWithValue("@Email", Session["tempEmail"].ToString());
+                        command.Parameters.AddWithValue("@AboutMe", "A curious learner!");
                         await command.ExecuteNonQueryAsync();
                     }
 

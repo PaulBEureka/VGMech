@@ -13,8 +13,9 @@ namespace VisualMech.Classes
         public string CommentContent { get; set; }
         public List<Comment> RepliesList { get; set; }
         public string AvatarPath { get; set; }
+        public string AboutMe { get; set; }
 
-        public Comment(int commentId, string username, DateTime dateCommented,string commentcontent, string avatarPath)
+        public Comment(int commentId, string username, DateTime dateCommented,string commentcontent, string avatarPath, string aboutMe)
         {
             CommentId = commentId;
             Username = username;
@@ -22,6 +23,7 @@ namespace VisualMech.Classes
             CommentContent = commentcontent;
             RepliesList = new List<Comment>();
             AvatarPath = avatarPath;
+            AboutMe = aboutMe;
         }
 
 
