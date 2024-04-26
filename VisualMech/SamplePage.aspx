@@ -26,6 +26,7 @@
                         <div class="container m-0 mx-auto d-grid">
                             <div class="row ">
                                 <h4 class="fw-bolder">Share your thoughts</h4>
+                               
                             </div>
                             <div>
                                 <hr />
@@ -103,7 +104,39 @@
     </main>
 
     <script>
+
         
+
+        function onContentLoaded() {
+            var currentPopover = null;
+
+            var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+            var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+                var popover = new bootstrap.Popover(popoverTriggerEl, {
+                    trigger: 'hover' // Set trigger option to 'hover'
+                });
+
+                popoverTriggerEl.addEventListener('shown.bs.popover', function () {
+                    // If there's a currently shown popover, hide it
+                    if (currentPopover && currentPopover !== popover) {
+                        currentPopover.hide();
+                    }
+
+                    // Set the current popover to the newly shown one
+                    currentPopover = popover;
+                });
+
+                popoverTriggerEl.addEventListener('hidden.bs.popover', function () {
+                    // Clear the reference to the current popover when it's hidden
+                    currentPopover = null;
+                });
+
+                return popover;
+            });
+        }
+
+
+
         var chat = $.connection.myHub;
 
         // Function to update comments
@@ -126,6 +159,8 @@
             $('#commentSection').html(commentHTML[0]);
             $('#commentCountDiv').html(commentHTML[1]);
             $('#sortByDiv').html(commentHTML[2]);
+
+            onContentLoaded();
         };
 
         $.connection.hub.start().done(function () {

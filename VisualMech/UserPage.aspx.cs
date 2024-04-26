@@ -214,7 +214,9 @@ namespace VisualMech
                                 {
                                     string oldPath = reader.GetString(pathIndex);
 
-                                    if (!string.IsNullOrEmpty(oldPath) && File.Exists(Server.MapPath(oldPath)))
+                               
+
+                                    if (!string.IsNullOrEmpty(oldPath) && File.Exists(Server.MapPath(oldPath)) && oldPath != "Images/person_icon.png")
                                     {
                                         try
                                         {
