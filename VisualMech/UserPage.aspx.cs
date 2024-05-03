@@ -59,7 +59,7 @@ namespace VisualMech
                               ""showMethod"": ""fadeIn"",
                               ""hideMethod"": ""fadeOut""
                             }}
-                            toastr['success']('{Session["Message"].ToString()}', 'Notification');
+                            toastr['success']('{Session["Message"]}', 'Notification');
                     ";
                 
                 ClientScript.RegisterClientScriptBlock(this.GetType(), "MyScript", script, true);
@@ -431,7 +431,6 @@ namespace VisualMech
             ConfirmBtn.Visible = false;
         }
 
-
         protected void ConfirmBtn_Click(object sender, EventArgs e)
         {
             bool tempClear = true;
@@ -642,8 +641,6 @@ namespace VisualMech
             }
         }
             
-
-
         protected void CancelChangePassBtn_Click(object sender, EventArgs e)
         {
             ChangePasswordPanel.Visible = false;
@@ -659,7 +656,6 @@ namespace VisualMech
             NewPasswordTb.Text = null;
             ConNewPasswordTb.Text = null;
         }
-
 
         protected void UpdatePassBtn_Click(object sender, EventArgs e)
         {

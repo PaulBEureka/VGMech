@@ -81,9 +81,9 @@ namespace VisualMech
                               ""showMethod"": ""fadeIn"",
                               ""hideMethod"": ""fadeOut""
                             }}
-                            toastr['success']('{Session["Message"].ToString()}', 'Notification');
+                            toastr['success']('{Session["Message"]}', 'Notification');
                     ";
-                ClientScript.RegisterClientScriptBlock(this.GetType(), "MyScript", script, true);
+                ClientScript.RegisterClientScriptBlock(this.GetType(), "MyScript2", script, true);
                 Session["Message"] = null;
             }
         
@@ -307,29 +307,9 @@ namespace VisualMech
                             insertCommand.ExecuteNonQuery();
                         }
 
-                        string toastMessage = $@"Have fun learning all about {cardTitle},<br/>Collaborate with other learners in the comment section!";
+                        Session["Message"] = $@"Have fun learning all about {cardTitle},<br/>Collaborate with other learners in the comment section!";
 
-                        string script = $@"
-                            toastr.options = {{
-                              ""closeButton"": false,
-                              ""debug"": false,
-                              ""newestOnTop"": false,
-                              ""progressBar"": false,
-                              ""positionClass"": ""toast-top-right"",
-                              ""preventDuplicates"": false,
-                              ""onclick"": null,
-                              ""showDuration"": ""300"",
-                              ""hideDuration"": ""1000"",
-                              ""timeOut"": ""10000"",
-                              ""extendedTimeOut"": ""1000"",
-                              ""showEasing"": ""swing"",
-                              ""hideEasing"": ""linear"",
-                              ""showMethod"": ""fadeIn"",
-                              ""hideMethod"": ""fadeOut""
-                            }}
-                            toastr['info']('{toastMessage}', 'Glad to see you here!');
-                        ";
-                        ClientScript.RegisterClientScriptBlock(this.GetType(), "MyScript", script, true);
+                        
                     }
                     else
                     {
