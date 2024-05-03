@@ -23,7 +23,6 @@ namespace VisualMech
     public class MyHub : Hub
     {
         private string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
-
         
         public async Task UpdateLeaderboards(string[] miniGameInfo)
         {
@@ -31,14 +30,12 @@ namespace VisualMech
             Clients.All.updateLeaderboards(leaderboardsData);
         }
 
-
         public async Task UpdateComments(string[] stringArr)
         {
             string[] commentsData = await RetrieveCommentsData(stringArr);
             Clients.All.sendComments(commentsData);
         }
         
-
         private async Task<string[]> RetrieveLeaderboardsDataAsync(string[] miniGameInfo)
         {
             string allLeaderboardsString = "";
@@ -176,8 +173,6 @@ namespace VisualMech
             
             return new string[4] { allLeaderboardsString, congratsScript, returnRank, returnScore };
         }
-
-
 
         private async Task<string[]> RetrieveCommentsData(string[] info)
         {

@@ -73,7 +73,7 @@ namespace VisualMech
                               ""showMethod"": ""fadeIn"",
                               ""hideMethod"": ""fadeOut""
                             }}
-                            toastr['success']('{Session["Message"].ToString()}', 'Notification');
+                            toastr['success']('{Session["Message"]}', 'Notification');
                     ";
                 ClientScript.RegisterClientScriptBlock(this.GetType(), "MyScript", script, true);
                 Session["Message"] = null;

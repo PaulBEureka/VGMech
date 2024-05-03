@@ -305,18 +305,6 @@
                     </div>
                   </div>
 
-                  <div class="row gutters-sm">
-                    
-                    <div class="col-sm-6 mb-3">
-                      <div class="card_user h-100">
-                        <div class="card-body-user">
-                            <h6 class="d-flex align-items-center mb-3">Friends</h6>
-                            
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
                 </div>
               </div>
 

@@ -53,7 +53,6 @@ namespace VisualMech.Classes
             Random random = new Random();
             string otpDigits = new string(Enumerable.Repeat("0123456789", otpLength)
                                   .Select(s => s[random.Next(s.Length)]).ToArray());
-
             
             OTP = otpDigits;
         }
@@ -64,7 +63,7 @@ namespace VisualMech.Classes
             string from = "dummytry935@gmail.com";
             string mailbody = startingBody + $". Your OTP is: {OTP}";
 
-             SendEmail(from, email, subject, mailbody);
+            SendEmail(from, email, subject, mailbody);
             
         }
 

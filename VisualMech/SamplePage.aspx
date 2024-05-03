@@ -113,21 +113,17 @@
             var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
             var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
                 var popover = new bootstrap.Popover(popoverTriggerEl, {
-                    trigger: 'hover' // Set trigger option to 'hover'
+                    trigger: 'hover' 
                 });
 
                 popoverTriggerEl.addEventListener('shown.bs.popover', function () {
-                    // If there's a currently shown popover, hide it
                     if (currentPopover && currentPopover !== popover) {
                         currentPopover.hide();
                     }
-
-                    // Set the current popover to the newly shown one
                     currentPopover = popover;
                 });
 
                 popoverTriggerEl.addEventListener('hidden.bs.popover', function () {
-                    // Clear the reference to the current popover when it's hidden
                     currentPopover = null;
                 });
 
