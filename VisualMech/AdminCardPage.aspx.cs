@@ -128,6 +128,8 @@ namespace VisualMech
                 {
                     errorLbl.Text = $@"File size on {fileUpload.ID} exceeds the maximum limit (2MB).";
                     errorLbl.Visible = true;
+
+                    return null;
                 }
 
                 string fileName = Path.GetFileName(fileUpload.FileName);

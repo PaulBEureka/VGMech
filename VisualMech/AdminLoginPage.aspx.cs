@@ -66,8 +66,8 @@ namespace VisualMech
                                 }
                                 else
                                 {
-                                    Session["CurrentUser"] = username;
-                                    Session["Current_ID"] = user_id;
+                                    Session["CurrentAdmin"] = username;
+                                    Session["Current_AdminID"] = user_id;
 
                                     Response.Redirect("AdminDashboard.aspx");
 
