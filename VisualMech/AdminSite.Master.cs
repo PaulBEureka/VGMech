@@ -12,7 +12,7 @@ namespace VisualMech
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            userLbl.Text = Session["CurrentUser"].ToString(); 
+            userLbl.Text = Session["CurrentAdmin"].ToString(); 
         }
 
         protected void LogoutBtn_Click(object sender, EventArgs e)

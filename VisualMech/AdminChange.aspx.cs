@@ -44,7 +44,7 @@ namespace VisualMech
                 {
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
-                        command.Parameters.AddWithValue("@Username", Session["CurrentUser"]);
+                        command.Parameters.AddWithValue("@Username", Session["CurrentAdmin"]);
 
                         connection.Open();
                         using (MySqlDataReader reader = command.ExecuteReader())
@@ -103,7 +103,7 @@ namespace VisualMech
                         string hashPassword = passwordHasher.HashPassword(NewPasswordTb.Text.ToString());
 
                         command.Parameters.AddWithValue("@NewPassword", hashPassword);
-                        command.Parameters.AddWithValue("@UserId", Session["Current_ID"]);
+                        command.Parameters.AddWithValue("@UserId", Session["Current_AdminID"]);
                         command.ExecuteNonQuery();
                     }
 
