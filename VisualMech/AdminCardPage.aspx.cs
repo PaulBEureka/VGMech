@@ -77,8 +77,8 @@ namespace VisualMech
         {
 
             string title = TitleInput.Text.ToUpper();
-            string bgPath = SaveImage(BgInputFile, ErrorLbl);
-            string iconpath = SaveImage(IconInputFile, ErrorLbl);
+            string bgPath = SaveImage(BgInputFile, ErrorLbl, "First");
+            string iconpath = SaveImage(IconInputFile, ErrorLbl, bgPath);
             string description = ReplaceNewlinesWithHtmlBreaks(DecriptionInput.Text);
             string unityLink = UnityLinkInput.Text;
             string genre = ReplaceNewlinesWithHtmlBreaks(CommonGenreInput.Text);
@@ -117,10 +117,12 @@ namespace VisualMech
         }
 
 
-        private string SaveImage(FileUpload fileUpload, Label errorLbl)
+        private string SaveImage(FileUpload fileUpload, Label errorLbl, string previousVal)
         {
             try
             {
+
+                
                 int maxFileSizeKB = 2000;
                 int fileSizeKB = fileUpload.PostedFile.ContentLength / 1024;
 
@@ -131,15 +133,19 @@ namespace VisualMech
 
                     return null;
                 }
+                else if (previousVal != null)
+                {
+                    errorLbl.Visible = false;
 
-                errorLbl.Visible = false;
+                    string fileName = Path.GetFileName(fileUpload.FileName);
+                    string filePath = Server.MapPath("~/Images/") + fileName;
+                    fileUpload.SaveAs(filePath);
 
-                string fileName = Path.GetFileName(fileUpload.FileName);
-                string filePath = Server.MapPath("~/Images/") + fileName;
-                fileUpload.SaveAs(filePath);
-
-                string imagePath = "Images/" + fileName;
-                return imagePath;
+                    string imagePath = "Images/" + fileName;
+                    return imagePath;
+                }
+                return null;
+                
             }
             catch (Exception ex)
             {
@@ -172,9 +178,9 @@ namespace VisualMech
 
         protected void CreateMiniBtn_Click(object sender, EventArgs e)
         {
-
+            
             string title = TitleInputMini.Text.ToUpper();
-            string bgPath = SaveImage(BgInputFileMini, ErrorLbl2);
+            string bgPath = SaveImage(BgInputFileMini, ErrorLbl2, "First");
             string unityLink = UnityLinkInputMini.Text;
 
             if (bgPath != null)
