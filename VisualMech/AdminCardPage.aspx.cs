@@ -132,6 +132,8 @@ namespace VisualMech
                     return null;
                 }
 
+                errorLbl.Visible = false;
+
                 string fileName = Path.GetFileName(fileUpload.FileName);
                 string filePath = Server.MapPath("~/Images/") + fileName;
                 fileUpload.SaveAs(filePath);
