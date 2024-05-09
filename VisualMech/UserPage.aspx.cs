@@ -117,7 +117,7 @@ namespace VisualMech
                 {
                     connection.Open();
 
-                    string updateQuery = "UPDATE Avatar SET avatar_path = @AvatarPath WHERE user_id = @UserId";
+                    string updateQuery = "UPDATE avatar SET avatar_path = @AvatarPath WHERE user_id = @UserId";
 
                     using (MySqlCommand command = new MySqlCommand(updateQuery, connection))
                     {
