@@ -5,6 +5,9 @@
     background-color: yellow;
 }
 
+.cog-icon {
+    cursor: pointer;
+}
 
 .navbar-toggler {
     background-color:white;

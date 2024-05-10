@@ -141,7 +141,7 @@ namespace VisualMech
         private async Task RecordDefaultAvatarAsync(int userID)
         {
             string defaultAvatarPath = "Images/person_icon.png";
-            string insertAvatarQuery = "INSERT INTO Avatar (user_id, avatar_path) VALUES (@UserId, @AvatarPath)";
+            string insertAvatarQuery = "INSERT INTO avatar (user_id, avatar_path) VALUES (@UserId, @AvatarPath)";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {

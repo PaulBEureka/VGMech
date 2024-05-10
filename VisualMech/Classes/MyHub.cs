@@ -17,6 +17,7 @@ using System.Data.SqlTypes;
 using System.Xml.Linq;
 using System.Web.UI;
 using System.Windows.Forms;
+using System.Globalization;
 
 namespace VisualMech
 {
@@ -36,6 +37,13 @@ namespace VisualMech
             Clients.All.sendComments(commentsData);
         }
         
+        public async Task UpdateCommentsOrder(string[] stringArr)
+        {
+            string[] commentsData = await RetrieveCommentsData(stringArr);
+            Clients.Caller.updateCommentsOrder(commentsData);
+        }
+
+
         private async Task<string[]> RetrieveLeaderboardsDataAsync(string[] miniGameInfo)
         {
             string allLeaderboardsString = "";
@@ -192,6 +200,8 @@ namespace VisualMech
             WHERE c1.mechanic_title = '{mechanicTitle}'
         ";
 
+                
+
                 using (MySqlCommand command = new MySqlCommand(query, connection))
                 {
                     await connection.OpenAsync();
@@ -200,16 +210,18 @@ namespace VisualMech
                     {
                         while (await reader.ReadAsync())
                         {
+                            DateTime commentDate = DateTime.MinValue;
+
                             int commentId = reader.GetInt32("comment_id");
                             string username = reader["username"].ToString();
-                            string rawDate = reader["comment_date"].ToString();
+                            DateTime localTimestamp = (DateTime)reader["comment_date"];
                             string raw_comment = reader["comment"].ToString();
                             int? parentCommentId = reader.IsDBNull(reader.GetOrdinal("parent_comment_id")) ? (int?)null : reader.GetInt32(reader.GetOrdinal("parent_comment_id"));
                             int userId = reader.GetInt32("user_id");
                             string about_me = reader["about_me"].ToString();
 
-                            
-                            DateTime commentDate = DateTime.Parse(rawDate);
+
+                            commentDate = localTimestamp.ToLocalTime();
 
                             string comment = MakeNameBold(raw_comment);
                             string commentAvatarPath = reader["avatar_path"].ToString();
@@ -311,8 +323,25 @@ namespace VisualMech
                                             <div class=""col"">
                                                 <span class=""fw-bold"">{replyComment.Username}</span>
                                                 <span class="""">{replydateCommented}</span>
-                                            </div>
-                                        </div>
+                                            </div>";
+
+                        if (replyComment.Username == sessionUser)
+                        {
+                            replyContainerDiv += $@"
+                                <div class=""col"">
+                                  <div class=""dropdown text-end"">
+                                     <i class=""fa-solid fa-gear cog-icon"" id=""dropdownMenuButton-{replyComment.CommentId}"" data-bs-toggle=""dropdown"" aria-expanded=""false""></i>
+           
+                                    <ul class=""dropdown-menu"" aria-labelledby=""dropdownMenuButton-{replyComment.CommentId}"">
+                                      <li><a class=""dropdown-item deleteOption"" data-comment-id=""{replyComment.CommentId}"" href=""#"">Delete</a></li>
+                                    </ul>
+                                  </div>
+                                </div>
+                             </div>";
+
+                        }
+
+                        replyContainerDiv += $@"
                                         <div class=""row"">
                                             <p class="""">{replyComment.CommentContent}</p>
                                         </div>
@@ -372,7 +401,28 @@ namespace VisualMech
                                         <span class=""fw-bold"">{comment.Username}</span>
                                         <span class="""">{dateCommented}</span>
                                     </div>
+
+                ");
+
+                if (comment.Username == sessionUser)
+                {
+                    allCommentString.Append($@"
+                                <div class=""col"">
+                                  <div class=""dropdown text-end"">
+                                     <i class=""fa-solid fa-gear cog-icon"" id=""dropdownMenuButton-{comment.CommentId}"" data-bs-toggle=""dropdown"" aria-expanded=""false""></i>
+           
+                                    <ul class=""dropdown-menu"" aria-labelledby=""dropdownMenuButton-{comment.CommentId}"">
+                                      <li><a class=""dropdown-item deleteOption"" data-comment-id=""{comment.CommentId}"" href=""#"">Delete</a></li>
+                                    </ul>
+                                  </div>
                                 </div>
+                             </div>");
+                            
+                }
+
+                
+
+                allCommentString.Append( $@"
                                 <div class=""row"">
                                     <p class="""">{comment.CommentContent}</p>
                                 </div>

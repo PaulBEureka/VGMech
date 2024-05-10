@@ -12,7 +12,6 @@
     <script src="/Content/custom.js"></script>
     <main id="content">
 
-
         <div class="main-home-color">
             <!-- Home page layout -->
 
