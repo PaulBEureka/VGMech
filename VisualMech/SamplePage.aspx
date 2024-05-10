@@ -146,6 +146,17 @@
                 });
         }
 
+        // Function to update comments
+        function updateCommentsOrder(cardTitle) {
+            chat.server.updateCommentsOrder(cardTitle)
+                .done(function () {
+                    console.log("Comments updated successfully.");
+                })
+                .fail(function (error) {
+                    console.error("Error updating comments: " + error);
+                });
+        }
+
         // Handle the updateComments message from the server
         chat.client.sendComments = function (commentHTML) {
             var firstComment = commentHTML[0]; 
@@ -158,6 +169,21 @@
 
             onContentLoaded();
         };
+
+        // Handle the updateComments message from the server
+        chat.client.updateCommentsOrder = function (commentHTML) {
+            var firstComment = commentHTML[0];
+            var secondComment = commentHTML[1];
+
+            // Update the comments on the webpage
+            $('#commentSection').html(commentHTML[0]);
+            $('#commentCountDiv').html(commentHTML[1]);
+            $('#sortByDiv').html(commentHTML[2]);
+
+        };
+
+
+
 
         $.connection.hub.start().done(function () {
             console.log("SignalR connected.");
@@ -234,10 +260,13 @@
             document.getElementById(parentString).value = null;
         }
 
+        function onSuccess4(response) {
+            updateCommentsOrder(response)
+        }
+
 
         function onSuccess2(response) {
-            PageMethods.get_Comments(onSuccess3);
-
+       
             toastr.options = {
                 "closeButton": false,
                 "debug": false,
@@ -257,6 +286,9 @@
             }
 
             toastr['info']('Order of comment changed to: ' + response);
+
+            PageMethods.get_Comments(onSuccess4);
+            
         }
 
 

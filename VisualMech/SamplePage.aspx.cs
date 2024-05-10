@@ -21,18 +21,13 @@ namespace VisualMech
     {
         private static string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
         private static string cardTitle = "";
-        private static string order = "Newest";
         private static List<LearnCard> cardList;
-
-        public static string Order
-        {
-            get { return order; }
-            set { order = value; }
-        }
-       
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session["CommentOrder"] == null){
+                Session["CommentOrder"] = "Newest";
+            }
 
             cardList = Session["CardList"] as List<LearnCard>;
 
@@ -93,8 +88,10 @@ namespace VisualMech
         [WebMethod]
         public static string changeCommentOrder(string newOrder)
         {
-            Order = newOrder;
-            return Order;
+            HttpContext context = HttpContext.Current;
+
+            context.Session["CommentOrder"] = newOrder;
+            return newOrder;
         }
 
         [WebMethod]
@@ -106,11 +103,11 @@ namespace VisualMech
 
             if (context.Session["CurrentUser"] != null)
             {
-                strings = new string[3] { cardTitle, context.Session["CurrentUser"].ToString(), Order };
+                strings = new string[3] { cardTitle, context.Session["CurrentUser"].ToString(), context.Session["CommentOrder"].ToString() };
             }
             else
             {
-                strings = new string[3] { cardTitle, null, Order };
+                strings = new string[3] { cardTitle, null, context.Session["CommentOrder"].ToString() };
             }
 
 
@@ -138,14 +135,16 @@ namespace VisualMech
                         if (context.Session["Current_ID"] != null)
                         {
                             connection.Open();
+                            DateTime timestampUtc = DateTime.UtcNow;
 
-                            string query = "INSERT INTO comment (user_id, mechanic_title, comment, parent_comment_id) VALUES (@UserId, @MechanicTitle, @CommentText, @Parent_comment_id)";
+                            string query = "INSERT INTO comment (user_id, mechanic_title, comment, comment_date, parent_comment_id) VALUES (@UserId, @MechanicTitle, @CommentText, @CommentDate, @Parent_comment_id)";
 
                             using (MySqlCommand command = new MySqlCommand(query, connection))
                             {
                                 command.Parameters.AddWithValue("@UserId", context.Session["Current_ID"]);
                                 command.Parameters.AddWithValue("@MechanicTitle", cardTitle);
                                 command.Parameters.AddWithValue("@CommentText", message);
+                                command.Parameters.AddWithValue("@CommentDate", timestampUtc);
                                 command.Parameters.AddWithValue("Parent_comment_id", parentCommentId);
 
                                 command.ExecuteNonQuery();
@@ -193,13 +192,16 @@ namespace VisualMech
                         {
                             connection.Open();
 
-                            string query = "INSERT INTO comment (user_id, mechanic_title, comment, parent_comment_id) VALUES (@UserId, @MechanicTitle, @CommentText, @Parent_comment_id)";
+                            DateTime timestampUtc = DateTime.UtcNow;
+
+                            string query = "INSERT INTO comment (user_id, mechanic_title, comment, comment_date, parent_comment_id) VALUES (@UserId, @MechanicTitle, @CommentText, @CommentDate, @Parent_comment_id)";
 
                             using (MySqlCommand command = new MySqlCommand(query, connection))
                             {
                                 command.Parameters.AddWithValue("@UserId", context.Session["Current_ID"]);
                                 command.Parameters.AddWithValue("@MechanicTitle", cardTitle);
                                 command.Parameters.AddWithValue("@CommentText", message);
+                                command.Parameters.AddWithValue("@CommentDate", timestampUtc);
                                 command.Parameters.AddWithValue("Parent_comment_id", parentCommentId);
 
                                 command.ExecuteNonQuery();
@@ -246,14 +248,16 @@ namespace VisualMech
                         if (context.Session["Current_ID"] != null)
                         {
                             connection.Open();
+                            DateTime timestampUtc = DateTime.UtcNow;
 
-                            string query = "INSERT INTO comment (user_id, mechanic_title, comment) VALUES (@UserId, @MechanicTitle, @CommentText)";
+                            string query = "INSERT INTO comment (user_id, mechanic_title, comment, comment_date) VALUES (@UserId, @MechanicTitle, @CommentText, @CommentDate)";
 
                             using (MySqlCommand command = new MySqlCommand(query, connection))
                             {
                                 command.Parameters.AddWithValue("@UserId", context.Session["Current_ID"]);
                                 command.Parameters.AddWithValue("@MechanicTitle", cardTitle);
                                 command.Parameters.AddWithValue("@CommentText", message);
+                                command.Parameters.AddWithValue("@CommentDate", timestampUtc);
 
                                 command.ExecuteNonQuery();
                             }
