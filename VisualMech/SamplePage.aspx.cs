@@ -283,6 +283,38 @@ namespace VisualMech
             return result;
         }
 
+
+        [WebMethod]
+        public static string DeleteComment(string commentID)
+        {
+            string result = "";
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "DELETE FROM comment WHERE comment_id = @CommentId";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@CommentId", commentID);
+                        command.ExecuteNonQuery();
+                    }
+
+                    result = "Comment Deleted Successfully";
+                    connection.Close();
+                }
+                catch (Exception ex)
+                {
+                    result = ex.Message;
+                }
+            }
+
+            return result;
+        }
+
+
         public void recordVisitedPage()
         {
             using (MySqlConnection connection = new MySqlConnection(connectionString))

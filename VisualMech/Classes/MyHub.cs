@@ -323,8 +323,25 @@ namespace VisualMech
                                             <div class=""col"">
                                                 <span class=""fw-bold"">{replyComment.Username}</span>
                                                 <span class="""">{replydateCommented}</span>
-                                            </div>
-                                        </div>
+                                            </div>";
+
+                        if (replyComment.Username == sessionUser)
+                        {
+                            replyContainerDiv += $@"
+                                <div class=""col"">
+                                  <div class=""dropdown text-end"">
+                                     <i class=""fa-solid fa-gear cog-icon"" id=""dropdownMenuButton-{replyComment.CommentId}"" data-bs-toggle=""dropdown"" aria-expanded=""false""></i>
+           
+                                    <ul class=""dropdown-menu"" aria-labelledby=""dropdownMenuButton-{replyComment.CommentId}"">
+                                      <li><a class=""dropdown-item deleteOption"" data-comment-id=""{replyComment.CommentId}"" href=""#"">Delete</a></li>
+                                    </ul>
+                                  </div>
+                                </div>
+                             </div>";
+
+                        }
+
+                        replyContainerDiv += $@"
                                         <div class=""row"">
                                             <p class="""">{replyComment.CommentContent}</p>
                                         </div>
@@ -384,7 +401,28 @@ namespace VisualMech
                                         <span class=""fw-bold"">{comment.Username}</span>
                                         <span class="""">{dateCommented}</span>
                                     </div>
+
+                ");
+
+                if (comment.Username == sessionUser)
+                {
+                    allCommentString.Append($@"
+                                <div class=""col"">
+                                  <div class=""dropdown text-end"">
+                                     <i class=""fa-solid fa-gear cog-icon"" id=""dropdownMenuButton-{comment.CommentId}"" data-bs-toggle=""dropdown"" aria-expanded=""false""></i>
+           
+                                    <ul class=""dropdown-menu"" aria-labelledby=""dropdownMenuButton-{comment.CommentId}"">
+                                      <li><a class=""dropdown-item deleteOption"" data-comment-id=""{comment.CommentId}"" href=""#"">Delete</a></li>
+                                    </ul>
+                                  </div>
                                 </div>
+                             </div>");
+                            
+                }
+
+                
+
+                allCommentString.Append( $@"
                                 <div class=""row"">
                                     <p class="""">{comment.CommentContent}</p>
                                 </div>
