@@ -131,7 +131,7 @@
     </main>
 
     <script>
-
+        var isValidUpdate = "0";
         
 
         function onContentLoaded() {
@@ -158,7 +158,8 @@
             });
 
 
-            var commentIdToDelete; 
+            var commentIdToDelete;
+            
 
             $(".deleteOption").click(function () {
                 commentIdToDelete = $(this).data("comment-id");
@@ -196,15 +197,17 @@
         }
 
         chat.client.sendComments = function (commentHTML) {
-            var firstComment = commentHTML[0]; 
-            var secondComment = commentHTML[1]; 
+            if (isValidUpdate == "0") {
+                var firstComment = commentHTML[0];
+                var secondComment = commentHTML[1];
 
-            // Update the comments on the webpage
-            $('#commentSection').html(commentHTML[0]);
-            $('#commentCountDiv').html(commentHTML[1]);
-            $('#sortByDiv').html(commentHTML[2]);
+                // Update the comments on the webpage
+                $('#commentSection').html(commentHTML[0]);
+                $('#commentCountDiv').html(commentHTML[1]);
+                $('#sortByDiv').html(commentHTML[2]);
 
-            onContentLoaded();
+                onContentLoaded();
+            }
         };
 
         chat.client.updateCommentsOrder = function (commentHTML) {
@@ -240,6 +243,7 @@
         }
 
         function onSuccess(response) {
+            isValidUpdate = "0";
             PageMethods.get_Comments(onSuccess3);
 
             toastr.options = {
@@ -293,6 +297,7 @@
 
             PageMethods.reply_Click(parentCommentId, message, onSuccess, onError);
             document.getElementById(parentString).value = null;
+            
         }
 
         function onSuccess4(response) {
@@ -402,6 +407,7 @@
 
             PageMethods.innerReply_Click(parentCommentId, message, onSuccess, onError);
             document.getElementById(parentString).value = null;
+            
         }
 
         function handleItemClick(order) {
@@ -417,6 +423,13 @@
             var expanded = button.getAttribute("aria-expanded") === "true" || false;
             button.setAttribute("aria-expanded", !expanded);
 
+            if (expanded == false) {
+                isValidUpdate = null;
+            }
+            else {
+                isValidUpdate = "0";
+            }
+
             // Toggle aria-hidden attribute
             var hidden = container.getAttribute("aria-hidden") === "true" || false;
             container.setAttribute("aria-hidden", !hidden);
@@ -429,6 +442,14 @@
             // Toggle aria-expanded attribute
             var expanded = button.getAttribute("aria-expanded") === "true" || false;
             button.setAttribute("aria-expanded", !expanded);
+
+            if (expanded == false) {
+                isValidUpdate = null;
+            }
+            else {
+                isValidUpdate = "0";
+            }
+
 
             // Toggle aria-hidden attribute
             var hidden = container.getAttribute("aria-hidden") === "true" || false;
