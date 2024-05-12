@@ -118,6 +118,10 @@ namespace VisualMech
         [WebMethod]
         public static string reply_Click(int parentCommentId, string message)
         {
+            if (message == null || message.Length < 1 || String.IsNullOrWhiteSpace(message))
+            {
+                return null;
+            }
             string result = "";
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -174,6 +178,10 @@ namespace VisualMech
         [WebMethod]
         public static string innerReply_Click(int parentCommentId, string message)
         {
+            if (message == null || message.Length < 1 || String.IsNullOrWhiteSpace(message))
+            {
+                return null;
+            }
             string result = "";
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -231,6 +239,10 @@ namespace VisualMech
         [WebMethod]
         public static string post_Click(string message)
         {
+            if (message == null || message.Length < 1 || String.IsNullOrWhiteSpace(message))
+            {
+                return null;
+            }
             string result = "";
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {

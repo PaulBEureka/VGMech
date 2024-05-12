@@ -39,7 +39,7 @@ namespace VisualMech.Classes
 
                 temp += $@"<div class=""row d-grid m-auto my-5 mt-0"" >
                                 <div class=""ratio ratio-16x9 d-grid m-auto"">
-                                    <iframe src=""{UnityLink}?current_id={sessionUserID}"" allowfullscreen=""allowfullscreen"" title=""{Title.ToUpper()}"" class=""mini_game_inner_box m-auto"" scrolling=""no""></iframe>
+                                    <iframe src=""{UnityLink}?current_id={sessionUserID}"" allowfullscreen title=""{Title.ToUpper()}"" class=""mini_game_inner_box m-auto"" scrolling=""no""></iframe>
                                 </div>
                           </div>";
             }
