@@ -167,7 +167,7 @@
             });
 
             $("#confirmDelete").click(function () {
-                PageMethods.DeleteComment(commentIdToDelete, onSuccess5, onError5);
+                PageMethods.DeleteComment(commentIdToDelete, onSuccess5);
                 $("#deleteModal").modal("hide");
             });
         }
@@ -243,9 +243,6 @@
         }
 
         function onSuccess(response) {
-            isValidUpdate = "0";
-            PageMethods.get_Comments(onSuccess3);
-
             toastr.options = {
                 "closeButton": false,
                 "debug": false,
@@ -264,7 +261,16 @@
                 "hideMethod": "fadeOut"
             }
 
-            toastr['success']('Your comment was posted successfully', 'Comment Posted');
+            if (response == null) {
+                toastr['info']('Please type in your comment', 'Message empty');
+            }
+            else {
+                toastr['success']('Comment posted successfully', 'Comment Posted');
+                isValidUpdate = "0";
+                PageMethods.get_Comments(onSuccess3);
+            }
+
+            
         }
         
         
@@ -305,6 +311,8 @@
         }
 
         function onSuccess5(response) {
+            isValidUpdate = "0";
+
             toastr.options = {
                 "closeButton": false,
                 "debug": false,
@@ -326,29 +334,6 @@
             toastr['success'](response);
             PageMethods.get_Comments(onSuccess3);
         }
-
-        function onError5(response) {
-            toastr.options = {
-                "closeButton": false,
-                "debug": false,
-                "newestOnTop": false,
-                "progressBar": false,
-                "positionClass": "toast-top-right",
-                "preventDuplicates": false,
-                "onclick": null,
-                "showDuration": "300",
-                "hideDuration": "1000",
-                "timeOut": "10000",
-                "extendedTimeOut": "1000",
-                "showEasing": "swing",
-                "hideEasing": "linear",
-                "showMethod": "fadeIn",
-                "hideMethod": "fadeOut"
-            }
-
-            toastr['error'](response);
-        }
-
 
         function onSuccess2(response) {
        

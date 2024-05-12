@@ -302,7 +302,7 @@ namespace VisualMech
                         replyContainer = sessionUser != null ? $@"
                         <div id=""respond-container-{replyComment.CommentId}"" class=""respond-container"" aria-labelledby=""toggle-replies-btn-{replyComment.CommentId}"" aria-hidden=""true"">
                             <div class=""row container mb-3"">
-                                <textarea placeholder=""Type your reply here {sessionUser}"" id=""replybox-{replyComment.CommentId}"" rows=""5"" class=""form-control"" style=""background-color: white; resize: none;"" draggable=""false"">@{replyComment.Username}</textarea>
+                                <textarea placeholder=""Type your reply here {sessionUser}"" id=""replybox-{replyComment.CommentId}"" rows=""5"" class=""form-control"" style=""background-color: white; resize: none;"" draggable=""false""></textarea>
                                 <button type=""button"" id=""button-addon-reply-{replyComment.CommentId}"" class=""comment_button my-2 bg-danger"" onclick=""innerReply_Click({comment.CommentId}, {replyComment.CommentId})"">Reply</button>
                             </div>
                         </div>
@@ -372,7 +372,7 @@ namespace VisualMech
                 replyContainer = sessionUser != null ? $@"
                     <div id=""respond-container-{comment.CommentId}"" class=""respond-container"" aria-labelledby=""toggle-replies-btn-{comment.CommentId}"" aria-hidden=""true"">
                         <div class=""row container mb-3"">
-                            <textarea placeholder=""Type your reply here {sessionUser}"" id=""replybox-{comment.CommentId}"" rows=""5"" class=""form-control"" style=""background-color: white; resize: none;"" draggable=""false"">@{comment.Username}</textarea>
+                            <textarea placeholder=""Type your reply here {sessionUser}"" id=""replybox-{comment.CommentId}"" rows=""5"" class=""form-control"" style=""background-color: white; resize: none;"" draggable=""false""></textarea>
                             <button type=""button"" id=""button-addon-reply-{comment.CommentId}"" class=""comment_button my-2 bg-danger"" onclick=""reply_Click({comment.CommentId})"">Reply</button>
                         </div>
                     </div>
