@@ -122,7 +122,7 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-danger" id="confirmDelete">Delete</button>
+                <button type="button" class="btn btn-danger" onclick="delete_Click()">Delete</button>
               </div>
             </div>
           </div>
@@ -132,46 +132,46 @@
 
     <script>
         var isValidUpdate = "0";
-        
+        var commentIdToDelete;
 
         function onContentLoaded() {
             var currentPopover = null;
 
             var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
             var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-                var popover = new bootstrap.Popover(popoverTriggerEl, {
-                    trigger: 'hover' 
-                });
-
-                popoverTriggerEl.addEventListener('shown.bs.popover', function () {
-                    if (currentPopover && currentPopover !== popover) {
-                        currentPopover.hide();
-                    }
-                    currentPopover = popover;
-                });
-
-                popoverTriggerEl.addEventListener('hidden.bs.popover', function () {
-                    currentPopover = null;
-                });
-
-                return popover;
+            var popover = new bootstrap.Popover(popoverTriggerEl, {
+                trigger: 'hover' 
             });
 
+            popoverTriggerEl.addEventListener('shown.bs.popover', function () {
+                if (currentPopover && currentPopover !== popover) {
+                    currentPopover.hide();
+                }
+                currentPopover = popover;
+            });
 
-            var commentIdToDelete;
+            popoverTriggerEl.addEventListener('hidden.bs.popover', function () {
+                currentPopover = null;
+            });
+
+            return popover;
+            });
+
             
 
             $(".deleteOption").click(function () {
-                commentIdToDelete = $(this).data("comment-id");
-                $("#deleteModal").modal("show");
-            });
-
-            $("#confirmDelete").click(function () {
-                PageMethods.DeleteComment(commentIdToDelete, onSuccess5);
-                $("#deleteModal").modal("hide");
+                    commentIdToDelete = $(this).data("comment-id");
+                    $("#deleteModal").modal("show");
             });
         }
 
+        
+
+
+        function delete_Click() {
+            PageMethods.DeleteComment(commentIdToDelete, onSuccess5);
+            $("#deleteModal").modal("hide");
+        }
 
 
         var chat = $.connection.myHub;

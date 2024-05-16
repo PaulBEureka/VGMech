@@ -417,6 +417,7 @@ namespace VisualMech
             ChangePassBtn.Visible = false;
             CancelEditBtn.Visible = true;
             ConfirmBtn.Visible = true;
+            DeleteAccManageBtn.Visible = false;
         }
 
         protected void EditBtn_ClickBack(object sender, EventArgs e)
@@ -429,6 +430,7 @@ namespace VisualMech
             ChangePassBtn.Visible = true;
             CancelEditBtn.Visible = false;
             ConfirmBtn.Visible = false;
+            DeleteAccManageBtn.Visible = true;
         }
 
         protected void ConfirmBtn_Click(object sender, EventArgs e)
@@ -624,6 +626,10 @@ namespace VisualMech
             UserInfosLit.Visible = false;
             EditBtn.Visible = false;
             ChangePassBtn.Visible = false;
+            UploadBtn.Visible = false;
+            customFile.Visible = false;
+            lblMessage.Visible = false;
+            DeleteAccManageBtn.Visible = false;
         }
 
         protected void VerifyBtn_Click(object sender, EventArgs e)
@@ -655,6 +661,10 @@ namespace VisualMech
             CurrentPasstb.Text = null;
             NewPasswordTb.Text = null;
             ConNewPasswordTb.Text = null;
+            DeleteAccManageBtn.Visible = true;
+            UploadBtn.Visible = true;
+            customFile.Visible = true;
+            
         }
 
         protected void UpdatePassBtn_Click(object sender, EventArgs e)
@@ -729,8 +739,9 @@ namespace VisualMech
             ConfirmBtn.Visible = false;
             DeleteAccManageBtn.Visible = false;
             DeleteAccPanel.Visible = false;
-            VerifyDeletePanel.Visible = false;
-            ConfirmDeletePanel.Visible = false;
+            lblMessage.Visible = false;
+            OTPlbl.Visible = false;
+            OTPtb.Visible = false;
         }
 
 
@@ -753,7 +764,12 @@ namespace VisualMech
             UserInfosLit.Visible = false;
             DeleteAccPanel.Visible = true;
             EditBtn.Visible = false;
+            VerifyDeletePanel.Visible = true;
+            ConfirmDeletePanel.Visible = false;
             ChangePassBtn.Visible = false;
+            customFile.Visible = false;
+            UploadBtn.Visible = false;
+            lblMessage.Visible = false;
         }
 
         protected void DeleteAccBtn_Click(object sender, EventArgs e)
