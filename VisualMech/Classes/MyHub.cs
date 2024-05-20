@@ -18,25 +18,51 @@ using System.Xml.Linq;
 using System.Web.UI;
 using System.Windows.Forms;
 using System.Globalization;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace VisualMech
 {
     public class MyHub : Hub
     {
         private string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
-        
+
+        public override Task OnConnected()
+        {
+            // Get the page context from the query string
+            var pageContext = Context.QueryString["page"];
+            Groups.Add(Context.ConnectionId, pageContext);
+            return base.OnConnected();
+        }
+
+        public override Task OnDisconnected(bool stopCalled)
+        {
+            // Get the page context from the query string
+            var pageContext = Context.QueryString["page"];
+            Groups.Remove(Context.ConnectionId, pageContext);
+            return base.OnDisconnected(stopCalled);
+        }
+
+
         public async Task UpdateLeaderboards(string[] miniGameInfo)
         {
             string[] leaderboardsData = await RetrieveLeaderboardsDataAsync(miniGameInfo);
             Clients.All.updateLeaderboards(leaderboardsData);
         }
 
-        public async Task UpdateComments(string[] stringArr)
+        //Send Comment to group only (Notify them to fetch comments only on caller to prevent order problems)
+        public void CallForGroupUpdate(string cardTitle)
+        {
+            Clients.Group(cardTitle).getCommentGroup();
+        }
+
+        //FetchComments when connecting to hub only on Caller
+        public async Task FetchComments(string[] stringArr)
         {
             string[] commentsData = await RetrieveCommentsData(stringArr);
-            Clients.All.sendComments(commentsData);
+            Clients.Caller.fetchCommentSolo(commentsData);
         }
-        
+
+
         public async Task UpdateCommentsOrder(string[] stringArr)
         {
             string[] commentsData = await RetrieveCommentsData(stringArr);
@@ -193,12 +219,12 @@ namespace VisualMech
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 string query = $@"
-            SELECT c1.*, user.username, user.about_me ,avatar.avatar_path 
-            FROM comment c1
-            INNER JOIN user ON c1.user_id = user.user_id 
-            INNER JOIN avatar ON user.user_id = avatar.user_id
-            WHERE c1.mechanic_title = '{mechanicTitle}'
-        ";
+                    SELECT c1.*, user.username, user.about_me ,avatar.avatar_path 
+                    FROM comment c1
+                    INNER JOIN user ON c1.user_id = user.user_id 
+                    INNER JOIN avatar ON user.user_id = avatar.user_id
+                    WHERE c1.mechanic_title = '{mechanicTitle}'
+                ";
 
                 
 
@@ -252,6 +278,11 @@ namespace VisualMech
 
             return SortComment(commentList, sessionUsername, order);
         }
+
+
+
+
+
 
         private string[] SortComment(List<Comment> commentList, string sessionUser, string order)
         {
@@ -315,7 +346,7 @@ namespace VisualMech
                             <div class=""comment mt-4 float-left"" >
                                 <div class=""row"">
                                     <div class=""col-1 text-end"">
-                                        <img src= ""{replyComment.AvatarPath}"" alt="""" role=""button"" class=""rounded-circle"" width=""40"" height=""40"" data-bs-toggle=""popover"" title=""About {replyComment.Username}"" data-bs-content=""{replyComment.AboutMe}"">
+                                        <img src= ""{replyComment.AvatarPath}"" alt="""" role=""button"" class=""rounded-circle comment-avatar"" width=""40"" height=""40"" data-bs-toggle=""popover"" title=""About {replyComment.Username}"" data-bs-content=""{replyComment.AboutMe}"">
                                         
                                     </div>
                                     <div class =""col-11"">
@@ -392,7 +423,7 @@ namespace VisualMech
                     <div class=""comment mt-4 float-left"" >
                         <div class=""row"">
                             <div class=""col-1 text-end"">
-                                <img src= ""{comment.AvatarPath}"" alt="""" role=""button"" class=""rounded-circle"" width=""40"" height=""40"" data-bs-toggle=""popover"" title=""About {comment.Username}"" data-bs-content=""{comment.AboutMe}"">
+                                <img src= ""{comment.AvatarPath}"" alt="""" role=""button"" class=""rounded-circle comment-avatar"" width=""40"" height=""40"" data-bs-toggle=""popover"" title=""About {comment.Username}"" data-bs-content=""{comment.AboutMe}"">
                                
                             </div>
                             <div class =""col-11"">
