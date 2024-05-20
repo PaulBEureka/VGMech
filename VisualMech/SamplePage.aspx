@@ -133,6 +133,18 @@
     <script>
         var isValidUpdate = "0";
         var commentIdToDelete;
+        var pageContext = null;
+        var chat = $.connection.myHub;
+
+        PageMethods.GetCardTitle(onSuccessOrder);
+
+        function onSuccessOrder(response) {
+            pageContext = response;
+            
+            $.connection.hub.qs = { "page": pageContext }; 
+        }
+
+        
 
         function onContentLoaded() {
             var currentPopover = null;
@@ -165,26 +177,57 @@
             });
         }
 
-        
-
 
         function delete_Click() {
             PageMethods.DeleteComment(commentIdToDelete, onSuccess5);
             $("#deleteModal").modal("hide");
         }
 
+        $.connection.hub.start().done(function () {
+            console.log("SignalR connected.");
 
-        var chat = $.connection.myHub;
+            PageMethods.get_Comments(fetchComments);
 
-        function updateComments(cardTitle) {
-            chat.server.updateComments(cardTitle)
+        });
+
+        function fetchComments(pageDetails) {
+            chat.server.fetchComments(pageDetails)
                 .done(function () {
-                    console.log("Comments updated successfully.");
+                    console.log("Comments fetched successfully.");
                 })
                 .fail(function (error) {
-                    console.error("Error updating comments: " + error);
+                    console.error("Error fetching comments: " + error);
                 });
         }
+
+        chat.client.fetchCommentSolo = function (commentHTML) {
+            if (isValidUpdate == "0") {
+                var firstComment = commentHTML[0];
+                var secondComment = commentHTML[1];
+
+                // Update the comments on the webpage
+                $('#commentSection').html(commentHTML[0]);
+                $('#commentCountDiv').html(commentHTML[1]);
+                $('#sortByDiv').html(commentHTML[2]);
+                onContentLoaded();
+            }
+        };
+
+        function sendComment(cardTitle) {
+            chat.server.callForGroupUpdate(cardTitle)
+                .done(function () {
+                    console.log("Call for update done");
+                })
+                .fail(function (error) {
+                    console.error("Error fetching in call update: " + error);
+                });
+        }
+
+        chat.client.getCommentGroup = function () {
+            PageMethods.get_Comments(fetchComments);
+        };
+
+
 
         function updateCommentsOrder(cardTitle) {
             chat.server.updateCommentsOrder(cardTitle)
@@ -196,20 +239,6 @@
                 });
         }
 
-        chat.client.sendComments = function (commentHTML) {
-            if (isValidUpdate == "0") {
-                var firstComment = commentHTML[0];
-                var secondComment = commentHTML[1];
-
-                // Update the comments on the webpage
-                $('#commentSection').html(commentHTML[0]);
-                $('#commentCountDiv').html(commentHTML[1]);
-                $('#sortByDiv').html(commentHTML[2]);
-
-                onContentLoaded();
-            }
-        };
-
         chat.client.updateCommentsOrder = function (commentHTML) {
             var firstComment = commentHTML[0];
             var secondComment = commentHTML[1];
@@ -218,21 +247,12 @@
             $('#commentCountDiv').html(commentHTML[1]);
             $('#sortByDiv').html(commentHTML[2]);
 
+            onContentLoaded();
         };
 
 
-
-
-        $.connection.hub.start().done(function () {
-            console.log("SignalR connected.");
-
-            PageMethods.get_Comments(onSuccess3);
-
-        });
-
-        function onSuccess3(response) {
-            updateComments(response);
-        }
+        
+        
 
 
         function post_Click() {
@@ -267,13 +287,13 @@
             else {
                 toastr['success']('Comment posted successfully', 'Comment Posted');
                 isValidUpdate = "0";
-                PageMethods.get_Comments(onSuccess3);
+
+                
+                sendComment(pageContext);
             }
 
             
         }
-        
-        
 
         function onError(response) {
             toastr.options = {
@@ -306,10 +326,6 @@
             
         }
 
-        function onSuccess4(response) {
-            updateCommentsOrder(response)
-        }
-
         function onSuccess5(response) {
             isValidUpdate = "0";
 
@@ -332,7 +348,7 @@
             }
 
             toastr['success'](response);
-            PageMethods.get_Comments(onSuccess3);
+            sendComment(pageContext);
         }
 
         function onSuccess2(response) {
@@ -357,7 +373,7 @@
 
             toastr['info']('Order of comment changed to: ' + response);
 
-            PageMethods.get_Comments(onSuccess4);
+            PageMethods.get_Comments(updateCommentsOrder);
             
         }
 

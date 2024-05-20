@@ -95,6 +95,12 @@ namespace VisualMech
         }
 
         [WebMethod]
+        public static string GetCardTitle()
+        {
+            return cardTitle;
+        }
+
+        [WebMethod]
         public static string[] get_Comments()
         {
             HttpContext context = HttpContext.Current;
