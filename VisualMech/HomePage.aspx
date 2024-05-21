@@ -98,7 +98,7 @@
 
         <section id="about us" class="about_us_bg ">
             <div class="row text-center text-light ">
-                <h1 class="display-4 mini_custom_padding fw-bolder">MEET THE TEAM AND<br /> EVERYTHING YOU NEED TO KNOW<br /> ABOUT US</h1>
+                <h1 class="display-4 mini_custom_padding fw-bolder border-2">MEET THE TEAM AND<br /> EVERYTHING YOU NEED TO KNOW<br /> ABOUT US</h1>
             </div>
             <div class="row">
                 <div class="col-md-6 d-grid">
@@ -131,6 +131,14 @@
                     </div>
                     <div class="text-center">
                         <p class="text-light">Kimtribi Aleksie Cuevas</p>
+                    </div>
+                </div>
+                <div class="col-md-12 d-grid">
+                    <div class="col-md-6 square-bg-2 m-auto text-center my-3">
+                       <img src="Images/andrei.png" alt="imgpng" class="img-fluid w-100 h-100" />
+                    </div>
+                    <div class="text-center">
+                        <p class="text-light">Andrei Robin Sta. Ana</p>
                     </div>
                 </div>
             </div>

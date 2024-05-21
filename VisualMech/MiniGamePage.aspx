@@ -39,7 +39,19 @@
 
     <script>
         
+        var pageContextMini = null;
         var chat = $.connection.myHub;
+
+        PageMethods.GetMiniTitle(onSuccessOrderMini);
+
+        function onSuccessOrderMini(response) {
+            pageContextMini = response;
+            $.connection.hub.qs = { "page": pageContextMini };
+
+
+        }
+
+
 
         function updateLeaderboards(cardTitle) {
             chat.server.updateLeaderboards(cardTitle)

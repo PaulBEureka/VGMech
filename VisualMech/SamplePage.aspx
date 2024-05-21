@@ -228,7 +228,6 @@
         };
 
 
-
         function updateCommentsOrder(cardTitle) {
             chat.server.updateCommentsOrder(cardTitle)
                 .done(function () {
@@ -250,9 +249,6 @@
             onContentLoaded();
         };
 
-
-        
-        
 
 
         function post_Click() {

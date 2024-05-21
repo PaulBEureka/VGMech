@@ -81,6 +81,12 @@ namespace VisualMech
         }
 
         [WebMethod]
+        public static string GetMiniTitle()
+        {
+            return cardTitle;
+        }
+
+        [WebMethod]
         public static string[] Get_Leaderboards()
         {
             string sessionPlayerCurrentRank = cardTitle + "playerRank";

@@ -98,7 +98,7 @@ namespace VisualMech
             }
             else
             {
-                lblCaptchaErrorMsg.Text = "Captcha code is incorrect.Please enter correct captcha code.";
+                lblCaptchaErrorMsg.Text = "Incorrect Captcha";
                 lblCaptchaErrorMsg.ForeColor = System.Drawing.Color.White;
                 captchacode.Text = "";
             }

@@ -35,7 +35,7 @@ namespace VisualMech
 
             if (captchaCode != sessionCaptcha)
             {
-                lblCaptchaErrorMsg.Text = "Captcha code is incorrect. Please enter correct captcha code.";
+                lblCaptchaErrorMsg.Text = "Incorrect Captcha";
                 lblCaptchaErrorMsg.ForeColor = System.Drawing.Color.White;
                 captchacode.Text = "";
                 tempClear = false;
@@ -65,6 +65,11 @@ namespace VisualMech
 
                 SignUpPanel.Visible = false;
                 VerifyPanel.Visible = true;
+            }
+            else
+            {
+                string script = "EnableButton();";
+                ClientScript.RegisterClientScriptBlock(this.GetType(), "EnableScript", script, true);
             }
         }
 
