@@ -7,7 +7,7 @@
 
         <asp:Panel runat="server" ID="SignUpPanel" Visible="true">
             <div class="row align-self-center m-auto my-5 signup_rectangle d-grid">
-                        <div class="d-grid m-auto">                        
+                        <div class="d-grid m-auto align-items-center">                        
                             <img src="Images/VGM_logo.png" alt="imgpng" class="img-fluid m-auto" style="width:100px; height:100px" />
                             <h5 style="color: white; padding-bottom:10px; text-align:left" class="m-auto">New Username: <asp:TextBox ID="New_Username_tb" runat="server" Width="348px" CssClass=" m-auto form-control"></asp:TextBox>
                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" CssClass="m-auto" Display="Dynamic" ControlToValidate="New_Username_tb" ErrorMessage="*" ForeColor="White"></asp:RequiredFieldValidator>
@@ -30,10 +30,10 @@
                             <h5 style="color: white; padding-bottom:10px; text-align:left" class="m-auto">Email: <asp:TextBox ID="Email_tb" runat="server" Width="348px" CssClass="m-auto form-control"></asp:TextBox>
                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" CssClass="m-auto" Display="Dynamic" ControlToValidate="Email_tb" ErrorMessage="*" ForeColor="White"></asp:RequiredFieldValidator>
                                 <asp:RegularExpressionValidator ID="RegularExpressionValidator2" Display="Dynamic" runat="server"
-                                    ControlToValidate="Email_tb" CssClass="m-auto"
+                                    ControlToValidate="Email_tb" 
                                     ErrorMessage="Invalid email format"
                                     ValidationExpression="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-                                    ForeColor="White"
+                                    ForeColor="White" CssClass="m-auto"
                                     Font-Size="Small">
                                 </asp:RegularExpressionValidator>
                                 <br />
@@ -46,18 +46,26 @@
 
 
 
-                            <h5 class="m-auto" style="color: white; padding-bottom:10px; text-align:left">New Password: <asp:TextBox ID="New_Password_tb" CssClass="form-control" runat="server" Width="348px" TextMode="Password"></asp:TextBox>
-                                <asp:RequiredFieldValidator CssClass="m-auto" ID="RequiredFieldValidator2" runat="server" Display="Dynamic" ControlToValidate="New_Password_tb" ErrorMessage="*" ForeColor="White"></asp:RequiredFieldValidator>
-                                <asp:RegularExpressionValidator ID="RegularExpressionValidatorPassword" Display="Dynamic" runat="server"
-                                    ControlToValidate="New_Password_tb" CssClass="m-auto"
+                            
+
+                            <h5 class="m-auto" style="color: white; padding-bottom:10px; text-align:left">New Password: <asp:TextBox ID="New_Password_tb" CssClass="form-control m-auto" runat="server" Width="348px" TextMode="Password"></asp:TextBox></h5> 
+                            
+                            
+                                <asp:RequiredFieldValidator ID="RequiredFieldValidator2" CssClass="m-auto" runat="server" Display="Dynamic" ControlToValidate="New_Password_tb" ErrorMessage="*" ForeColor="White"></asp:RequiredFieldValidator>
+                                <asp:RegularExpressionValidator ID="RegularExpressionValidatorPassword" runat="server" Display="Dynamic"
+                                    ControlToValidate="New_Password_tb"
                                     ErrorMessage="Password must contain at least one uppercase letter, one lowercase letter, one digit, one special character, and be at least 8 characters long."
                                     ValidationExpression="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$"
-                                    ForeColor="White"
+                                    ForeColor="White" CssClass="pb-2 text-center"
                                     Font-Size="Small">
 
                                 </asp:RegularExpressionValidator>
                         
-                            </h5>
+                        
+                            
+
+
+
                             <h5 class="m-auto" style="color: white; padding-bottom:10px; text-align:left">Confirm Password: <asp:TextBox ID="Confirm_Password_tb" CssClass="form-control m-auto" runat="server" Width="348px" TextMode="Password"></asp:TextBox>
                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator3" CssClass="m-auto" runat="server" Display="Dynamic" ControlToValidate="Confirm_Password_tb" ErrorMessage="*" ForeColor="White"></asp:RequiredFieldValidator>
                                 <asp:CompareValidator ID="CompareValidatorPassword" runat="server" Display="Dynamic"
@@ -135,6 +143,15 @@
             btn1.disabled = true;
             btn1.value = 'Sending OTP...';
 
+            return true;
+        }
+
+        function EnableButton() {
+            var btn1 = document.getElementById('Register_btn');
+            btn1.disabled = false;
+            btn1.value = 'Register';
+
+            console.log("ENABLE BUTTON");
             return true;
         }
 

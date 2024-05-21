@@ -42,11 +42,10 @@ namespace VisualMech
             return base.OnDisconnected(stopCalled);
         }
 
-
         public async Task UpdateLeaderboards(string[] miniGameInfo)
         {
             string[] leaderboardsData = await RetrieveLeaderboardsDataAsync(miniGameInfo);
-            Clients.All.updateLeaderboards(leaderboardsData);
+            Clients.Group(miniGameInfo[0]).updateLeaderboards(leaderboardsData);
         }
 
         //Send Comment to group only (Notify them to fetch comments only on caller to prevent order problems)

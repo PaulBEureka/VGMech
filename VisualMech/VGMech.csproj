@@ -563,6 +563,7 @@
     <Content Include="HomePage.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Content\custom.js" />
+    <Content Include="Images\andrei.png" />
     <Content Include="Images\aries_pic.jpg" />
     <Content Include="Images\cj_pic.jpg" />
     <Content Include="Images\CollectingMechanic_Thumbnail.png" />
