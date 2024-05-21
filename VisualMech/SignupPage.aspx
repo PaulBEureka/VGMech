@@ -48,16 +48,18 @@
 
                             
 
-                            <h5 class="m-auto" style="color: white; padding-bottom:10px; text-align:left">New Password: <asp:TextBox ID="New_Password_tb" CssClass="form-control m-auto" runat="server" Width="348px" TextMode="Password"></asp:TextBox></h5> 
-                            
-                            
+                            <h5 class="m-auto" style="color: white; padding-bottom:10px; text-align:left">New Password: <asp:TextBox ID="New_Password_tb" CssClass="form-control m-auto" runat="server" Width="348px" TextMode="Password"></asp:TextBox>
                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator2" CssClass="m-auto" runat="server" Display="Dynamic" ControlToValidate="New_Password_tb" ErrorMessage="*" ForeColor="White"></asp:RequiredFieldValidator>
+                            </h5> 
+                            
+                            
                                 <asp:RegularExpressionValidator ID="RegularExpressionValidatorPassword" runat="server" Display="Dynamic"
                                     ControlToValidate="New_Password_tb"
                                     ErrorMessage="Password must contain at least one uppercase letter, one lowercase letter, one digit, one special character, and be at least 8 characters long."
                                     ValidationExpression="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$"
                                     ForeColor="White" CssClass="pb-2 text-center"
-                                    Font-Size="Small">
+                                    Font-Size="Small"
+                                    ClientIDMode="Inherit">
 
                                 </asp:RegularExpressionValidator>
                         
@@ -139,11 +141,15 @@
     <script src="/Content/custom.js"></script>
     <script>
         function DisableButton() {
-            var btn1 = document.getElementById('Register_btn');
-            btn1.disabled = true;
-            btn1.value = 'Sending OTP...';
+            var isValid = Page_ClientValidate();
 
-            return true;
+            if (isValid) {
+                var btn1 = document.getElementById('Register_btn');
+                btn1.disabled = true;
+                btn1.value = 'Sending OTP...';
+
+                return true;
+            }
         }
 
         function EnableButton() {
