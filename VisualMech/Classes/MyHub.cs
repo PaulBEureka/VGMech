@@ -495,6 +495,8 @@ namespace VisualMech
                                             </ul>
                                         </div>";
 
+            //int stringCount = allCommentString.Length;
+
             return new string[] { allCommentString.ToString(), commentCountString, sortByFormat };
         }
 

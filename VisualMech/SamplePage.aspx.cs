@@ -353,11 +353,14 @@ namespace VisualMech
 
                     if (count == 0) // No similar record found
                     {
-                        string insertQuery = "INSERT INTO visited_pages (user_id, mechanic_title) VALUES (@UserId, @MechanicTitle)";
+                        DateTime timestampUtc = DateTime.UtcNow;
+
+                        string insertQuery = "INSERT INTO visited_pages (user_id, mechanic_title, visited_timestamp) VALUES (@UserId, @MechanicTitle, @VistedTimestamp)";
                         using (MySqlCommand insertCommand = new MySqlCommand(insertQuery, connection))
                         {
                             insertCommand.Parameters.AddWithValue("@UserId", Session["Current_ID"]);
                             insertCommand.Parameters.AddWithValue("@MechanicTitle", cardTitle);
+                            insertCommand.Parameters.AddWithValue("@VistedTimestamp", timestampUtc);
                             insertCommand.ExecuteNonQuery();
                         }
 

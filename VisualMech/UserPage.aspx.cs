@@ -349,10 +349,14 @@ namespace VisualMech
                         {
                             while (reader.Read())
                             {
+                                DateTime nowDate = DateTime.MinValue;
+
                                 string mechanicTitle = reader.GetString("mechanic_title");
-                                string recordDate = reader["visited_timestamp"].ToString();
-                                DateTime parsedDateTime = DateTime.Parse(recordDate);
-                                string visitedDateTime = parsedDateTime.ToString("M/d/yyyy h:mm tt");
+
+                                DateTime localTimestamp = (DateTime)reader["visited_timestamp"];
+                                nowDate = localTimestamp.ToLocalTime();
+
+                                string visitedDateTime = nowDate.ToString("M/d/yyyy h:mm tt");
 
                                 visitedPagesList.Add(mechanicTitle);
 
@@ -361,7 +365,6 @@ namespace VisualMech
                                 {
                                     if (card.Title.ToUpper() == mechanicTitle.ToUpper())
                                     {
-                                        Debug.WriteLine(mechanicTitle.ToUpper());
                                         content += $@"<li class=""list-group-item"">Date visited: {visitedDateTime} <br /><a class=""learn-link"" href=""SamplePage.aspx?Learn={card.CardID}"">{mechanicTitle}</a></li>";
                                     }
                                 }
