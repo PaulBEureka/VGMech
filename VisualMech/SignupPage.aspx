@@ -93,9 +93,14 @@
 
                             <asp:Button class="signup_button m-auto " ID="Register_btn" UseSubmitBehavior="false" ClientIDMode="Static" OnClientClick="DisableButton()" runat="server" Text="Register" OnClick="Register_btn_Click"/>
                             <br />
-                            <a class="white-link text-end" runat="server" href="SignInPage.aspx" >Sign In</a>
-                    
                             
+                    
+                            <div class="row">
+                                <div class="col-12 text-end">
+                                    <a class="white-link text-end" runat="server" href="SignInPage.aspx" >Sign In</a>
+                                </div>
+
+                            </div>
                         
                         </div>
                     
@@ -134,6 +139,12 @@
                 </div>
             </div>
         </asp:Panel>
+
+
+
+
+
+
         
     </main>
 

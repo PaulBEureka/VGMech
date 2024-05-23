@@ -495,6 +495,7 @@ namespace VisualMech
                     {
                         if (OTPtb.Text == EmailSender.OTP) // OTP is correct, proceed to update
                         {
+                            EmailSender.OTP = null;
                             UpdateInformation();
                         }
                         else
