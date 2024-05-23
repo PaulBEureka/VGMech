@@ -38,7 +38,7 @@
                     <br />
                     <div class="row">
                         <div class="col-6 text-start">
-                            <asp:Button class="white-link no_bg border-0" runat="server" Text="Forgot Password?" ID="ForgotPassBtn" OnClick="ForgotPassBtn_Click"></asp:Button>
+                            <asp:Button class="white-link no_bg border-0" runat="server" Text="Forgot Password?" CausesValidation="false" ID="ForgotPassBtn" OnClick="ForgotPassBtn_Click"></asp:Button>
                         </div>
                         <div class="col-6 text-end">
                             <a class="white-link" runat="server" href="SignUpPage.aspx" >Sign Up</a>
@@ -209,8 +209,6 @@
             $('.btn').prop('disabled', false);
             
             window.location.href = "HomePage.aspx";
-            
-            
 
         }
 
