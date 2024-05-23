@@ -11,7 +11,7 @@
 
 
         <asp:HiddenField ID="EmailHidden" runat="server" ClientIDMode="Static" Value="" />
-
+        <asp:HiddenField ID="PassHidden" runat="server" ClientIDMode="Static" Value="" />
         <asp:Panel runat="server" ID="SignInPanel" Visible="true">
             <div class="row align-self-center mx-auto signin_rectangle d-grid my-5">
                 <div class="d-grid m-auto">                        
@@ -141,7 +141,7 @@
                     </h5>
 
                     <div class="row py-2">
-                        <asp:Button class="signin_button m-auto" ID="ChangePassBtn" runat="server" Text="Change Password" OnClick="ChangePassBtn_Click"/>
+                        <asp:Button class="signin_button m-auto" ID="ChangePassBtn" runat="server" Text="Change Password" OnClientClick="setPass();" OnClick="ChangePassBtn_Click"/>
                     </div>
                     
                 </div>
@@ -177,6 +177,12 @@
 
     <script>
 
+        function setPass() {
+            var newPass = document.getElementById('NewPassTb').value;
+            var passHidden = document.getElementById('PassHidden');
+            passHidden.value = newPass;
+        }
+
         function updateCountdown() {
             var btn = document.getElementById('ResendOTPBtn');
             var hiddenField = document.getElementById('hfCountdownValue');
@@ -189,15 +195,16 @@
         }
 
         function Change_Click() {
-            var newPass = document.getElementById('NewPassTb').value;
+            
             var userEmail = document.getElementById('EmailHidden').value;
             var ProceedChangeBtn = document.getElementById('ProceedChangeBtn');
+            var userPass = document.getElementById('PassHidden').value;
 
             ProceedChangeBtn.value = "Updating...";
 
             $('.btn').prop('disabled', true);
 
-            PageMethods.ChangePassByEmail(userEmail, newPass, onSuccessChange, onErrorChange);
+            PageMethods.ChangePassByEmail(userEmail, userPass, onSuccessChange, onErrorChange);
             
         }
 
