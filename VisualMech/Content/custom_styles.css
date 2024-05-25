@@ -312,8 +312,8 @@ body {
 /*Footer Styles*/
 
 .footer_logo{
-    width:150px;
-    height:150px;
+    width:120px;
+    height:120px;
 }
 
     .footer_logo:hover {
@@ -352,25 +352,38 @@ body {
 /*Game Mechanics layout styles*/
 
 .gameMech-bgColor {
-    background-image: url('../Images/try_bg.jpg'); /* Replace 'your-background-image.jpg' with your actual image path */
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    height:100%;
+    width: 100%;
+    height: 100%;
+    --s: 37px; /* control the size */
+
+    --c: #0000, #282828 0.5deg 119.5deg, #0000 120deg;
+    --g1: conic-gradient(from 60deg at 56.25% calc(425% / 6), var(--c));
+    --g2: conic-gradient(from 180deg at 43.75% calc(425% / 6), var(--c));
+    --g3: conic-gradient(from -60deg at 50% calc(175% / 12), var(--c));
+    background: var(--g1), var(--g1) var(--s) calc(1.73 * var(--s)), var(--g2), var(--g2) var(--s) calc(1.73 * var(--s)), var(--g3) var(--s) 0, var(--g3) 0 calc(1.73 * var(--s)) #1e1e1e;
+    background-size: calc(2 * var(--s)) calc(3.46 * var(--s));
 }
 
 .gameMech-section-holders {
-    max-width: 670px;
-    max-height: 700px;
+    max-width: 650px;
     background-color:  rgb(91,7,21);
-    padding-bottom: 3em;
-    padding-top: 3em;
+    padding-bottom: 1em;
+    padding-top: 1em;
 }
+
+.gameMech-section-holders-info {
+    max-width: 650px;
+    background-color: rgb(91,7,21);
+    padding-bottom: 1em;
+    padding-top: 1em;
+    height: fit-content;
+}
+
+
 
 .gameMech-code-holder {
     overflow: scroll;
-    max-width: 620px;
-    min-height:534px;
+    
     height: 100%;
     background-color: white;
     padding-top: 3em;
@@ -380,10 +393,6 @@ body {
     padding-bottom: 50px;
 }
 
-.gameMech-information-holder {
-    background-color: rgb(91,7,21);
-    max-width: 86%;
-}
 
 .gameMech-padding-text {
     padding-bottom: 15px;
@@ -400,12 +409,9 @@ body {
 }
 
 .gameMech-outer-box {
-    width: 89%;
-    height: 100%;
-    background-color: #e4e4e4;
+    background-color: rgb(91, 7, 21);
     padding-bottom: 1em;
     padding-top: 1em;
-    border:20px solid rgb(91,7,21);
 }
 
 .comment-section-size{

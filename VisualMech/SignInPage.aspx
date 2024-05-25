@@ -8,14 +8,13 @@
 
 
 
-
-
         <asp:HiddenField ID="EmailHidden" runat="server" ClientIDMode="Static" Value="" />
         <asp:HiddenField ID="PassHidden" runat="server" ClientIDMode="Static" Value="" />
         <asp:Panel runat="server" ID="SignInPanel" Visible="true">
             <div class="row align-self-center mx-auto signin_rectangle d-grid my-5">
                 <div class="d-grid m-auto">                        
-                    <img src="Images/VGM_logo.png" alt="imgpng" class="img-fluid m-auto" style="width:100px; height:100px" />
+                    <h4 class="text-center text-white pt-3 fw-bold">Sign In</h4>
+                    <hr class="text-white"/>
                     <h5 style="color: white; padding-bottom:10px; text-align:left" class="m-auto">Username: <asp:TextBox ID="Username_tb" runat="server" Width="348px" CssClass="m-auto form-control"></asp:TextBox>
                         <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" CssClass="m-auto" ControlToValidate="Username_tb" ErrorMessage="*" ForeColor="White"></asp:RequiredFieldValidator>
                         <asp:Label Text ="No Username found" Visible="false" Font-Size="Small" ID="No_Username_lbl" CssClass="m-auto" runat="server"></asp:Label>
@@ -33,7 +32,7 @@
                     </div>
                     <br />
                         
-                    <asp:Button class="signin_button m-auto" ID="Login_btn" runat="server" Text="Login" OnClick="Login_btn_Click"/>
+                    <asp:Button class="signin_button m-auto" ID="Login_btn" runat="server" Text="Sign In" OnClick="Login_btn_Click"/>
                         
                     <br />
                     <div class="row">
@@ -72,32 +71,34 @@
                         
                     </h5>   
 
-                    <div class="row">
-                        <div class="col text-center">
-                            <asp:Label Text ="" Visible="false" Font-Size="Small" ID="CustomValidator" CssClass="m-auto fw-bold text-white" runat="server"></asp:Label>
+                    <div class="col-12 text-center pt-3">
+                        <asp:Label Text ="" Visible="false" Font-Size="Medium" ID="CustomValidator" CssClass="m-auto fw-bold text-white" runat="server"></asp:Label>
                     
-                        </div>
-                    </div>  
+                    </div>
+                    
                     <div class="row py-2">
                         <asp:Button class="signin_button m-auto" ID="ResendOTPBtn" runat="server" ClientIDMode="Static" Text="Send OTP (Limit - 5/5)" UseSubmitBehavior="false" OnClientClick="DisableButtons();" OnClick="ResendOTPBtn_Click"/>
                         <asp:HiddenField ID="hfCountdownValue" runat="server" ClientIDMode="Static" Value="5" />
                     </div>
                     
                     <asp:Panel runat="server" ID="OTPCheckPanel" Visible="false">
-               
+                        
+                        <hr class="text-white"/>
                         <div class="row py-2">
                             <div class="col-12 text-center d-grid">
                                 <p class="text-white">Check your email for the OTP</p>
                             </div>
                             <div class="col-12 text-center d-grid">
-                                <asp:TextBox ID="OTPtb" runat="server" CssClass="m-auto" Placeholder="Type OTP here"></asp:TextBox>
+                                <asp:TextBox ID="OTPtb" runat="server" CssClass="m-auto form-control" Placeholder="Type OTP here"></asp:TextBox>
                             </div>
+                            
                             <div class="col-12 text-center d-grid py-3">
                                 <asp:Button class="signin_button m-auto" ID="ConfirmOTPBtn" runat="server" ClientIDMode="Static" Text="Confirm OTP" OnClick="ConfirmOTPBtn_Click"/>
                             </div>
 
                         
                         </div>
+                        
                     </asp:Panel>
                     
                 </div>

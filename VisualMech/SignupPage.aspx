@@ -8,7 +8,8 @@
         <asp:Panel runat="server" ID="SignUpPanel" Visible="true">
             <div class="row align-self-center m-auto my-5 signup_rectangle d-grid">
                         <div class="d-grid m-auto align-items-center">                        
-                            <img src="Images/VGM_logo.png" alt="imgpng" class="img-fluid m-auto" style="width:100px; height:100px" />
+                            <h4 class="text-center text-white pt-3 fw-bold">Sign Up</h4>
+                            <hr class="text-white"/>
                             <h5 style="color: white; padding-bottom:10px; text-align:left" class="m-auto">New Username: <asp:TextBox ID="New_Username_tb" runat="server" Width="348px" CssClass=" m-auto form-control"></asp:TextBox>
                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" CssClass="m-auto" Display="Dynamic" ControlToValidate="New_Username_tb" ErrorMessage="*" ForeColor="White"></asp:RequiredFieldValidator>
                                 <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" CssClass="m-auto"
@@ -113,29 +114,38 @@
 
         
         <asp:Panel runat="server" ID="VerifyPanel" Visible="false">
-            <div class="row mt-5 ms-3">
-                <asp:Button class="signin_button" ID="ChangeBtn" runat="server" UseSubmitBehavior="false" ClientIDMode="Static" Text="Change Credentials" OnClientClick="DisableButtons2()" OnClick="ChangeBtn_Click"/>
-                <br />
-                <h4 class=" text-center my-5">OTP sent to your provided email, verify to complete account registation</h4>
-            </div>
-            
+              
+            <div class="row align-self-center mx-auto signin_rectangle d-grid my-5">
+                <div class="container mt-2">
+                    
+                    <asp:Button class="signin_button w-25" ID="ChangeBtn" runat="server" UseSubmitBehavior="false" ClientIDMode="Static" Text="Back" OnClientClick="DisableButtons2()" OnClick="ChangeBtn_Click"/>
+                    <hr class="text-white"/>
+                </div>
+                <div class="d-grid m-auto">                        
+                    <h5 class="text-white pt-3 text-center">OTP sent to your provided email, verify to complete account registation</h5>
+                    <hr class="text-white"/>
+                    
+                    <div class="row">
+                        <div class="col text-center">
+                           <asp:Label ID="lblTimer" runat="server" Text="" Font-Size="Medium" CssClass="text-white text-wrap"></asp:Label><br />
+                        </div>
+                    </div> 
+                    
+                    <div class="row py-2">
+                        <div class="col-12 text-center d-grid">
+                            <asp:TextBox ID="OTPtb" runat="server" CssClass="m-auto mb-3 form-control" Placeholder="Type OTP here"></asp:TextBox>
+                            <asp:Button class="signin_button m-auto" ID="ResendBtn" runat="server" UseSubmitBehavior="false" ClientIDMode="Static" Text="Resend OTP (Limit - 5/5)" OnClientClick="DisableButtons()" OnClick="ResendBtn_Click"/>
+                            <asp:HiddenField ID="hfCountdownValue" runat="server" ClientIDMode="Static" Value="5" /> 
+                    
+                        </div>
+                        <div class="col-12 text-center d-grid py-3">
+                            <asp:Button class="signin_button m-auto" ID="OTPbtn" runat="server" UseSubmitBehavior="false" ClientIDMode="Static" Text="Submit OTP" OnClientClick="DisableButtons2()" OnClick="OTPbtn_Click"/>
+                        </div>
 
-            <div class="row">
-                <div class="col text-center">
-                   <asp:Label ID="lblTimer" runat="server" Text="" Font-Size="Large"></asp:Label><br />
-                </div>
-            </div> 
-            <div class="row">
-                <div class="col text-center">
-                    <asp:TextBox ID="OTPtb" runat="server" Placeholder="Type OTP here"></asp:TextBox>
-                    <asp:Button class="signin_button m-auto" ID="ResendBtn" runat="server" UseSubmitBehavior="false" ClientIDMode="Static" Text="Resend OTP (Limit - 5/5)" OnClientClick="DisableButtons()" OnClick="ResendBtn_Click"/>
-                    <asp:HiddenField ID="hfCountdownValue" runat="server" ClientIDMode="Static" Value="5" />
-                </div>
-            </div>     
-            <div class="row">
-                <div class="col text-center my-4">
-                    <asp:Button class="signin_button m-auto" ID="OTPbtn" runat="server" UseSubmitBehavior="false" ClientIDMode="Static" Text="Submit OTP" OnClientClick="DisableButtons2()" OnClick="OTPbtn_Click"/>
-      
+                    </div>
+
+                    
+                    
                 </div>
             </div>
         </asp:Panel>

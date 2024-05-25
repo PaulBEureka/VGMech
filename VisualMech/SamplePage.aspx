@@ -20,88 +20,78 @@
         
         <section class="gameMech-bgColor">
             <asp:Literal ID="gameMechLit" runat="server"></asp:Literal>
-            <!-- Comment Section layout -->
 
-            <div class="row m-auto gameMech-layout-padding mt-5">
-                <div class="container d-grid">
-                    <div class="gameMech-outer-box m-auto d-grid">
-                        <div class="container m-0 mx-auto d-grid">
-                            <div class="row ">
-                                <h4 class="fw-bolder">Share your thoughts</h4>
-                               
-                            </div>
-                            <div>
+            <div class="row d-grid mt-3">
+                <div class="row justify-content-center gameMech-layout-padding m-auto">
+
+                        <asp:Literal ID="gameMechInfoLit" runat="server"></asp:Literal>
+
+                        <div class="col-md-6 gameMech-section-holders mx-md-3 my-3">
+                            <div class="container bg-white m-0 mx-auto d-grid">
+                                <div class="row pt-3">
+                                    <h4 class="fw-bolder">Share your thoughts</h4>
+                                </div>
                                 <hr />
-                            </div>
 
-                            <div class="row container d-grid">
-                                    
-                                                    
-
-                                    <% if (Session["CurrentUser"] != null) { %>
-                                    <div class="col-5 mb-1 d-flex d-grid">
-                                        <img src="<%# Session["CurrentAvatarPath"] ?? "Images/person_icon.png" %>" alt="" class="rounded-circle" width="40" height="40">
-                                        <h5 class="ms-3 my-auto"><%# Session["CurrentUser"] ?? "Default Name" %></h5>
-                                    </div>
-
-                                    
-                                    
-                                    <br />
-                                    <textarea name="msg" placeholder="Type your comment here" id="commentbox" rows="5" class="form-control" style="background-color: white; resize: none;" draggable="false"></textarea>
-                                    
-
-                                    <% } %>
-                                    
-                                    <% if (Session["CurrentUser"] == null) { %>
-                                    <button type="button" id="post_disbled" class="comment_button mx-auto my-2 bg-danger" onclick="sign_in_comment()">Sign in</button>
-                                        <% } else { %>
-                                    <button type="button" id="post" class="comment_button my-2 bg-danger" onclick="post_Click()">Post Comment</button>
-                                    <% } %>
-                            </div>
-
-                            <hr />
-                            <div class="container">
-                                <div class="row justify-content-md-start align-items-center">
-                                    <div class="col-lg-2 fw-bolder" id="commentCountDiv">
-                                        
-                                    </div>
-                                    <div class="col-lg-5" id="sortByDiv">
-                                        
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <section>
-                                <div class="container"> 
-                                    
-
-                                    <div class="row">
-                                        <div class="col pb-4 comment-section-size shadow">
-                                            
-                                            <div id="commentSection" class="d-grid">
-                                                <!-- Existing comments will be dynamically added here -->
-                                                    <div class="spinner-border text-danger m-auto mt-5" role="status">
-                                                        <span class="visually-hidden">Loading...</span>
-                                                    </div>
-                                                
-                                            </div>
-                                            
+                                <div class="row container d-grid">
+                                        <% if (Session["CurrentUser"] != null) { %>
+                                        <div class="col-5 mb-1 d-flex d-grid">
+                                            <img src="<%# Session["CurrentAvatarPath"] ?? "Images/person_icon.png" %>" alt="" class="rounded-circle" width="40" height="40">
+                                            <h5 class="ms-3 my-auto"><%# Session["CurrentUser"] ?? "Default Name" %></h5>
                                         </div>
+                                        <br />
+                                        <textarea name="msg" placeholder="Type your comment here" id="commentbox" rows="5" class="form-control" style="background-color: white; resize: none;" draggable="false"></textarea>
+                                    
+                                        <% } %>
+                                    
+                                        <% if (Session["CurrentUser"] == null) { %>
+                                        <button type="button" id="post_disbled" class="comment_button mx-auto my-2 bg-danger" onclick="sign_in_comment()">Sign in</button>
+                                            <% } else { %>
+                                        <button type="button" id="post" class="comment_button my-2 bg-danger" onclick="post_Click()">Post Comment</button>
+                                        <% } %>
+                                </div>
+
+                                <hr />
+                                <div class="container">
+                                    <div class="row justify-content-md-start align-items-center">
+                                        <div class="col-6 text-start fw-bolder" id="commentCountDiv">
                                         
+                                        </div>
+                                        <div class="col-6 text-end" id="sortByDiv">
+                                        
+                                        </div>
                                     </div>
                                 </div>
-                            </section>
 
 
-
-
-
+                                <section>
+                                    <div class="container"> 
+                                        <div class="row pb-4">
+                                            <div class="col comment-section-size shadow">
+                                                <div id="commentSection" class="d-grid py-3">
+                                                    <!-- Existing comments will be dynamically added here -->
+                                                        <div class="spinner-border text-danger m-auto mt-5" role="status">
+                                                            <span class="visually-hidden">Loading...</span>
+                                                        </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                        
                         </div>
-                    </div>
+
+                            
+                        
+                        
+
+                    
                 </div>
+
             </div>
 
+            
 
         </section>
                     

@@ -18,7 +18,7 @@
               <div class="row gutters-sm">
                 <div class="col-md-12">
                     <asp:Button ID="ManageBtn" Text="Manage account" runat="server" OnClick="ManageBtn_Click" CssClass="comment_button my-2 bg-danger" />
-                    <asp:Button ID="ExitManageBtn" Text="Public layout" CausesValidation="false" Visible="false" runat="server" OnClick="ExitManageBtn_Click" CssClass="comment_button my-2 bg-danger" />
+                    <asp:Button ID="ExitManageBtn" Text="Exit Manage" CausesValidation="false" Visible="false" runat="server" OnClick="ExitManageBtn_Click" CssClass="comment_button my-2 bg-danger" />
                     <asp:Button ID="DeleteAccManageBtn" Text="Delete Account" CausesValidation="false" runat="server" Visible="false" OnClick="DeleteAccManageBtn_Click" CssClass="comment_button my-2 bg-danger" />
                 
                 </div>            
