@@ -100,10 +100,9 @@ namespace VisualMech
                         while (await reader.ReadAsync())
                         {
                             string username = reader["username"].ToString();
-                            string ranking_date = reader["ranking_date"].ToString();
+                            string time_finished = reader["time_finished"].ToString();
                             string score = reader["game_score"].ToString();
                             string avatarPath = reader["avatar_path"].ToString();
-                            string dateString = DateTime.Parse(ranking_date).ToString("M/d/yyyy");
 
                             allLeaderboardsString += $@"<div class=""row mt-3"" >
                                                     <div class=""col-md-1 d-grid"">
@@ -113,17 +112,17 @@ namespace VisualMech
                                                         <img src=""{avatarPath}"" alt="""" class=""rounded-circle record_border"" width=""60"" height=""60"">
                                                     </div>
                                                     <div class=""col-md-9 leaderboard_white_rec_round"">
-                                                        <div class=""row"">
-                                                            <div class = ""col-4 my-3"">
-                                                                <p class=""fw-bolder text-start"">{username.ToUpper()}</p>
+                                                            <div class=""row"">
+                                                                <div class = ""col my-3"">
+                                                                    <p class=""text-start""><strong>{username.ToUpper()}</strong></p>
+                                                                </div>
+                                                                <div class =""col my-3"">
+                                                                    <p class=""text-center""><strong>Score:</strong>{score} pts</p>
+                                                                </div>
+                                                                <div class =""col my-3"">
+                                                                    <p class=""text-end""><strong>Time finished:</strong>{time_finished}</p>
+                                                                </div>
                                                             </div>
-                                                            <div class ="" col-4 my-3"">
-                                                                <p class=""fw-bolder text-end"">{dateString}</p>
-                                                            </div>
-                                                            <div class ="" col-4 my-3"">
-                                                                <p class=""fw-bolder text-end"">{score} pts</p>
-                                                            </div>
-                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div>
