@@ -482,6 +482,7 @@ body {
 
 .leaderboard_white_rec_round{
     height: 50px;
+    max-height: 100px;
     border-radius: 30px;
     background-color: white;
 }
