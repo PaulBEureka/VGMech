@@ -179,7 +179,7 @@ namespace VisualMech
             }
             else
             {
-                lblTimer.Text = "Invalid OTP, Note: Changing of email could be done via Change Credentials button";
+                lblTimer.Text = "<strong>Invalid OTP</strong><br/><strong>Note</strong>: Changing of email could be done via Change Credentials button";
             }
         }
 

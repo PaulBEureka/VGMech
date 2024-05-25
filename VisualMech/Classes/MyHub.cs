@@ -344,11 +344,11 @@ namespace VisualMech
                         replyContainerDiv += $@"
                             <div class=""comment mt-4 float-left"" >
                                 <div class=""row"">
-                                    <div class=""col-1 text-end"">
+                                    <div class=""col-2 text-end"">
                                         <img src= ""{replyComment.AvatarPath}"" alt="""" role=""button"" class=""rounded-circle comment-avatar"" width=""40"" height=""40"" data-bs-toggle=""popover"" title=""About {replyComment.Username}"" data-bs-content=""{replyComment.AboutMe}"">
                                         
                                     </div>
-                                    <div class =""col-11"">
+                                    <div class =""col-10"">
                                         <div class=""row"">
                                             <div class=""col"">
                                                 <span class=""fw-bold"">{replyComment.Username}</span>
@@ -421,11 +421,11 @@ namespace VisualMech
                 allCommentString.Append($@"
                     <div class=""comment mt-4 float-left"" >
                         <div class=""row"">
-                            <div class=""col-1 text-end"">
+                            <div class=""col-2 text-end"">
                                 <img src= ""{comment.AvatarPath}"" alt="""" role=""button"" class=""rounded-circle comment-avatar"" width=""40"" height=""40"" data-bs-toggle=""popover"" title=""About {comment.Username}"" data-bs-content=""{comment.AboutMe}"">
                                
                             </div>
-                            <div class =""col-11"">
+                            <div class =""col-10"">
                                 <div class=""row"">
                                     <div class=""col"">
                                         <span class=""fw-bold"">{comment.Username}</span>

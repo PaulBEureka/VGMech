@@ -40,6 +40,7 @@ namespace VisualMech
                     LearnCard selectedCard = cardList.FirstOrDefault(card => card.CardID == learnID);
                     cardTitle = selectedCard.Title;
                     gameMechLit.Text = selectedCard.GetContentHtml();
+                    gameMechInfoLit.Text = selectedCard.GetLearnInformation();
 
                     string script = $@"
                             var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle=""tooltip""]'))
@@ -115,8 +116,6 @@ namespace VisualMech
             {
                 strings = new string[3] { cardTitle, null, context.Session["CommentOrder"].ToString() };
             }
-
-
 
             return strings;
         }

@@ -27,6 +27,7 @@ namespace VisualMech
                 ForgotPasswordPanel.Visible = false;
                 ChangePasswordPanel.Visible = false;
                 OTPCheckPanel.Visible = false;
+
             }
         }
 

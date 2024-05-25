@@ -64,14 +64,18 @@ namespace VisualMech.Content.Classes
                         <div class=""row"">
                             <h2 class=""text-light fw-bolder"">Interactive Demonstration</h2>
                             
-                    </div>
-                    <div class=""ratio ratio-16x9 d-grid m-auto mb-3 pb-3"">
-                        <iframe src=""{UnityLink}"" class=""unityLayout m-auto"" allowfullscreen=""allowfullscreen"" title=""{Title.ToUpper()}"" scrolling=""no""></iframe>
-                    </div>
-                    <div>
-                        <h4 class=""text-light fw-bolder gameMech-padding-Title pb-3"">INTERACTIVE CONTROLS</h4>
-                        <p class=""text-light m-0 gameMech-padding-text fs-6"">{InteractiveControls}</p>
-                    </div>
+                        </div>
+                        <div class=""ratio ratio-16x9 d-grid m-auto mb-3 pb-3"">
+                            <iframe src=""{UnityLink}"" class=""unityLayout m-auto"" allowfullscreen=""allowfullscreen"" title=""{Title.ToUpper()}"" scrolling=""no""></iframe>
+                        </div>
+                        <div>
+                            <h4 class=""text-light fw-bolder gameMech-padding-Title pb-3"">INTERACTIVE CONTROLS</h4>
+                        </div>
+                        <div style=""text-align: center;"">
+                            <div style=""display: inline-block; text-align: left;"">
+                                <p class=""text-light m-0 gameMech-padding-text fs-6"">{InteractiveControls}</p>
+                            </div>
+                        </div>
                     </div>
                     <div class=""col-md-6 d-grid gameMech-section-holders mx-md-3 my-5 "">
                         <div class=""row"">
@@ -87,12 +91,15 @@ namespace VisualMech.Content.Classes
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>";
+        }
 
-
+        public string GetLearnInformation()
+        {
+            return $@"
+               
             <!-- Information layout -->
-            <div class=""row d-grid gameMech-layout"">
-                <div class=""container gameMech-information-holder m-auto p-3"">
+                <div class=""col-md-6 gameMech-section-holders-info mx-md-3 my-3"">
                     <!-- Game genres layout -->
                     <h5 class=""text-light fw-bolder gameMech-padding-Title"">Commonly Used Game Genres:</h5>
                     <p class=""text-light m-0 gameMech-padding-text"">{CommonGenres}</p>
@@ -104,9 +111,11 @@ namespace VisualMech.Content.Classes
                     <!-- Possible Combination layout -->
                     <h5 class=""text-light fw-bolder gameMech-padding-Title"">Possible Game Mechanics Combination:</h5>
                     <p class=""text-light m-0 gameMech-padding-text"">{PossibleCombinations}</p>
+                    
+                    
 
                 </div>
-            </div>";
+            ";
         }
 
 
