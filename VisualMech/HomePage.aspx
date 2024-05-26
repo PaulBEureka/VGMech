@@ -22,38 +22,60 @@
                     <button type="button" data-bs-target="#carouselExampleInterval" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
                     <button type="button" data-bs-target="#carouselExampleInterval" data-bs-slide-to="1" aria-label="Slide 2"></button>
                     <button type="button" data-bs-target="#carouselExampleInterval" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                    <button type="button" data-bs-target="#carouselExampleInterval" data-bs-slide-to="3" aria-label="Slide 4"></button>
+                    <button type="button" data-bs-target="#carouselExampleInterval" data-bs-slide-to="4" aria-label="Slide 5"></button>
                 </div>
                 <div class="carousel-inner carousel-container">
                     <div class="carousel-item active" data-bs-interval="5000">
                         <div class="row my-3 py-5">
                             <div class="col-md-6 justify-content-center text-center my-3 py-5 d-grid">
-                                <p class="display-3 text-center text-light fw-bolder m-auto">Redefining <br /> Learning of Game<br /> Mechanics!</p>
+                                <p class="display-3 text-center text-light fw-bolder m-auto">Master the Basics: <br /> fluid movement is <br /> the foundation of gameplay</p>
                             </div>
                             <div class="col-md-6 justify-content-center text-center ">
-                                <img class="ratio ratio-4x3 container-md" src="Images/game-mechanics-cover.png" alt=" ">
+                                <img class="ratio ratio-4x3 container-md" src="Images/movement_gif.gif" alt=" ">
                             </div>
                         </div>
                     </div>
                     <div class="carousel-item" data-bs-interval="5000">
                         <div class="row my-3 py-5">
                             <div class="col-md-6 justify-content-center text-center">
-                                <img class="ratio ratio-4x3 container-md" src="Images/game-mechanics-cover2.png" alt=" " >
+                                <img class="ratio ratio-4x3 container-md" src="Images/shooting_gif.gif" alt=" " >
                             </div>
                             <div class="col-md-6 justify-content-center text-center my-3 py-5 d-grid">
-                                <p class="display-3 text-center text-light fw-bolder m-auto">Interactively learn<br />Each Game Mechanic!</p>
+                                <p class="display-3 text-center text-light fw-bolder m-auto">Sharpen your aim: <br />precise shooting <br />makes all the difference.</p>
                             </div>
                         </div>
                     </div>
                     <div class="carousel-item" data-bs-interval="5000">
                         <div class="row my-3 py-5">
                             <div class="col-md-6 justify-content-center text-center my-3 py-5 d-grid">
-                                <p class="display-3 text-center text-light fw-bolder m-auto">Collaboratively learn<br />with other learners!</p>
+                                <p class="display-3 text-center text-light fw-bolder m-auto">Gather wisely: <br />every item counts towards your success.</p>
                             </div>
                             <div class="col-md-6 justify-content-center text-center">
-                                <img class="ratio ratio-4x3 container-md" src="Images/game-mechanics-cover3.png" alt=" ">
+                                <img class="ratio ratio-4x3 container-md" src="Images/collecting_gif.gif" alt=" ">
                             </div>
                         </div>
                     </div>
+                    <div class="carousel-item" data-bs-interval="5000">
+                        <div class="row my-3 py-5">
+                            <div class="col-md-6 justify-content-center text-center">
+                                <img class="ratio ratio-4x3 container-md" src="Images/interaction_gif.gif" alt=" " >
+                            </div>
+                            <div class="col-md-6 justify-content-center text-center my-3 py-5 d-grid">
+                                <p class="display-3 text-center text-light fw-bolder m-auto">Engage actively:<br /> interaction opens new possibilities.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-item" data-bs-interval="5000">
+                    <div class="row my-3 py-5">
+                        <div class="col-md-6 justify-content-center text-center my-3 py-5 d-grid">
+                            <p class="display-3 text-center text-light fw-bolder m-auto">Manage your vitality: health is<br /> key to survival.</p>
+                        </div>
+                        <div class="col-md-6 justify-content-center text-center">
+                            <img class="ratio ratio-4x3 container-md" src="Images/health_gif.gif" alt=" ">
+                        </div>
+                    </div>
+                </div>
                 </div>
             </div>
         </section>
