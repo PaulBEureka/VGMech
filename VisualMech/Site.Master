@@ -99,7 +99,7 @@
 
 
 
-        <div class="main_wrap">
+        <div class="main_wrap gameMech-bgColor">
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
             
@@ -108,7 +108,7 @@
         <!-- Footer layout -->
 
         <footer class="footer-background">
-            <div class="container pt-3">
+            <div class="container">
 
                 <div class="row d-block text-center">
                     <div class="col">

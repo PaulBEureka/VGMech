@@ -16,7 +16,7 @@
             <!-- Home page layout -->
 
 
-       <section id="homepage" class="intro-section-color my-3" aria-labelledby="aspnetTitle">
+       <section id="homepage" class="intro-section-color" aria-labelledby="aspnetTitle">
             <div id="carouselExampleInterval" class="carousel slide container carousel-container" data-bs-ride="carousel">
                 <div class="carousel-indicators">
                     <button type="button" data-bs-target="#carouselExampleInterval" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -171,7 +171,7 @@
                 <h1 class="display-5 text-light fw-bolder">Our Core Purpose</h1>
             </div>
             <div class="container">
-                <p class="text-light my-2 py-4 text-center fw-bold h4">
+                <p class="text-light py-5 text-center fw-bold h4 mb-0">
                     "To empower aspiring game developers and enthusiasts with deep understanding of game mechanics through interactive learning experiences,  fostering both knowledge acquisition and enjoyment in a dynamic virtual environment."
                 </p>
             </div>
