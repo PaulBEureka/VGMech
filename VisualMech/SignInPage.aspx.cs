@@ -29,11 +29,12 @@ namespace VisualMech
                 OTPCheckPanel.Visible = false;
 
             }
+            captchacode.Text = null;
         }
 
         protected void Login_btn_Click(object sender, EventArgs e)
         {
-
+            lblCaptchaErrorMsg.Visible = false;
             if (captchacode.Text == Session["sessionCaptcha"].ToString())
             {
                 string query = $@"
@@ -107,7 +108,7 @@ namespace VisualMech
             {
                 lblCaptchaErrorMsg.Text = "Incorrect Captcha";
                 lblCaptchaErrorMsg.ForeColor = System.Drawing.Color.White;
-                captchacode.Text = "";
+                captchacode.Text = null;
             }
         }
 

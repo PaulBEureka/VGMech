@@ -309,7 +309,8 @@ body {
 
 
 
-/*Footer Styles*/
+/*
+    Styles*/
 
 .footer_logo{
     width:120px;
@@ -808,7 +809,11 @@ body {
     background-color:white;
 }
 
+.visited-pages-custom{
+    max-height: 250px;
+    overflow:auto;
 
+}
 
 
 /*Admin styles*/
