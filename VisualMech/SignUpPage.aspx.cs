@@ -23,6 +23,10 @@ namespace VisualMech
     {
         private static readonly string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
 
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            captchacode.Text = null;
+        }
 
         protected void Register_btn_Click(object sender, EventArgs e)
         {
@@ -32,12 +36,12 @@ namespace VisualMech
 
             taken_lbl.Visible = false;
             email_lbl.Visible = false;
-
+            lblCaptchaErrorMsg.Visible = false;
             if (captchaCode != sessionCaptcha)
             {
                 lblCaptchaErrorMsg.Text = "Incorrect Captcha";
                 lblCaptchaErrorMsg.ForeColor = System.Drawing.Color.White;
-                captchacode.Text = "";
+                captchacode.Text = null;
                 tempClear = false;
             }
 

@@ -295,7 +295,7 @@
                       <div class="card_user h-100">
                         <div class="card-body-user">
                             <h6 class="d-flex align-items-center mb-3">Visited Learn Game Mechanics</h6>
-                            <ul class="list-group list-group-flush">
+                            <ul class="list-group list-group-flush visited-pages-custom">
                                 <asp:Literal ID="VisitedPagesLit" runat="server"></asp:Literal>
                       
                             
