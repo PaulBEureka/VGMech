@@ -42,7 +42,7 @@
                                 <img class="ratio ratio-4x3 container-md" src="Images/shooting_gif.gif" alt=" " >
                             </div>
                             <div class="col-md-6 justify-content-center text-center my-3 py-5 d-grid">
-                                <p class="display-3 text-center text-light fw-bolder m-auto">Sharpen your aim: <br />precise shooting <br />makes all the difference.</p>
+                                <p class="display-3 text-center text-light m-auto fw-bolder">Sharpen your aim: <br />precise shooting <br />makes all the difference.</p>
                             </div>
                         </div>
                     </div>

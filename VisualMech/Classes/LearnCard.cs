@@ -87,7 +87,7 @@ namespace VisualMech.Content.Classes
                             </div>
                         </div>
                         <div class=""row justify-content-center m-auto gameMech-code-holder"">
-                            <p class= ""text-start"" id=""codeText"">{CodeText}</>
+                            <p class= ""text-start text-break"" id=""codeText"">{CodeText}</>
                         </div>
                     </div>
                 </div>

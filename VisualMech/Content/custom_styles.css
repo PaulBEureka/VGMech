@@ -382,9 +382,9 @@ body {
 
 
 .gameMech-code-holder {
-    overflow: scroll;
-    
-    height: 100%;
+    overflow:auto;
+    width: 98%;
+    max-height: 600px;
     background-color: white;
     padding-top: 3em;
 }
