@@ -66,7 +66,7 @@ namespace VisualMech.Content.Classes
                             
                         </div>
                         <div class=""ratio ratio-16x9 d-grid m-auto mb-3 pb-3"">
-                            <iframe src=""{UnityLink}"" class=""unityLayout m-auto"" allowfullscreen=""allowfullscreen"" title=""{Title.ToUpper()}"" scrolling=""no""></iframe>
+                            <iframe src=""{UnityLink}"" class=""unityLayout m-auto"" allowfullscreen title=""{Title.ToUpper()}"" scrolling=""no""></iframe>
                         </div>
                         <div>
                             <h4 class=""text-light fw-bolder gameMech-padding-Title pb-3"">INTERACTIVE CONTROLS</h4>
