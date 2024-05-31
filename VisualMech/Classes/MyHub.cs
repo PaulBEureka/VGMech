@@ -365,8 +365,8 @@ namespace VisualMech
                                     <div class =""col-10"">
                                         <div class=""row"">
                                             <div class=""col"">
-                                                <span class=""fw-bold"">{replyComment.Username}</span>
-                                                <span class=""text-muted"">{replydateCommented}</span>
+                                                <span class=""fw-bold comment-header-style"">{replyComment.Username}</span>
+                                                <span class=""text-muted comment-header-style"">{replydateCommented}</span>
                                             </div>";
 
                         if (replyComment.Username == sessionUser)
@@ -387,7 +387,7 @@ namespace VisualMech
 
                         replyContainerDiv += $@"
                                         <div class=""row"">
-                                            <p class="""">{replyComment.CommentContent}</p>
+                                            <p class=""comment-content-style"">{replyComment.CommentContent}</p>
                                         </div>
                                         <div class=""row text-start"">
                                             <div class=""dropdown"">
@@ -457,8 +457,8 @@ namespace VisualMech
                             <div class =""col-10"">
                                 <div class=""row"">
                                     <div class=""col"">
-                                        <span class=""fw-bold"">{comment.Username}</span>
-                                        <span class=""text-muted"">{dateCommented}</span>
+                                        <span class=""fw-bold comment-header-style"">{comment.Username}</span>
+                                        <span class=""text-muted comment-header-style"">{dateCommented}</span>
                                     </div>
 
                 ");
@@ -483,7 +483,7 @@ namespace VisualMech
 
                 allCommentString.Append( $@"
                                 <div class=""row"">
-                                    <p class="""">{comment.CommentContent}</p>
+                                    <p class=""comment-content-style"">{comment.CommentContent}</p>
                                 </div>
                                 <div class=""row text-start"">
                                     <div class=""dropdown"">

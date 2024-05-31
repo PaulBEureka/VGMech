@@ -305,7 +305,10 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-sm-12 mb-3">
+
+                    <%-- inserted in panel at the moment --%>
+                    <asp:Panel runat="server" Visible ="false">
+                        <div class="col-sm-12 mb-3">
                         <div class="card_user h-100">
                             <div class="card-body-user">
                                 <h6 class="d-flex align-items-center mb-3">Badges Earned</h6>
@@ -382,6 +385,7 @@
                             </div>
                         </div>
 
+                    </asp:Panel>
 
                         
                     </div>

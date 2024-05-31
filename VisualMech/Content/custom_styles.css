@@ -739,6 +739,14 @@ body {
     cursor: pointer; /* Show pointer cursor on hover */
 }
 
+.comment-header-style{
+    font-size:small;
+
+}
+
+.comment-content-style{
+    font-size:14px;
+}
 
 
 
