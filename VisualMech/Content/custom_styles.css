@@ -678,6 +678,7 @@ body {
     background-color: transparent; /* Transparent background */
     color: black; /* Text color */
     font-weight: 600;
+    font-size:small;
     border: none;
     border-radius: 20px;
     transition: .2s ease-in-out;
@@ -695,6 +696,7 @@ body {
     color: #007bff; /* Text color */
     cursor: pointer; /* Show pointer cursor on hover */
     font-weight: bold;
+    font-size:small;
     text-align: start;
     border-radius: 20px;
     transition: .2s ease-in-out;

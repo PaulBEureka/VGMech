@@ -404,11 +404,21 @@
 
         function toggleReplies(commentId) {
             var button = document.getElementById("toggle-replies-btn-" + commentId);
+            var icon = document.getElementById("toggle-replies-btn-icon-" + commentId);
             var container = document.getElementById("reply-container-" + commentId);
 
-            // Toggle aria-expanded attribute
             var expanded = button.getAttribute("aria-expanded") === "true" || false;
             button.setAttribute("aria-expanded", !expanded);
+
+
+            if (icon.classList.contains('fa-chevron-down')) {
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-up');
+            }
+            else if (icon.classList.contains('fa-chevron-up')) {
+                icon.classList.remove('fa-chevron-up');
+                icon.classList.add('fa-chevron-down');
+            }
 
             if (expanded == false) {
                 isValidUpdate = null;

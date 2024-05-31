@@ -366,7 +366,7 @@ namespace VisualMech
                                         <div class=""row"">
                                             <div class=""col"">
                                                 <span class=""fw-bold"">{replyComment.Username}</span>
-                                                <span class="""">{replydateCommented}</span>
+                                                <span class=""text-muted"">{replydateCommented}</span>
                                             </div>";
 
                         if (replyComment.Username == sessionUser)
@@ -404,11 +404,26 @@ namespace VisualMech
 
                     replyContainerDiv += " </div></div>";
 
-                    viewRepliesButton = $@"
+
+                    if(comment.RepliesList.Count > 1)
+                    {
+                        viewRepliesButton = $@"
                         <button id=""toggle-replies-btn-{comment.CommentId}"" class=""toggle-replies-btn"" type=""button"" aria-expanded=""false"" aria-controls=""reply-container-{comment.CommentId}"" onclick=""toggleReplies({comment.CommentId})"">
-                            view {comment.RepliesList.Count} replies
+                            <i class=""fa-solid fa-chevron-down"" id=""toggle-replies-btn-icon-{comment.CommentId}""></i> {comment.RepliesList.Count} replies
                         </button>
                         ";
+
+                    }
+                    else
+                    {
+                        viewRepliesButton = $@"
+                        <button id=""toggle-replies-btn-{comment.CommentId}"" class=""toggle-replies-btn"" type=""button"" aria-expanded=""false"" aria-controls=""reply-container-{comment.CommentId}"" onclick=""toggleReplies({comment.CommentId})"">
+                            <i class=""fa-solid fa-chevron-down"" id=""toggle-replies-btn-icon-{comment.CommentId}""></i> {comment.RepliesList.Count} reply
+                        </button>
+                        ";
+                    }
+
+
                 }
 
                 string dateCommented = GetTimeAgo(comment.DateCommented);
@@ -443,7 +458,7 @@ namespace VisualMech
                                 <div class=""row"">
                                     <div class=""col"">
                                         <span class=""fw-bold"">{comment.Username}</span>
-                                        <span class="""">{dateCommented}</span>
+                                        <span class=""text-muted"">{dateCommented}</span>
                                     </div>
 
                 ");
