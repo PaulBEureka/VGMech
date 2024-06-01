@@ -351,7 +351,7 @@ namespace VisualMech
                 {
                     connection.Open();
 
-                    string query = "DELETE FROM comment WHERE comment_id = @CommentId";
+                    string query = "DELETE FROM comment WHERE comment_id = @CommentId OR parent_comment_id = @CommentId";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
