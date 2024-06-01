@@ -5,6 +5,8 @@
     <script src="/Content/custom.js"></script>
     <main>
 
+        
+
         <asp:Panel runat="server" ID="SignUpPanel" Visible="true">
             <div class="row align-self-center m-auto my-5 signup_rectangle d-grid">
                         <div class="d-grid m-auto align-items-center">                        

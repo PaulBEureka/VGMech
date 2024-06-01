@@ -124,6 +124,7 @@
         var isValidUpdate = "0";
         var commentIdToDelete;
         var pageContext = null;
+        var mainCommentStreamPage
         var chat = $.connection.myHub;
 
         PageMethods.GetCardTitle(onSuccessOrder);
@@ -165,6 +166,8 @@
                     commentIdToDelete = $(this).data("comment-id");
                     $("#deleteModal").modal("show");
             });
+
+            
         }
 
 
@@ -181,51 +184,75 @@
         });
 
         function fetchComments(pageDetails) {
-            chat.server.fetchComments(pageDetails)
-                .done(function () {
-                    console.log("Comments fetched successfully.");
-                })
-                .fail(function (error) {
-                    console.error("Error fetching comments: " + error);
-                });
+            chat.server.fetchComments(pageDetails);
         }
 
         chat.client.fetchCommentSolo = function (commentHTML) {
             if (isValidUpdate == "0") {
-                var firstComment = commentHTML[0];
-                var secondComment = commentHTML[1];
 
                 // Update the comments on the webpage
                 $('#commentSection').html(commentHTML[0]);
                 $('#commentCountDiv').html(commentHTML[1]);
                 $('#sortByDiv').html(commentHTML[2]);
+                PageMethods.SetOffset(commentHTML[3]);
                 onContentLoaded();
             }
         };
 
+
+
+
+        function loadMoreCommentsHub(pageDetails) {
+            chat.server.loadMoreComments(pageDetails);
+        }
+
+        chat.client.loadMoreSolo = function (commentHTML) {
+           
+            $('#insertNextCommentDiv').remove();
+            $('#commentSection').append(commentHTML[0]);
+
+            PageMethods.SetOffset(commentHTML[3]);
+            onContentLoaded();
+            
+        };
+
+        function loadMoreRepliesHub(pageDetails) {
+            chat.server.loadMoreReplies(pageDetails);
+        }
+
+        chat.client.loadMoreRepliesSolo = function (commentHTML) {
+            var replyContainer = document.getElementById("inner-reply-" + commentHTML[1]);
+            var insertDiv = document.getElementById('insertNextCommentDiv-' + commentHTML[1]);
+            var initialSpinner = document.getElementById('initial-spinner-' + commentHTML[1]);
+
+            if (initialSpinner != null) {
+                $(initialSpinner).remove();
+            }
+            else {
+                $(insertDiv).remove();
+            }
+
+            $(replyContainer).append(commentHTML[0]);
+
+            PageMethods.SetReplyOffset(commentHTML[1], commentHTML[2]);
+            onContentLoaded();
+            
+        };
+
+
+
         function sendComment(cardTitle) {
-            chat.server.callForGroupUpdate(cardTitle)
-                .done(function () {
-                    console.log("Call for update done");
-                })
-                .fail(function (error) {
-                    console.error("Error fetching in call update: " + error);
-                });
+            chat.server.callForGroupUpdate(cardTitle);
         }
 
         chat.client.getCommentGroup = function () {
+
             PageMethods.get_Comments(fetchComments);
         };
 
 
         function updateCommentsOrder(cardTitle) {
-            chat.server.updateCommentsOrder(cardTitle)
-                .done(function () {
-                    console.log("Comments updated successfully.");
-                })
-                .fail(function (error) {
-                    console.error("Error updating comments: " + error);
-                });
+            chat.server.updateCommentsOrder(cardTitle);
         }
 
         chat.client.updateCommentsOrder = function (commentHTML) {
@@ -235,6 +262,7 @@
             $('#commentSection').html(commentHTML[0]);
             $('#commentCountDiv').html(commentHTML[1]);
             $('#sortByDiv').html(commentHTML[2]);
+            PageMethods.SetOffset(commentHTML[3]);
 
             onContentLoaded();
         };
@@ -363,8 +391,6 @@
             
         }
 
-
-
         function onError2(response) {
             toastr.options = {
                 "closeButton": false,
@@ -387,12 +413,11 @@
             toastr['error']('An error occurred while changing comment order', 'Error');
         }
 
-
         function innerReply_Click(parentCommentId, commentID) {
             var parentString = "replybox-" + commentID.toString();
             var message = document.getElementById(parentString).value; 
 
-            PageMethods.innerReply_Click(parentCommentId, message, onSuccess, onError);
+            PageMethods.reply_Click(parentCommentId, message, onSuccess, onError);
             document.getElementById(parentString).value = null;
             
         }
@@ -401,19 +426,27 @@
             PageMethods.changeCommentOrder(order, onSuccess2, onError2);
         }
 
-
         function toggleReplies(commentId) {
             var button = document.getElementById("toggle-replies-btn-" + commentId);
             var icon = document.getElementById("toggle-replies-btn-icon-" + commentId);
             var container = document.getElementById("reply-container-" + commentId);
+            var replyContainer = document.getElementById("inner-reply-" + commentId);
+                
 
             var expanded = button.getAttribute("aria-expanded") === "true" || false;
             button.setAttribute("aria-expanded", !expanded);
 
+            const spinnerElement = replyContainer.querySelector(".spinner-border");
 
             if (icon.classList.contains('fa-chevron-down')) {
                 icon.classList.remove('fa-chevron-down');
                 icon.classList.add('fa-chevron-up');
+
+                //If there is a spinner element, no replies have been loaded yet so perform an initial load upon toggle
+                if (spinnerElement) {
+                    //Get the information from the server regarding the offset and other page data, then pass to the signalR Hub
+                    PageMethods.get_Replies(commentId, loadMoreRepliesHub) 
+                } 
             }
             else if (icon.classList.contains('fa-chevron-up')) {
                 icon.classList.remove('fa-chevron-up');
@@ -435,6 +468,11 @@
         function toggleRespond(commentId) {
             var button = document.getElementById("toggle-respond-btn-" + commentId);
             var container = document.getElementById("respond-container-" + commentId);
+            var container = document.getElementById("respond-container-" + commentId);
+            var replyBox = document.getElementById("replybox-" + commentId);
+
+            //Clear previous contents
+            replyBox.value = null;
 
             // Toggle aria-expanded attribute
             var expanded = button.getAttribute("aria-expanded") === "true" || false;
@@ -452,7 +490,35 @@
             var hidden = container.getAttribute("aria-hidden") === "true" || false;
             container.setAttribute("aria-hidden", !hidden);
         }
+
         
+
+
+        // Function to load more comments
+        function loadMoreComments() {
+            const spinnerHTML = `
+                <div class="spinner-border text-danger m-auto text-center" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            `;
+            $('#loadMoreDiv').html(spinnerHTML);
+            PageMethods.get_Comments(loadMoreCommentsHub);
+        }
+
+        // Function to load more comments
+        function loadMoreReplies(commentId) {
+            const spinnerHTML = `
+                <div class="spinner-border text-danger m-auto text-center" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            `;
+
+            $('#loadMoreReplies-' + commentId).html(spinnerHTML);
+            PageMethods.get_Replies(commentId, loadMoreRepliesHub) 
+        }
+        
+
+
 
     </script>
 
