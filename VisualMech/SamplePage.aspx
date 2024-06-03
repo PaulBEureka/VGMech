@@ -37,7 +37,7 @@
                                         <% if (Session["CurrentUser"] != null) { %>
                                         <div class="col-5 mb-1 d-flex d-grid">
                                             <img src="<%# Session["CurrentAvatarPath"] ?? "Images/person_icon.png" %>" alt="" class="rounded-circle" width="40" height="40">
-                                            <h5 class="ms-3 my-auto"><%# Session["CurrentUser"] ?? "Default Name" %></h5>
+                                            <h5 class="ms-3 my-auto" id="SessionUserLabel"><%# Session["CurrentUser"] ?? "Default Name" %></h5>
                                         </div>
                                         <br />
                                         <textarea name="msg" placeholder="Type your comment here" id="commentbox" rows="5" class="form-control" style="background-color: white; resize: none;" draggable="false"></textarea>
@@ -126,6 +126,8 @@
         var pageContext = null;
         var mainCommentStreamPage
         var chat = $.connection.myHub;
+        var mainCommentOffset = null;
+        var sessionUser = null;
 
         PageMethods.GetCardTitle(onSuccessOrder);
 
@@ -167,6 +169,9 @@
                     $("#deleteModal").modal("show");
             });
 
+            var sessionLabel = document.getElementById("SessionUserLabel");
+
+            sessionUser = sessionLabel.textContent;
             
         }
 
@@ -188,15 +193,19 @@
         }
 
         chat.client.fetchCommentSolo = function (commentHTML) {
-            if (isValidUpdate == "0") {
+            
 
-                // Update the comments on the webpage
-                $('#commentSection').html(commentHTML[0]);
-                $('#commentCountDiv').html(commentHTML[1]);
-                $('#sortByDiv').html(commentHTML[2]);
-                PageMethods.SetOffset(commentHTML[3]);
-                onContentLoaded();
-            }
+            // Update the comments on the webpage
+            $('#commentSection').html(commentHTML[0]);
+            $('#commentCountDiv').html(commentHTML[1]);
+            $('#sortByDiv').html(commentHTML[2]);
+
+            mainCommentOffset = commentHTML[3];
+            PageMethods.SetOffset(commentHTML[3]);
+            onContentLoaded();
+
+                
+            
         };
 
 
@@ -211,6 +220,7 @@
             $('#insertNextCommentDiv').remove();
             $('#commentSection').append(commentHTML[0]);
 
+            mainCommentOffset = commentHTML[3];
             PageMethods.SetOffset(commentHTML[3]);
             onContentLoaded();
             
@@ -239,16 +249,180 @@
             
         };
 
-
-
-        function sendComment(cardTitle) {
-            chat.server.callForGroupUpdate(cardTitle);
+        function deleteComment(cardTitle, idToDelete) {
+            chat.server.callForGroupDelete(cardTitle, idToDelete);
         }
 
-        chat.client.getCommentGroup = function () {
+        chat.client.deleteCommentGroup = function (idToDelete) {
+            const commentToDelete = document.querySelector(`div[data-comment-id="${idToDelete}"]`);
 
-            PageMethods.get_Comments(fetchComments);
+            
+            updateReplyCount(idToDelete, -1);
+            commentToDelete.remove();
+            updateTotalCommentCount(-1);
+            onContentLoaded();
+        }
+
+
+        function sendComment(cardTitle, info) {
+            chat.server.callForGroupSend(cardTitle, info);
+        }
+
+        chat.client.sendCommentGroup = function (newCommentHTML) {
+            var commentContent = newCommentHTML[0];
+            var orderOrParentID = newCommentHTML[1]; //order of the comments of the receiver or parentID if the value is not Newest or Oldest
+            var incomingUser = newCommentHTML[2];
+
+
+            if (orderOrParentID === "Oldest" || orderOrParentID === "Newest") { // Having these values means that the comment is a main comment
+                const mainDiv = document.getElementById('commentSection');
+                console.log("Entered main comment if");
+
+                const childDivToFirst = mainDiv.querySelector('div[data-comment-type="First"]');
+
+                if (orderOrParentID == "Oldest") { // insertNextDiv being null means that the receiver has reached the end of comments
+                    console.log("Entered Oldest append");
+
+                    if (sessionUser == incomingUser) {//Insert before the first comment that is not the active session user
+                        console.log(childDivToFirst);
+                        childDivToFirst.insertAdjacentHTML('beforebegin', commentContent);
+                    }
+                    else {
+                        const moreDiv = document.getElementById('insertNextCommentDiv');
+                        if (moreDiv == null) {//means that all comments are loaded
+                            $('#commentSection').append(commentContent);
+                        }
+                    }
+
+                }
+                else if (orderOrParentID == "Newest") {
+                    console.log("Entered Oldest append");
+
+                    if (sessionUser == incomingUser) {//prepend at the beginning of the comment section if the comment came from the session user
+                        $('#commentSection').prepend(commentContent);
+                    }
+                    else {//Insert before the comment that is not the active session user
+                        childDivToFirst.removeAttribute('data-comment-type'); //Remove the data-comment-type to set as next basis of insertion to the new comment
+                        childDivToFirst.insertAdjacentHTML('beforebegin', commentContent);
+                    }
+
+                }
+                
+            }
+            else {
+                var insertDiv = document.getElementById('insertNextCommentDiv-' + orderOrParentID);
+                var initialSpinner = document.getElementById('initial-spinner-' + orderOrParentID);
+                var toggleButton = document.getElementById('toggle-replies-btn-' + orderOrParentID);
+                var replyHiddenContainer = document.getElementById('ReplyContainerDivHidden-' + orderOrParentID);
+
+                if (replyHiddenContainer != null) {//If this is not null, the comment has no existing replies
+                    replyHiddenContainer.style.display = "inline";
+                    $(initialSpinner).remove();
+                    $('#inner-reply-' + orderOrParentID).append(commentContent);
+                }
+                else {
+                    if (insertDiv == null && initialSpinner == null) {//Check if all replies of that comment is fully loaded
+                        console.log("Entered Reply append");
+                        $('#inner-reply-' + orderOrParentID).append(commentContent); //Only append when all replies are fully loaded to prevent clashing of updates when loaded more
+                    }
+                }
+                updateReplyCount(orderOrParentID, 1);
+
+            }
+            updateTotalCommentCount(1);
+            onContentLoaded();
+
         };
+
+
+        function updateReplyCount(commentId, value) {
+            if (value > 0) {//Means that the passed value is parentCommentID
+                const button = document.getElementById(`toggle-replies-btn-${commentId}`);
+                var icon = document.getElementById(`toggle-replies-btn-icon-${commentId}`);
+                const buttonText = button.textContent;
+
+                const contentArr = buttonText.split(' ');
+                let replyCount = parseInt(contentArr[0], 10);
+                replyCount += value;
+
+                if (replyCount == 1) {
+                    if (icon.classList.contains('fa-chevron-down')) {
+                        $('#toggle-replies-btn-' + commentId).html(`<i class="fa-solid fa-chevron-down" id="toggle-replies-btn-icon-${commentId}"></i>${replyCount} reply`);
+                    }
+                    else if (icon.classList.contains('fa-chevron-up')) {
+                        $('#toggle-replies-btn-' + commentId).html(`<i class="fa-solid fa-chevron-up" id="toggle-replies-btn-icon-${commentId}"></i>${replyCount} reply`);
+                    }
+                }
+                else {
+                    if (icon.classList.contains('fa-chevron-down')) {
+                        $('#toggle-replies-btn-' + commentId).html(`<i class="fa-solid fa-chevron-down" id="toggle-replies-btn-icon-${commentId}"></i>${replyCount} replies`);
+                    }
+                    else if (icon.classList.contains('fa-chevron-up')) {
+                        $('#toggle-replies-btn-' + commentId).html(`<i class="fa-solid fa-chevron-up" id="toggle-replies-btn-icon-${commentId}"></i>${replyCount} replies`);
+                    }
+                }
+            }
+            else {//Means that the passed value is the deleted CommentID
+                const commentToDelete = document.querySelector(`div[data-comment-id="${commentId}"]`);
+                const parentComment = commentToDelete.getAttribute('data-parent-id');
+                if (parentComment != null) {//null means that the there is no reply count to update
+                    const button = document.getElementById(`toggle-replies-btn-${parentComment}`);
+                    var icon = document.getElementById(`toggle-replies-btn-icon-${parentComment}`);
+                    var replyHiddenContainer = document.getElementById(`ReplyContainerDivHidden-${parentComment}`);
+                    const buttonText = button.textContent;
+
+                    const contentArr = buttonText.split(' ');
+                    let replyCount = parseInt(contentArr[0], 10);
+                    replyCount += value;
+
+                    if (replyCount == 1) {
+                        if (icon.classList.contains('fa-chevron-down')) {
+                            $('#toggle-replies-btn-' + parentComment).html(`<i class="fa-solid fa-chevron-down" id="toggle-replies-btn-icon-${parentComment}"></i>${replyCount} reply`);
+                        }
+                        else if (icon.classList.contains('fa-chevron-up')) {
+                            $('#toggle-replies-btn-' + parentComment).html(`<i class="fa-solid fa-chevron-up" id="toggle-replies-btn-icon-${parentComment}"></i>${replyCount} reply`);
+                        }
+                    }
+                    else if (replyCount == 0) {
+                        $('#toggle-replies-btn-' + parentComment).html(`<i class="fa-solid fa-chevron-down" id="toggle-replies-btn-icon-${parentComment}"></i>${replyCount} reply`);
+                        replyHiddenContainer.style.display = "none";
+                    }
+                    else {
+                        if (icon.classList.contains('fa-chevron-down')) {
+                            $('#toggle-replies-btn-' + parentComment).html(`<i class="fa-solid fa-chevron-down" id="toggle-replies-btn-icon-${parentComment}"></i>${replyCount} replies`);
+                        }
+                        else if (icon.classList.contains('fa-chevron-up')) {
+                            $('#toggle-replies-btn-' + parentComment).html(`<i class="fa-solid fa-chevron-up" id="toggle-replies-btn-icon-${parentComment}"></i>${replyCount} replies`);
+                        }
+                    }
+
+                    
+                }
+            }
+
+
+
+            
+            
+        }
+
+        function updateTotalCommentCount(value) {
+            const totalCountDiv = document.getElementById(`commentCountDiv`);
+
+            const totalCountContent = totalCountDiv.textContent;
+
+            const contentArr = totalCountContent.split(' ');
+
+            let commentCount = parseInt(contentArr[0], 10);
+            commentCount += value;
+
+            if (commentCount == 1) {
+                $('#commentCountDiv').html(`${commentCount} comment`);
+            }
+            else {
+                $('#commentCountDiv').html(`${commentCount} comments`);
+            }
+        }
 
 
         function updateCommentsOrder(cardTitle) {
@@ -302,8 +476,8 @@
                 toastr['success']('Comment posted successfully', 'Comment Posted');
                 isValidUpdate = "0";
 
-                
-                sendComment(pageContext);
+
+                sendComment(pageContext, response);
             }
 
             
@@ -361,8 +535,8 @@
                 "hideMethod": "fadeOut"
             }
 
-            toastr['success'](response);
-            sendComment(pageContext);
+            toastr['success']("Comment Deleted Successfully");
+            deleteComment(pageContext, response);
         }
 
         function onSuccess2(response) {

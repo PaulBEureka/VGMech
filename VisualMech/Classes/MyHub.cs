@@ -19,6 +19,8 @@ using System.Web.UI;
 using System.Windows.Forms;
 using System.Globalization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Collections;
+using System.ComponentModel;
 
 namespace VisualMech
 {
@@ -49,12 +51,18 @@ namespace VisualMech
         }
 
         //Send Comment to group only (Notify them to fetch comments only on caller to prevent order problems)
-        public void CallForGroupUpdate(string cardTitle)
+        public async Task CallForGroupSend(string cardTitle, string[] info)
         {
-
-
-            Clients.Group(cardTitle).getCommentGroup();
+            string[] commentsData = await GetNewComment(info);
+            Clients.Group(cardTitle).sendCommentGroup(commentsData);
         }
+
+        public void CallForGroupDelete(string cardTitle, string idToDelete)
+        {
+            Clients.Group(cardTitle).deleteCommentGroup(idToDelete);
+        }
+
+        
 
         //FetchComments when connecting to hub only on Caller
         public async Task FetchComments(string[] stringArr)
@@ -74,6 +82,82 @@ namespace VisualMech
             string[] commentsData = await RetrieveRepliesData(stringArr);
             Clients.Caller.loadMoreRepliesSolo(commentsData);
         }
+
+        private async Task<string[]> GetNewComment(string[] info)
+        {
+            string newCommentID = info[0];
+            string commentOrder = info[1];
+            string sessionUser = info[2];
+
+            List<Comment> commentList = new List<Comment>();
+            int? parentCommentID = 0;
+
+            string query = $@"
+                SELECT 
+                    c1.*, 
+                    user.username, 
+                    user.about_me, 
+                    avatar.avatar_path, 
+                    COUNT(c2.comment_id) AS ReplyCount
+                    FROM comment c1
+                    INNER JOIN user ON c1.user_id = user.user_id 
+                    INNER JOIN avatar ON user.user_id = avatar.user_id
+                    LEFT JOIN comment c2 ON c1.comment_id = c2.parent_comment_id
+                    WHERE c1.comment_id = {newCommentID};
+            ";
+
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    await connection.OpenAsync();
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+
+                        using (MySqlDataReader reader = (MySqlDataReader)await command.ExecuteReaderAsync())
+                        {
+                            while (await reader.ReadAsync())
+                            {
+                                DateTime commentDate = DateTime.MinValue;
+
+                                int commentId = reader.GetInt32("comment_id");
+                                string username = reader["username"].ToString();
+                                DateTime localTimestamp = (DateTime)reader["comment_date"];
+                                string raw_comment = reader["comment"].ToString();
+                                int userId = reader.GetInt32("user_id");
+                                string about_me = reader["about_me"].ToString();
+                                int replyCountValue = reader.IsDBNull(reader.GetOrdinal("ReplyCount")) ? 0 : reader.GetInt32(reader.GetOrdinal("ReplyCount"));
+
+                                parentCommentID = reader.IsDBNull(reader.GetOrdinal("parent_comment_id")) ? 0 : reader.GetInt32(reader.GetOrdinal("parent_comment_id"));
+
+                                commentDate = localTimestamp.ToLocalTime();
+
+                                string comment = MakeNameBold(raw_comment);
+                                string commentAvatarPath = reader["avatar_path"].ToString();
+
+                                commentList.Add(new Comment(commentId, username, commentDate, comment, commentAvatarPath, about_me, replyCountValue));
+                            }
+                        }
+                    }
+                }
+
+
+                if (parentCommentID == 0)
+                {
+                    return SortComment(commentList, sessionUser, commentOrder, 0, 0, true);
+                }
+                else
+                {
+                    return SortReplies(commentList, sessionUser, 0, parentCommentID.ToString(), true);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
 
         public async Task UpdateCommentsOrder(string[] stringArr)
         {
@@ -243,7 +327,7 @@ namespace VisualMech
             int repliesOffset = int.Parse(info[2]);
             string parentCommentID = info[3];
 
-            int offsetNextValue = repliesOffset + 10;
+            int offsetNextValue = repliesOffset;
             string queryOrder = "ASC";//Have replies to always be in oldest first order to retain context
             string query;
 
@@ -306,12 +390,11 @@ namespace VisualMech
             }
             catch (Exception ex)
             {
-                Console.WriteLine("An error occurred: " + ex.Message);
-                return null; // or throw exception
+                throw ex;
             }
         }
 
-        private string[] SortReplies(List<Comment> commentList, string sessionUser, int offset, string parentCommentID)
+        private string[] SortReplies(List<Comment> commentList, string sessionUser, int offset, string parentCommentID, bool isNewComment = false)
         {
             // Check if there are more than 10 reply comments, indication of there are more comments to be loaded
             bool hasMore = commentList.Count > 10;
@@ -353,8 +436,13 @@ namespace VisualMech
                         </button>
                         ";
 
+                
                 allCommentString.Append($@"
-                    <div class=""comment mt-4 float-left"" >
+                <div class=""comment mt-4 float-left"" data-comment-id=""{comment.CommentId}"" data-parent-id=""{parentCommentID}"">");
+                
+
+
+                allCommentString.Append($@"
                         <div class=""row"">
                             <div class=""col-2 text-end"">
                                 <img src= ""{comment.AvatarPath}"" alt="""" role=""button"" class=""rounded-circle comment-avatar mt-2"" width=""40"" height=""40"" data-bs-toggle=""popover"" title=""About {comment.Username}"" data-bs-content=""{comment.AboutMe}"">
@@ -405,9 +493,11 @@ namespace VisualMech
 
             }
 
-            if (hasMore)
+            if (!isNewComment)
             {
-                allCommentString.Append($@"
+                if (hasMore)
+                {
+                    allCommentString.Append($@"
                     <div id=""insertNextCommentDiv-{parentCommentID}"">
                         <div class=""row d-grid"">
                             <div class=""col-5 text-center m-auto"" id=""loadMoreReplies-{parentCommentID}"">
@@ -418,9 +508,15 @@ namespace VisualMech
                         </div>
                     </div>
                 ");
+                }
+                return new string[] { allCommentString.ToString(), parentCommentID, offset.ToString() };
+            }
+            else
+            {
+                return new string[] { allCommentString.ToString(), parentCommentID};
             }
 
-            return new string[] { allCommentString.ToString(), parentCommentID, offset.ToString() };
+            
         }
 
 
@@ -432,7 +528,7 @@ namespace VisualMech
             string sessionUsername = info[1];
             string order = info[2];
             int commentOffset = int.Parse(info[3]);
-            int offsetNextValue = commentOffset + 10;
+            int offsetNextValue = commentOffset;
             string queryOrder = (order == "Newest") ? "DESC" : "ASC";
             int totalComments = 0;
 
@@ -535,17 +631,15 @@ namespace VisualMech
             }
             catch (Exception ex)
             {
-                Console.WriteLine("An error occurred: " + ex.Message);
-                return null; // or throw exception
+                throw ex;
             }
         }
 
-        private string[] SortComment(List<Comment> commentList, string sessionUser, string order, int offset, int totalComments)
+        private string[] SortComment(List<Comment> commentList, string sessionUser, string order, int offset, int totalComments, bool isNewComment = false)
         {
 
             // Check if there are more than 10 comments, indication of there are more comments to be loaded
             bool hasMore = commentList.Count > 10;
-
             if (hasMore)
             {
                 commentList.RemoveAt(commentList.Count - 1);
@@ -554,6 +648,9 @@ namespace VisualMech
 
             StringBuilder allCommentString = new StringBuilder();
             allCommentString.Clear();
+
+
+            bool IsFirstTag = false;
 
 
 
@@ -565,42 +662,37 @@ namespace VisualMech
                 string replyContainerDiv = "";
                 int replyCount = comment.ReplyCount;
 
-                if (replyCount != 0)
-                {
-                    replyContainerDiv = $@"
-                        <div id=""reply-container-{comment.CommentId}"" class=""reply-container"" aria-labelledby=""toggle-replies-btn-{comment.CommentId}"" aria-hidden=""true"">
-                            <div class=""reply mt-4 text-justify float-left"" id=""inner-reply-{comment.CommentId}"" >
-                                <div class=""row d-grid"" id=""initial-spinner-{comment.CommentId}"">
-                                    <div class=""col-5 text-center m-auto"">
-                                        <div class=""spinner-border text-danger text-center"" role=""status"">
-                                            <span class=""visually-hidden"">Loading...</span>
-                                        </div>   
-                                    </div>
+                
+                replyContainerDiv = $@"
+                    <div id=""reply-container-{comment.CommentId}"" class=""reply-container"" aria-labelledby=""toggle-replies-btn-{comment.CommentId}"" aria-hidden=""true"">
+                        <div class=""reply mt-4 text-justify float-left"" id=""inner-reply-{comment.CommentId}"" >
+                            <div class=""row d-grid"" id=""initial-spinner-{comment.CommentId}"">
+                                <div class=""col-5 text-center m-auto"">
+                                    <div class=""spinner-border text-danger text-center"" role=""status"">
+                                        <span class=""visually-hidden"">Loading...</span>
+                                    </div>   
                                 </div>
                             </div>
                         </div>
-                        ";
+                    </div>
+                    ";
 
-                    if(replyCount > 1)
-                    {
-                        viewRepliesButton = $@"
-                        <button id=""toggle-replies-btn-{comment.CommentId}"" class=""toggle-replies-btn"" type=""button"" aria-expanded=""false"" aria-controls=""reply-container-{comment.CommentId}"" onclick=""toggleReplies({comment.CommentId})"">
-                            <i class=""fa-solid fa-chevron-down"" id=""toggle-replies-btn-icon-{comment.CommentId}""></i> {replyCount} replies
-                        </button>
-                        ";
-
-                    }
-                    else
-                    {
-                        viewRepliesButton = $@"
-                        <button id=""toggle-replies-btn-{comment.CommentId}"" class=""toggle-replies-btn"" type=""button"" aria-expanded=""false"" aria-controls=""reply-container-{comment.CommentId}"" onclick=""toggleReplies({comment.CommentId})"">
-                            <i class=""fa-solid fa-chevron-down"" id=""toggle-replies-btn-icon-{comment.CommentId}""></i> {replyCount} reply
-                        </button>
-                        ";
-                    }
-
+                if(replyCount > 1)
+                {
+                    viewRepliesButton = $@"
+                    <button id=""toggle-replies-btn-{comment.CommentId}"" class=""toggle-replies-btn"" type=""button"" aria-expanded=""false"" aria-controls=""reply-container-{comment.CommentId}"" onclick=""toggleReplies({comment.CommentId})""><i class=""fa-solid fa-chevron-down"" id=""toggle-replies-btn-icon-{comment.CommentId}""></i>{replyCount} replies</button>
+                    ";
 
                 }
+                else
+                {
+                    viewRepliesButton = $@"
+                    <button id=""toggle-replies-btn-{comment.CommentId}"" class=""toggle-replies-btn"" type=""button"" aria-expanded=""false"" aria-controls=""reply-container-{comment.CommentId}"" onclick=""toggleReplies({comment.CommentId})""><i class=""fa-solid fa-chevron-down"" id=""toggle-replies-btn-icon-{comment.CommentId}""></i>{replyCount} reply</button>
+                    ";
+                }
+
+
+                
 
                 string dateCommented = GetTimeAgo(comment.DateCommented);
 
@@ -624,8 +716,21 @@ namespace VisualMech
                         </button>
                         ";
 
+                //Put a data-comment-type = "First" to the first comment that is not the user if the offset is 0
+                if(!IsFirstTag && offset == 0 && comment.Username != sessionUser)
+                {
+                    allCommentString.Append($@"
+                        <div class=""comment mt-4 float-left"" data-comment-type='First' data-comment-id=""{comment.CommentId}"">");
+                    IsFirstTag = true;
+                }
+                else
+                {
+                    allCommentString.Append($@"
+                    <div class=""comment mt-4 float-left"" data-comment-id=""{comment.CommentId}"">");
+                }
+
+
                 allCommentString.Append($@"
-                    <div class=""comment mt-4 float-left"" >
                         <div class=""row"">
                             <div class=""col-2 text-end"">
                                 <img src= ""{comment.AvatarPath}"" alt="""" role=""button"" class=""rounded-circle comment-avatar mt-2"" width=""40"" height=""40"" data-bs-toggle=""popover"" title=""About {comment.Username}"" data-bs-content=""{comment.AboutMe}"">
@@ -657,41 +762,70 @@ namespace VisualMech
 
                 
 
-                allCommentString.Append( $@"
-                                </div>
-                                <div class=""row"">
-                                    <p class=""comment-content-style"">{comment.CommentContent}</p>
-                                </div>
-                                <div class=""row text-start"">
-                                    <div class=""dropdown"">
-                                        {replyButton}
-                                        {replyContainer}
+                if(comment.ReplyCount != 0)
+                {
+                    allCommentString.Append($@"
                                     </div>
-                                    <div>
-                                        {viewRepliesButton}
-                                        {replyContainerDiv}
+                                    <div class=""row"">
+                                        <p class=""comment-content-style"">{comment.CommentContent}</p>
                                     </div>
+                                    <div class=""row text-start"">
+                                        <div class=""dropdown"">
+                                            {replyButton}
+                                            {replyContainer}
+                                        </div>
+                                        <div id=""ReplyContainerDivHidden-{comment.CommentId}"" >
+                                            {viewRepliesButton}
+                                            {replyContainerDiv}
+                                        </div>
                                     
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
                     
-                ");
+                    ");
+                }
+                else
+                {
+                    allCommentString.Append($@"
+                                    </div>
+                                    <div class=""row"">
+                                        <p class=""comment-content-style"">{comment.CommentContent}</p>
+                                    </div>
+                                    <div class=""row text-start"">
+                                        <div class=""dropdown"">
+                                            {replyButton}
+                                            {replyContainer}
+                                        </div>
+                                        <div id=""ReplyContainerDivHidden-{comment.CommentId}"" style=""display: none;"">
+                                            {viewRepliesButton}
+                                            {replyContainerDiv}
+                                        </div>
+                                    
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                    ");
+                }
                 
             }
 
-            string commentCountString;
-            if (totalComments <= 1 )
+            if (!isNewComment) 
             {
-                commentCountString = totalComments.ToString() + " comment";
-            }
-            else
-            {
-                commentCountString = totalComments.ToString() + " comments";
-            }
+                string commentCountString;
+                if (totalComments <= 1)
+                {
+                    commentCountString = totalComments.ToString() + " comment";
+                }
+                else
+                {
+                    commentCountString = totalComments.ToString() + " comments";
+                }
 
-            string sortByFormat = $@"<div class=""dropdown"">
+                string sortByFormat = $@"<div class=""dropdown"">
                                             <button class=""sortby_button"" type=""button"" id=""sortDropdown"" data-bs-toggle=""dropdown"" aria-expanded=""false"">
                                                 <i class=""fa fa-sort"" aria-hidden=""true""></i> Sort by: {order}
                                             </button>
@@ -701,9 +835,9 @@ namespace VisualMech
                                             </ul>
                                         </div>";
 
-            if (hasMore)
-            {
-                allCommentString.Append($@"
+                if (hasMore)
+                {
+                    allCommentString.Append($@"
                     <div id=""insertNextCommentDiv"">
                         <div class=""row d-grid"">
                             <div class=""col-5 text-center m-auto"" id=""loadMoreDiv"">
@@ -714,9 +848,17 @@ namespace VisualMech
                         </div>
                     </div>
                 ");
+                }
+
+                return new string[] { allCommentString.ToString(), commentCountString, sortByFormat, offset.ToString() };
+            }
+            else
+            {
+
+                return new string[] { allCommentString.ToString(), order, sessionUser };
             }
 
-            return new string[] { allCommentString.ToString(), commentCountString, sortByFormat , offset.ToString()};
+            
         }
 
         private static string GetTimeAgo(DateTime inputDate)

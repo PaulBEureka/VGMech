@@ -15,6 +15,8 @@ using MySql.Data.MySqlClient;
 using Microsoft.AspNet.SignalR;
 using System.Web.Script.Serialization;
 using System.ComponentModel.Design;
+using Microsoft.Ajax.Utilities;
+using System.Runtime.Remoting.Contexts;
 
 namespace VisualMech
 {
@@ -142,7 +144,7 @@ namespace VisualMech
         {
             HttpContext context = HttpContext.Current;
 
-            context.Session["CommentOffset"] = offset;
+            context.Session["CommentOffset"] = (int.Parse(offset) + 10).ToString();
         }
 
         [WebMethod]
@@ -150,7 +152,7 @@ namespace VisualMech
         {
             HttpContext context = HttpContext.Current;
 
-            context.Session["ReplyOffset" + commentID] = offset;
+            context.Session["ReplyOffset" + commentID] = (int.Parse(offset) + 10).ToString();
         }
 
         [WebMethod]
@@ -214,19 +216,21 @@ namespace VisualMech
         }
 
         [WebMethod]
-        public static string reply_Click(int parentCommentId, string message)
+        public static string[] reply_Click(int parentCommentId, string message)
         {
             if (message == null || message.Length < 1 || String.IsNullOrWhiteSpace(message))
             {
                 return null;
             }
             string result = "";
+
+            string lastInsertedId = null;
+            // Get the current HttpContext
+            HttpContext context = HttpContext.Current;
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 try
                 {
-                    // Get the current HttpContext
-                    HttpContext context = HttpContext.Current;
 
                     if (message.Length <= 0)
                     {
@@ -237,7 +241,6 @@ namespace VisualMech
                         
                         if (context.Session["Current_ID"] != null)
                         {
-                            ClearOffsets();
                             connection.Open();
                             DateTime timestampUtc = DateTime.UtcNow;
 
@@ -252,6 +255,8 @@ namespace VisualMech
                                 command.Parameters.AddWithValue("Parent_comment_id", parentCommentId);
 
                                 command.ExecuteNonQuery();
+                                // Get the last inserted ID
+                                lastInsertedId = command.LastInsertedId.ToString();
                             }
 
                             result = "Comment Posted Successfully";
@@ -267,31 +272,28 @@ namespace VisualMech
                 }
                 catch (Exception ex)
                 {
-                    result = ex.Message;
+                    throw ex;
                 }
             }
-
-
-            return result;
+            return new string[] { lastInsertedId, context.Session["CommentOrder"].ToString(), context.Session["CurrentUser"].ToString() };
         }
 
         
         [WebMethod]
-        public static string post_Click(string message)
+        public static string[] post_Click(string message)
         {
             if (message == null || message.Length < 1 || String.IsNullOrWhiteSpace(message))
             {
                 return null;
             }
-            string result = "";
+            string lastInsertedId;
+            // Get the current HttpContext
+            HttpContext context = HttpContext.Current;
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 try
                 {
-                    // Get the current HttpContext
-                    HttpContext context = HttpContext.Current;
-
-
+                    
                     if (message.Length <= 0)
                     {
                         throw new Exception("Comment cannot be empty");
@@ -301,12 +303,11 @@ namespace VisualMech
                         if (context.Session["Current_ID"] != null)
                         {
 
-                            ClearOffsets();
                             connection.Open();
                             DateTime timestampUtc = DateTime.UtcNow;
 
                             string query = "INSERT INTO comment (user_id, mechanic_title, comment, comment_date) VALUES (@UserId, @MechanicTitle, @CommentText, @CommentDate)";
-
+                            
                             using (MySqlCommand command = new MySqlCommand(query, connection))
                             {
                                 command.Parameters.AddWithValue("@UserId", context.Session["Current_ID"]);
@@ -315,9 +316,12 @@ namespace VisualMech
                                 command.Parameters.AddWithValue("@CommentDate", timestampUtc);
 
                                 command.ExecuteNonQuery();
+
+                                // Get the last inserted ID
+                                 lastInsertedId = command.LastInsertedId.ToString();
                             }
 
-                            result = "Comment Posted Successfully";
+                            
                             connection.Close();
 
 
@@ -330,19 +334,17 @@ namespace VisualMech
                 }
                 catch (Exception ex)
                 {
-                    result = ex.Message;
+                    throw ex;
                 }
             }
 
-
-            return result;
+            return new string[] { lastInsertedId, context.Session["CommentOrder"].ToString(), context.Session["CurrentUser"].ToString() };
         }
 
 
         [WebMethod]
         public static string DeleteComment(string commentID)
         {
-            ClearOffsets();
 
             string result = "";
             using (MySqlConnection connection = new MySqlConnection(connectionString))
@@ -359,12 +361,12 @@ namespace VisualMech
                         command.ExecuteNonQuery();
                     }
 
-                    result = "Comment Deleted Successfully";
+                    result = commentID;
                     connection.Close();
                 }
                 catch (Exception ex)
                 {
-                    result = ex.Message;
+                    throw ex;
                 }
             }
 
