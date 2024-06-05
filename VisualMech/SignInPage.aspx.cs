@@ -29,7 +29,6 @@ namespace VisualMech
                 OTPCheckPanel.Visible = false;
 
             }
-            captchacode.Text = null;
         }
 
         protected void Login_btn_Click(object sender, EventArgs e)
@@ -73,6 +72,7 @@ namespace VisualMech
                                     if (!isMatch)
                                     {
                                         Incorrect_lbl.Visible = true;
+                                        captchacode.Text = null;
                                     }
                                     else
                                     {
@@ -94,6 +94,7 @@ namespace VisualMech
                                 else
                                 {
                                     No_Username_lbl.Visible = true;
+                                    captchacode.Text = null;
                                 }
                             }
                         }
@@ -101,6 +102,7 @@ namespace VisualMech
                     catch (Exception ex)
                     {
                         Response.Write(ex.Message);
+                        captchacode.Text = null;
                     }
                 }
             }
@@ -108,6 +110,7 @@ namespace VisualMech
             {
                 lblCaptchaErrorMsg.Text = "Incorrect Captcha";
                 lblCaptchaErrorMsg.ForeColor = System.Drawing.Color.White;
+                lblCaptchaErrorMsg.Visible = true;
                 captchacode.Text = null;
             }
         }

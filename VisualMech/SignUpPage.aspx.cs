@@ -12,7 +12,7 @@ using System.Web.Services.Description;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using VisualMech.Classes;
-using BCryptNet = BCrypt.Net.BCrypt; // If this has error, run this in package manager console: Install-Package BCrypt.Net
+using BCryptNet = BCrypt.Net.BCrypt; 
 using static System.Net.WebRequestMethods;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,7 +25,7 @@ namespace VisualMech
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            captchacode.Text = null;
+            
         }
 
         protected void Register_btn_Click(object sender, EventArgs e)
@@ -49,6 +49,7 @@ namespace VisualMech
             {
                 taken_lbl.Visible = true;
                 tempClear = false;
+                captchacode.Text = null;
             }
 
 
@@ -56,6 +57,7 @@ namespace VisualMech
             {
                 email_lbl.Visible = true;
                 tempClear = false;
+                captchacode.Text = null;
             }
 
             if (tempClear)

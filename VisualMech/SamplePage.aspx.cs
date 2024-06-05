@@ -14,6 +14,9 @@ using VisualMech.Content.Classes;
 using MySql.Data.MySqlClient;
 using Microsoft.AspNet.SignalR;
 using System.Web.Script.Serialization;
+using System.ComponentModel.Design;
+using Microsoft.Ajax.Utilities;
+using System.Runtime.Remoting.Contexts;
 
 namespace VisualMech
 {
@@ -25,14 +28,31 @@ namespace VisualMech
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["CommentOrder"] == null){
-                Session["CommentOrder"] = "Newest";
-            }
+           
 
             cardList = Session["CardList"] as List<LearnCard>;
+            Session["CommentOrder"] = "Newest";
+            Session["CommentOffset"] = 0;
+
+            List<string> keysToRemove = new List<string>();
+
+            foreach (string key in Session.Keys)
+            {
+                if (key.Contains("ReplyOffset"))
+                {
+                    keysToRemove.Add(key);
+                }
+            }
+
+            foreach (string key in keysToRemove)
+            {
+                Session.Remove(key);
+            }
 
             if (!IsPostBack)
             {
+                
+
                 if (Request.QueryString["Learn"] != null)
                 {
                     string learnID = Request.QueryString["Learn"];
@@ -85,6 +105,28 @@ namespace VisualMech
         
         }
 
+        public static void ClearOffsets()
+        {
+            // Get the current HttpContext
+            HttpContext context = HttpContext.Current;
+
+            context.Session["CommentOffset"] = 0;
+
+            List<string> keysToRemove = new List<string>();
+
+            foreach (string key in context.Session.Keys)
+            {
+                if (key.Contains("ReplyOffset"))
+                {
+                    keysToRemove.Add(key);
+                }
+            }
+
+            foreach (string key in keysToRemove)
+            {
+                context.Session.Remove(key);
+            }
+        }
 
         [WebMethod]
         public static string changeCommentOrder(string newOrder)
@@ -92,7 +134,25 @@ namespace VisualMech
             HttpContext context = HttpContext.Current;
 
             context.Session["CommentOrder"] = newOrder;
+            ClearOffsets();
+
             return newOrder;
+        }
+
+        [WebMethod]
+        public static void SetOffset(string offset)
+        {
+            HttpContext context = HttpContext.Current;
+
+            context.Session["CommentOffset"] = (int.Parse(offset) + 10).ToString();
+        }
+
+        [WebMethod]
+        public static void SetReplyOffset(string commentID, string offset)
+        {
+            HttpContext context = HttpContext.Current;
+
+            context.Session["ReplyOffset" + commentID] = (int.Parse(offset) + 10).ToString();
         }
 
         [WebMethod]
@@ -106,15 +166,50 @@ namespace VisualMech
         {
             HttpContext context = HttpContext.Current;
 
+
             string[] strings;
 
             if (context.Session["CurrentUser"] != null)
             {
-                strings = new string[3] { cardTitle, context.Session["CurrentUser"].ToString(), context.Session["CommentOrder"].ToString() };
+                strings = new string[] { cardTitle, context.Session["CurrentUser"].ToString(), context.Session["CommentOrder"].ToString() 
+                    , context.Session["CommentOffset"].ToString() };
             }
             else
             {
-                strings = new string[3] { cardTitle, null, context.Session["CommentOrder"].ToString() };
+                strings = new string[] { cardTitle, null, context.Session["CommentOrder"].ToString(),
+                context.Session["CommentOffset"].ToString()};
+            }
+
+            return strings;
+        }
+
+        [WebMethod]
+        public static string[] get_Replies(string commentID)
+        {
+            HttpContext context = HttpContext.Current;
+
+
+            string[] strings;
+
+            if (context.Session["CurrentUser"] != null)
+            {
+                if (context.Session["ReplyOffset" + commentID] == null)
+                {
+                    context.Session["ReplyOffset" + commentID] = 0;
+                }
+
+                strings = new string[] { cardTitle, context.Session["CurrentUser"].ToString()
+                    , context.Session["ReplyOffset" + commentID].ToString(), commentID };
+            }
+            else
+            {
+                if (context.Session["ReplyOffset" + commentID] == null)
+                {
+                    context.Session["ReplyOffset" + commentID] = 0;
+                }
+                strings = new string[] { cardTitle, null,
+                context.Session["ReplyOffset" + commentID].ToString(), commentID};
+
             }
 
             return strings;
@@ -127,13 +222,13 @@ namespace VisualMech
             {
                 return null;
             }
-            string result = "";
+            string lastInsertedId = null;
+            // Get the current HttpContext
+            HttpContext context = HttpContext.Current;
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 try
                 {
-                    // Get the current HttpContext
-                    HttpContext context = HttpContext.Current;
 
                     if (message.Length <= 0)
                     {
@@ -141,6 +236,7 @@ namespace VisualMech
                     }
                     else
                     {
+                        
                         if (context.Session["Current_ID"] != null)
                         {
                             connection.Open();
@@ -157,9 +253,10 @@ namespace VisualMech
                                 command.Parameters.AddWithValue("Parent_comment_id", parentCommentId);
 
                                 command.ExecuteNonQuery();
+                                // Get the last inserted ID
+                                lastInsertedId = command.LastInsertedId.ToString();
                             }
 
-                            result = "Comment Posted Successfully";
                             connection.Close();
 
 
@@ -172,75 +269,13 @@ namespace VisualMech
                 }
                 catch (Exception ex)
                 {
-                    result = ex.Message;
+                    throw ex;
                 }
             }
-
-
-            return result;
+            return lastInsertedId;
         }
 
-        [WebMethod]
-        public static string innerReply_Click(int parentCommentId, string message)
-        {
-            if (message == null || message.Length < 1 || String.IsNullOrWhiteSpace(message))
-            {
-                return null;
-            }
-            string result = "";
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
-            {
-                try
-                {
-                    // Get the current HttpContext
-                    HttpContext context = HttpContext.Current;
-
-                    if (message.Length <= 0)
-                    {
-                        throw new Exception("Comment cannot be empty");
-                    }
-                    else
-                    {
-                        if (context.Session["Current_ID"] != null)
-                        {
-                            connection.Open();
-
-                            DateTime timestampUtc = DateTime.UtcNow;
-
-                            string query = "INSERT INTO comment (user_id, mechanic_title, comment, comment_date, parent_comment_id) VALUES (@UserId, @MechanicTitle, @CommentText, @CommentDate, @Parent_comment_id)";
-
-                            using (MySqlCommand command = new MySqlCommand(query, connection))
-                            {
-                                command.Parameters.AddWithValue("@UserId", context.Session["Current_ID"]);
-                                command.Parameters.AddWithValue("@MechanicTitle", cardTitle);
-                                command.Parameters.AddWithValue("@CommentText", message);
-                                command.Parameters.AddWithValue("@CommentDate", timestampUtc);
-                                command.Parameters.AddWithValue("Parent_comment_id", parentCommentId);
-
-                                command.ExecuteNonQuery();
-                            }
-
-                            result = "Comment Posted Successfully";
-                            connection.Close();
-
-
-                        }
-                        else
-                        {
-                            throw new Exception("Please Sign In First");
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    result = ex.Message;
-                }
-            }
-
-
-            return result;
-        }
-
+        
         [WebMethod]
         public static string post_Click(string message)
         {
@@ -248,14 +283,14 @@ namespace VisualMech
             {
                 return null;
             }
-            string result = "";
+            string lastInsertedId;
+            // Get the current HttpContext
+            HttpContext context = HttpContext.Current;
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 try
                 {
-                    // Get the current HttpContext
-                    HttpContext context = HttpContext.Current;
-
+                    
                     if (message.Length <= 0)
                     {
                         throw new Exception("Comment cannot be empty");
@@ -264,11 +299,12 @@ namespace VisualMech
                     {
                         if (context.Session["Current_ID"] != null)
                         {
+
                             connection.Open();
                             DateTime timestampUtc = DateTime.UtcNow;
 
                             string query = "INSERT INTO comment (user_id, mechanic_title, comment, comment_date) VALUES (@UserId, @MechanicTitle, @CommentText, @CommentDate)";
-
+                            
                             using (MySqlCommand command = new MySqlCommand(query, connection))
                             {
                                 command.Parameters.AddWithValue("@UserId", context.Session["Current_ID"]);
@@ -277,9 +313,12 @@ namespace VisualMech
                                 command.Parameters.AddWithValue("@CommentDate", timestampUtc);
 
                                 command.ExecuteNonQuery();
+
+                                // Get the last inserted ID
+                                 lastInsertedId = command.LastInsertedId.ToString();
                             }
 
-                            result = "Comment Posted Successfully";
+                            
                             connection.Close();
 
 
@@ -292,18 +331,18 @@ namespace VisualMech
                 }
                 catch (Exception ex)
                 {
-                    result = ex.Message;
+                    throw ex;
                 }
             }
 
-
-            return result;
+            return lastInsertedId;
         }
 
 
         [WebMethod]
         public static string DeleteComment(string commentID)
         {
+
             string result = "";
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -311,7 +350,7 @@ namespace VisualMech
                 {
                     connection.Open();
 
-                    string query = "DELETE FROM comment WHERE comment_id = @CommentId";
+                    string query = "DELETE FROM comment WHERE comment_id = @CommentId OR parent_comment_id = @CommentId";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
@@ -319,12 +358,12 @@ namespace VisualMech
                         command.ExecuteNonQuery();
                     }
 
-                    result = "Comment Deleted Successfully";
+                    result = commentID;
                     connection.Close();
                 }
                 catch (Exception ex)
                 {
-                    result = ex.Message;
+                    throw ex;
                 }
             }
 

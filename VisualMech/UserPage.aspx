@@ -21,7 +21,9 @@
                     <asp:Button ID="ExitManageBtn" Text="Exit Manage" CausesValidation="false" Visible="false" runat="server" OnClick="ExitManageBtn_Click" CssClass="comment_button my-2 bg-danger" />
                     <asp:Button ID="DeleteAccManageBtn" Text="Delete Account" CausesValidation="false" runat="server" Visible="false" OnClick="DeleteAccManageBtn_Click" CssClass="comment_button my-2 bg-danger" />
                 
-                </div>            
+                </div> 
+                  
+
 
                 <div class="col-md-4 mb-3">
                   <div class="card_user">
@@ -303,13 +305,99 @@
                         </div>
                       </div>
                     </div>
+
+                    <%-- inserted in panel at the moment --%>
+                    <asp:Panel runat="server" Visible ="false">
+                        <div class="col-sm-12 mb-3">
+                        <div class="card_user h-100">
+                            <div class="card-body-user">
+                                <h6 class="d-flex align-items-center mb-3">Badges Earned</h6>
+                                <div class="justify-content-evenly badge-container">
+                                    <div class="col">
+                                        <div class="card-badge">
+                                              <div class="container-image">
+                                                <img class="image-circle" src="Images/All_Learning.png">
+                                              </div>
+                                              <div class="content">
+                                                <div class="detail">
+                                                  <p class="fw-bold text-center">Master Explorer</p>
+                                                  <p><strong>Description:</strong><br />Visit All Learning Mechanics</p>
+                                                </div>
+                                              </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="card-badge">
+                                              <div class="container-image">
+                                                <img class="image-circle" src="Images/One_Learning.png">
+                                              </div>
+                                              <div class="content">
+                                                <div class="detail">
+                                                  <p class="fw-bold text-center">Beginning of a journey</p>
+                                                  <p><strong>Description:</strong><br />Visit One Learn Mechanic Page</p>
+                                                </div>
+                                              </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="card-badge">
+                                              <div class="container-image">
+                                                <img class="image-circle" src="Images/Top_5.png">
+                                              </div>
+                                              <div class="content">
+                                                <div class="detail">
+                                                  <p class="fw-bold text-center">Elite Five</p>
+                                                  <p><strong>Description:</strong><br />Reach top 5 leaderboard of any minigame</p>
+                                                </div>
+                                              </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="card-badge">
+                                              <div class="container-image">
+                                                <img class="image-circle" src="Images/Change_DP.png">
+                                              </div>
+                                              <div class="content">
+                                                <div class="detail">
+                                                  <p class="fw-bold text-center">I am Me</p>
+                                                  <p><strong>Description:</strong><br />Change Default Avatar Badge</p>
+                                                </div>
+                                              </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="card-badge">
+                                              <div class="container-image">
+                                                <img class="image-circle" src="Images/First_Comment.png">
+                                              </div>
+                                              <div class="content">
+                                                <div class="detail">
+                                                  <p class="fw-bold text-center">First Word Wizard</p>
+                                                  <p><strong>Description:</strong><br />Make your first comment Badge</p>
+                                                </div>
+                                              </div>
+                                        </div>
+                                    </div>
+
+                                    
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </asp:Panel>
+
+                        
+                    </div>
+
+
                   </div>
 
                 </div>
               </div>
 
             </div>
-        </div>
+
 
     </main>
     

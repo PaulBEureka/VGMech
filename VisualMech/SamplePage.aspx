@@ -37,7 +37,7 @@
                                         <% if (Session["CurrentUser"] != null) { %>
                                         <div class="col-5 mb-1 d-flex d-grid">
                                             <img src="<%# Session["CurrentAvatarPath"] ?? "Images/person_icon.png" %>" alt="" class="rounded-circle" width="40" height="40">
-                                            <h5 class="ms-3 my-auto"><%# Session["CurrentUser"] ?? "Default Name" %></h5>
+                                            <h5 class="ms-3 my-auto" id="SessionUserLabel"><%# Session["CurrentUser"] ?? "Default Name" %></h5>
                                         </div>
                                         <br />
                                         <textarea name="msg" placeholder="Type your comment here" id="commentbox" rows="5" class="form-control" style="background-color: white; resize: none;" draggable="false"></textarea>
@@ -124,7 +124,10 @@
         var isValidUpdate = "0";
         var commentIdToDelete;
         var pageContext = null;
+        var mainCommentStreamPage
         var chat = $.connection.myHub;
+        var mainCommentOrder = null;
+        var sessionUser = null;
 
         PageMethods.GetCardTitle(onSuccessOrder);
 
@@ -165,6 +168,12 @@
                     commentIdToDelete = $(this).data("comment-id");
                     $("#deleteModal").modal("show");
             });
+
+            var sessionLabel = document.getElementById("SessionUserLabel");
+            if (sessionLabel !== null) {
+                sessionUser = sessionLabel.textContent;
+            } 
+            
         }
 
 
@@ -181,51 +190,243 @@
         });
 
         function fetchComments(pageDetails) {
-            chat.server.fetchComments(pageDetails)
-                .done(function () {
-                    console.log("Comments fetched successfully.");
-                })
-                .fail(function (error) {
-                    console.error("Error fetching comments: " + error);
-                });
+            mainCommentOrder = pageDetails[2];
+            chat.server.fetchComments(pageDetails);
         }
 
         chat.client.fetchCommentSolo = function (commentHTML) {
-            if (isValidUpdate == "0") {
-                var firstComment = commentHTML[0];
-                var secondComment = commentHTML[1];
+            
 
-                // Update the comments on the webpage
-                $('#commentSection').html(commentHTML[0]);
-                $('#commentCountDiv').html(commentHTML[1]);
-                $('#sortByDiv').html(commentHTML[2]);
-                onContentLoaded();
-            }
+            // Update the comments on the webpage
+            $('#commentSection').html(commentHTML[0]);
+            $('#commentCountDiv').html(commentHTML[1]);
+            $('#sortByDiv').html(commentHTML[2]);
+
+            PageMethods.SetOffset(commentHTML[3]);
+            onContentLoaded();
+
+                
+            
         };
 
-        function sendComment(cardTitle) {
-            chat.server.callForGroupUpdate(cardTitle)
-                .done(function () {
-                    console.log("Call for update done");
-                })
-                .fail(function (error) {
-                    console.error("Error fetching in call update: " + error);
-                });
+
+
+
+        function loadMoreCommentsHub(pageDetails) {
+            chat.server.loadMoreComments(pageDetails);
         }
 
-        chat.client.getCommentGroup = function () {
-            PageMethods.get_Comments(fetchComments);
+        chat.client.loadMoreSolo = function (commentHTML) {
+           
+            $('#insertNextCommentDiv').remove();
+            $('#commentSection').append(commentHTML[0]);
+
+            PageMethods.SetOffset(commentHTML[3]);
+            onContentLoaded();
+            
         };
+
+        function loadMoreRepliesHub(pageDetails) {
+            chat.server.loadMoreReplies(pageDetails);
+        }
+
+        chat.client.loadMoreRepliesSolo = function (commentHTML) {
+            var replyContainer = document.getElementById("inner-reply-" + commentHTML[1]);
+            var insertDiv = document.getElementById('insertNextCommentDiv-' + commentHTML[1]);
+            var initialSpinner = document.getElementById('initial-spinner-' + commentHTML[1]);
+
+            if (initialSpinner != null) {
+                $(initialSpinner).remove();
+            }
+            else {
+                $(insertDiv).remove();
+            }
+
+            $(replyContainer).append(commentHTML[0]);
+
+            PageMethods.SetReplyOffset(commentHTML[1], commentHTML[2]);
+            onContentLoaded();
+            
+        };
+
+        function deleteComment(cardTitle, idToDelete) {
+            chat.server.callForGroupDelete(cardTitle, idToDelete);
+        }
+
+        chat.client.deleteCommentGroup = function (idToDelete) {
+            const commentToDelete = document.querySelector(`div[data-comment-id="${idToDelete}"]`);
+
+            if (commentIdToDelete !== null) {// Only start removal only if the comment is currently loaded
+                updateReplyCount(idToDelete, -1);
+                commentToDelete.remove();
+            }
+
+            updateTotalCommentCount(-1); //Decrease the comment count
+            onContentLoaded();
+        }
+
+
+        function sendComment(cardTitle, info) {
+            chat.server.callForGroupSend(cardTitle, info);
+        }
+
+        chat.client.sendCommentGroup = function (insertedID) {
+            chat.server.buildIncomingComment(insertedID, sessionUser);//Include the current session user to identify if the comment belongs to the active user
+        }
+
+
+        chat.client.receiveComment = function (newCommentHTML) {
+            var commentContent = newCommentHTML[0];
+            var ignoreOrParentID = newCommentHTML[1]; 
+            var incomingUser = newCommentHTML[2];
+
+            if (ignoreOrParentID === "Ignore") { // Means that the comment is a main comment
+                const mainDiv = document.getElementById('commentSection');
+                console.log("Entered main comment if");
+
+                const childDivToFirst = mainDiv.querySelector('div[data-comment-type="First"]');
+
+                if (mainCommentOrder === "Oldest") { // insertNextDiv being null means that the receiver has reached the end of comments
+                    console.log("Entered Oldest append");
+
+                    if (sessionUser === incomingUser) {//Insert before the first comment that is not the active session user
+                        console.log(childDivToFirst);
+                        childDivToFirst.insertAdjacentHTML('beforebegin', commentContent);
+                    }
+                    else {
+                        const moreDiv = document.getElementById('insertNextCommentDiv');
+                        if (moreDiv === null) {//means that all comments are loaded
+                            $('#commentSection').append(commentContent);
+                        }
+                    }
+
+                }
+                else if (mainCommentOrder === "Newest") {
+                    console.log("Entered Oldest append");
+
+                    if (sessionUser === incomingUser) {//prepend at the beginning of the comment section if the comment came from the session user
+                        $('#commentSection').prepend(commentContent);
+                    }
+                    else {//Insert before the comment that is not the active session user
+                        childDivToFirst.removeAttribute('data-comment-type'); //Remove the data-comment-type to set as next basis of insertion to the new comment
+                        childDivToFirst.insertAdjacentHTML('beforebegin', commentContent);
+                    }
+
+                }
+                
+            }
+            else {
+                var insertDiv = document.getElementById('insertNextCommentDiv-' + ignoreOrParentID);
+                var initialSpinner = document.getElementById('initial-spinner-' + ignoreOrParentID);
+                var toggleButton = document.getElementById('toggle-replies-btn-' + ignoreOrParentID);
+                var replyHiddenContainer = document.getElementById('ReplyContainerDivHidden-' + ignoreOrParentID);
+
+                replyHiddenContainer.style.display = "inline";
+
+                if (insertDiv === null && initialSpinner === null) {//Check if all replies of that comment is fully loaded
+                    $('#inner-reply-' + ignoreOrParentID).append(commentContent); //Only append when all replies are fully loaded to prevent clashing of updates when loaded more
+                }
+                updateReplyCount(ignoreOrParentID, 1);
+
+            }
+            updateTotalCommentCount(1); //Increase comment count 
+            onContentLoaded();
+
+        };
+
+
+        function updateReplyCount(commentId, value) {
+            if (value > 0) {//Means that the passed value is parentCommentID
+                const button = document.getElementById(`toggle-replies-btn-${commentId}`);
+                var icon = document.getElementById(`toggle-replies-btn-icon-${commentId}`);
+                const buttonText = button.textContent;
+
+                const contentArr = buttonText.split(' ');
+                let replyCount = parseInt(contentArr[0], 10);
+                replyCount += value;
+
+                if (replyCount === 1) {
+                    if (icon.classList.contains('fa-chevron-down')) {
+                        $('#toggle-replies-btn-' + commentId).html(`<i class="fa-solid fa-chevron-down" id="toggle-replies-btn-icon-${commentId}"></i>${replyCount} reply`);
+                    }
+                    else if (icon.classList.contains('fa-chevron-up')) {
+                        $('#toggle-replies-btn-' + commentId).html(`<i class="fa-solid fa-chevron-up" id="toggle-replies-btn-icon-${commentId}"></i>${replyCount} reply`);
+                    }
+                }
+                else {
+                    if (icon.classList.contains('fa-chevron-down')) {
+                        $('#toggle-replies-btn-' + commentId).html(`<i class="fa-solid fa-chevron-down" id="toggle-replies-btn-icon-${commentId}"></i>${replyCount} replies`);
+                    }
+                    else if (icon.classList.contains('fa-chevron-up')) {
+                        $('#toggle-replies-btn-' + commentId).html(`<i class="fa-solid fa-chevron-up" id="toggle-replies-btn-icon-${commentId}"></i>${replyCount} replies`);
+                    }
+                }
+            }
+            else {//Means that the passed value is the deleted CommentID
+                const commentToDelete = document.querySelector(`div[data-comment-id="${commentId}"]`);
+                const parentComment = commentToDelete.getAttribute('data-parent-id');
+                if (parentComment !== null) {//null means that the there is no reply count to update
+                    const button = document.getElementById(`toggle-replies-btn-${parentComment}`);
+                    var icon = document.getElementById(`toggle-replies-btn-icon-${parentComment}`);
+                    var replyHiddenContainer = document.getElementById(`ReplyContainerDivHidden-${parentComment}`);
+                    const buttonText = button.textContent;
+
+                    const contentArr = buttonText.split(' ');
+                    let replyCount = parseInt(contentArr[0], 10);
+                    replyCount += value;
+
+                    if (replyCount === 1) {
+                        if (icon.classList.contains('fa-chevron-down')) {
+                            $('#toggle-replies-btn-' + parentComment).html(`<i class="fa-solid fa-chevron-down" id="toggle-replies-btn-icon-${parentComment}"></i>${replyCount} reply`);
+                        }
+                        else if (icon.classList.contains('fa-chevron-up')) {
+                            $('#toggle-replies-btn-' + parentComment).html(`<i class="fa-solid fa-chevron-up" id="toggle-replies-btn-icon-${parentComment}"></i>${replyCount} reply`);
+                        }
+                    }
+                    else if (replyCount === 0) {
+                        $('#toggle-replies-btn-' + parentComment).html(`<i class="fa-solid fa-chevron-down" id="toggle-replies-btn-icon-${parentComment}"></i>${replyCount} reply`);
+                        replyHiddenContainer.style.display = "none";
+                    }
+                    else {
+                        if (icon.classList.contains('fa-chevron-down')) {
+                            $('#toggle-replies-btn-' + parentComment).html(`<i class="fa-solid fa-chevron-down" id="toggle-replies-btn-icon-${parentComment}"></i>${replyCount} replies`);
+                        }
+                        else if (icon.classList.contains('fa-chevron-up')) {
+                            $('#toggle-replies-btn-' + parentComment).html(`<i class="fa-solid fa-chevron-up" id="toggle-replies-btn-icon-${parentComment}"></i>${replyCount} replies`);
+                        }
+                    }
+
+                    
+                }
+            }
+
+
+
+            
+            
+        }
+
+        function updateTotalCommentCount(value) {
+            const totalCountDiv = document.getElementById(`commentCountDiv`);
+
+            const totalCountContent = totalCountDiv.textContent;
+
+            const contentArr = totalCountContent.split(' ');
+
+            let commentCount = parseInt(contentArr[0], 10);
+            commentCount += value;
+
+            if (commentCount === 1) {
+                $('#commentCountDiv').html(`${commentCount} comment`);
+            }
+            else {
+                $('#commentCountDiv').html(`${commentCount} comments`);
+            }
+        }
 
 
         function updateCommentsOrder(cardTitle) {
-            chat.server.updateCommentsOrder(cardTitle)
-                .done(function () {
-                    console.log("Comments updated successfully.");
-                })
-                .fail(function (error) {
-                    console.error("Error updating comments: " + error);
-                });
+            chat.server.updateCommentsOrder(cardTitle);
         }
 
         chat.client.updateCommentsOrder = function (commentHTML) {
@@ -235,6 +436,7 @@
             $('#commentSection').html(commentHTML[0]);
             $('#commentCountDiv').html(commentHTML[1]);
             $('#sortByDiv').html(commentHTML[2]);
+            PageMethods.SetOffset(commentHTML[3]);
 
             onContentLoaded();
         };
@@ -274,8 +476,8 @@
                 toastr['success']('Comment posted successfully', 'Comment Posted');
                 isValidUpdate = "0";
 
-                
-                sendComment(pageContext);
+
+                sendComment(pageContext, response);
             }
 
             
@@ -333,8 +535,8 @@
                 "hideMethod": "fadeOut"
             }
 
-            toastr['success'](response);
-            sendComment(pageContext);
+            toastr['success']("Comment Deleted Successfully");
+            deleteComment(pageContext, response);
         }
 
         function onSuccess2(response) {
@@ -358,12 +560,10 @@
             }
 
             toastr['info']('Order of comment changed to: ' + response);
-
+            mainCommentOrder = response;
             PageMethods.get_Comments(updateCommentsOrder);
             
         }
-
-
 
         function onError2(response) {
             toastr.options = {
@@ -387,12 +587,11 @@
             toastr['error']('An error occurred while changing comment order', 'Error');
         }
 
-
         function innerReply_Click(parentCommentId, commentID) {
             var parentString = "replybox-" + commentID.toString();
             var message = document.getElementById(parentString).value; 
 
-            PageMethods.innerReply_Click(parentCommentId, message, onSuccess, onError);
+            PageMethods.reply_Click(parentCommentId, message, onSuccess, onError);
             document.getElementById(parentString).value = null;
             
         }
@@ -401,14 +600,32 @@
             PageMethods.changeCommentOrder(order, onSuccess2, onError2);
         }
 
-
         function toggleReplies(commentId) {
             var button = document.getElementById("toggle-replies-btn-" + commentId);
+            var icon = document.getElementById("toggle-replies-btn-icon-" + commentId);
             var container = document.getElementById("reply-container-" + commentId);
+            var replyContainer = document.getElementById("inner-reply-" + commentId);
+                
 
-            // Toggle aria-expanded attribute
             var expanded = button.getAttribute("aria-expanded") === "true" || false;
             button.setAttribute("aria-expanded", !expanded);
+
+            const spinnerElement = replyContainer.querySelector(".spinner-border");
+
+            if (icon.classList.contains('fa-chevron-down')) {
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-up');
+
+                //If there is a spinner element, no replies have been loaded yet so perform an initial load upon toggle
+                if (spinnerElement) {
+                    //Get the information from the server regarding the offset and other page data, then pass to the signalR Hub
+                    PageMethods.get_Replies(commentId, loadMoreRepliesHub) 
+                } 
+            }
+            else if (icon.classList.contains('fa-chevron-up')) {
+                icon.classList.remove('fa-chevron-up');
+                icon.classList.add('fa-chevron-down');
+            }
 
             if (expanded == false) {
                 isValidUpdate = null;
@@ -425,6 +642,11 @@
         function toggleRespond(commentId) {
             var button = document.getElementById("toggle-respond-btn-" + commentId);
             var container = document.getElementById("respond-container-" + commentId);
+            var container = document.getElementById("respond-container-" + commentId);
+            var replyBox = document.getElementById("replybox-" + commentId);
+
+            //Clear previous contents
+            replyBox.value = null;
 
             // Toggle aria-expanded attribute
             var expanded = button.getAttribute("aria-expanded") === "true" || false;
@@ -442,7 +664,35 @@
             var hidden = container.getAttribute("aria-hidden") === "true" || false;
             container.setAttribute("aria-hidden", !hidden);
         }
+
         
+
+
+        // Function to load more comments
+        function loadMoreComments() {
+            const spinnerHTML = `
+                <div class="spinner-border text-danger m-auto text-center" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            `;
+            $('#loadMoreDiv').html(spinnerHTML);
+            PageMethods.get_Comments(loadMoreCommentsHub);
+        }
+
+        // Function to load more comments
+        function loadMoreReplies(commentId) {
+            const spinnerHTML = `
+                <div class="spinner-border text-danger m-auto text-center" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            `;
+
+            $('#loadMoreReplies-' + commentId).html(spinnerHTML);
+            PageMethods.get_Replies(commentId, loadMoreRepliesHub) 
+        }
+        
+
+
 
     </script>
 
