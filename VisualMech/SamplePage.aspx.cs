@@ -216,14 +216,12 @@ namespace VisualMech
         }
 
         [WebMethod]
-        public static string[] reply_Click(int parentCommentId, string message)
+        public static string reply_Click(int parentCommentId, string message)
         {
             if (message == null || message.Length < 1 || String.IsNullOrWhiteSpace(message))
             {
                 return null;
             }
-            string result = "";
-
             string lastInsertedId = null;
             // Get the current HttpContext
             HttpContext context = HttpContext.Current;
@@ -259,7 +257,6 @@ namespace VisualMech
                                 lastInsertedId = command.LastInsertedId.ToString();
                             }
 
-                            result = "Comment Posted Successfully";
                             connection.Close();
 
 
@@ -275,12 +272,12 @@ namespace VisualMech
                     throw ex;
                 }
             }
-            return new string[] { lastInsertedId, context.Session["CommentOrder"].ToString(), context.Session["CurrentUser"].ToString() };
+            return lastInsertedId;
         }
 
         
         [WebMethod]
-        public static string[] post_Click(string message)
+        public static string post_Click(string message)
         {
             if (message == null || message.Length < 1 || String.IsNullOrWhiteSpace(message))
             {
@@ -338,7 +335,7 @@ namespace VisualMech
                 }
             }
 
-            return new string[] { lastInsertedId, context.Session["CommentOrder"].ToString(), context.Session["CurrentUser"].ToString() };
+            return lastInsertedId;
         }
 
 

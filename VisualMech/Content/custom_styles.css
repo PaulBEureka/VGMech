@@ -597,6 +597,21 @@ body {
 }
 
 
+.comment_button_2 {
+    border: none;
+    color: white;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bolder;
+    opacity: 1;
+    transition: 0.3s;
+    text-decoration: none;
+    cursor: pointer;
+    width: 100px;
+    border-radius: 5%;
+    height: 40px;
+}
+
 
 .comment_button:hover {
     filter: brightness(1.2);

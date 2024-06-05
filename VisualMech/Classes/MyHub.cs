@@ -51,10 +51,15 @@ namespace VisualMech
         }
 
         //Send Comment to group only (Notify them to fetch comments only on caller to prevent order problems)
-        public async Task CallForGroupSend(string cardTitle, string[] info)
+        public void CallForGroupSend(string cardTitle, string insertedID)
         {
-            string[] commentsData = await GetNewComment(info);
-            Clients.Group(cardTitle).sendCommentGroup(commentsData);
+            Clients.Group(cardTitle).sendCommentGroup(insertedID);
+        }
+
+        public async Task BuildIncomingComment (string insertedID, string sessionUser)
+        {
+            string[] commentsData = await GetNewComment(insertedID, sessionUser);
+            Clients.Caller.receiveComment(commentsData);
         }
 
         public void CallForGroupDelete(string cardTitle, string idToDelete)
@@ -83,11 +88,8 @@ namespace VisualMech
             Clients.Caller.loadMoreRepliesSolo(commentsData);
         }
 
-        private async Task<string[]> GetNewComment(string[] info)
+        private async Task<string[]> GetNewComment(string insertedID, string sessionUser)
         {
-            string newCommentID = info[0];
-            string commentOrder = info[1];
-            string sessionUser = info[2];
 
             List<Comment> commentList = new List<Comment>();
             int? parentCommentID = 0;
@@ -103,7 +105,7 @@ namespace VisualMech
                     INNER JOIN user ON c1.user_id = user.user_id 
                     INNER JOIN avatar ON user.user_id = avatar.user_id
                     LEFT JOIN comment c2 ON c1.comment_id = c2.parent_comment_id
-                    WHERE c1.comment_id = {newCommentID};
+                    WHERE c1.comment_id = {insertedID};
             ";
 
             try
@@ -145,7 +147,7 @@ namespace VisualMech
 
                 if (parentCommentID == 0)
                 {
-                    return SortComment(commentList, sessionUser, commentOrder, 0, 0, true);
+                    return SortComment(commentList, sessionUser, null, 0, 0, true);
                 }
                 else
                 {
@@ -420,8 +422,14 @@ namespace VisualMech
                     <div id=""respond-container-{comment.CommentId}"" class=""respond-container"" aria-labelledby=""toggle-replies-btn-{comment.CommentId}"" aria-hidden=""true"">
                         <div class=""row container mb-3 gap-3"">
                             <textarea placeholder=""Type your reply here {sessionUser}"" id=""replybox-{comment.CommentId}"" rows=""5"" class=""form-control"" style=""background-color: white; resize: none;"" draggable=""false""></textarea>
-                            <button type=""button"" class=""comment_button my-2 bg-danger w-25"" onclick=""toggleRespond({comment.CommentId})"">Cancel</button>
-                            <button type=""button"" id=""button-addon-reply-{comment.CommentId}"" class=""comment_button my-2 bg-danger w-25"" onclick=""innerReply_Click({parentCommentID}, {comment.CommentId})"">Reply</button>
+                            <div class=""row gap-3"">
+                                <div class=""col-4 me-3"">
+                                    <button type=""button"" class=""comment_button_2 bg-danger"" onclick=""toggleRespond({comment.CommentId})"">Cancel</button>
+                                </div>
+                                <div class=""col-4"">
+                                    <button type=""button"" id=""button-addon-reply-{comment.CommentId}"" class=""comment_button_2 bg-danger"" onclick=""innerReply_Click({parentCommentID}, {comment.CommentId})"">Reply</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 " : "";
@@ -444,11 +452,11 @@ namespace VisualMech
 
                 allCommentString.Append($@"
                         <div class=""row"">
-                            <div class=""col-2 text-end"">
+                            <div class=""col-md-2 text-md-end"">
                                 <img src= ""{comment.AvatarPath}"" alt="""" role=""button"" class=""rounded-circle comment-avatar mt-2"" width=""40"" height=""40"" data-bs-toggle=""popover"" title=""About {comment.Username}"" data-bs-content=""{comment.AboutMe}"">
                                
                             </div>
-                            <div class =""col-10"">
+                            <div class =""col-md-10 text-start"">
                                 <div class=""row"">
                                     <div class=""col"">
                                         <span class=""fw-bold comment-header-style"">{comment.Username}</span>
@@ -652,7 +660,7 @@ namespace VisualMech
 
             bool IsFirstTag = false;
 
-
+            string newCommentUser = null;
 
             foreach (Comment comment in commentList)
             {
@@ -661,8 +669,8 @@ namespace VisualMech
                 string replyContainer = "";
                 string replyContainerDiv = "";
                 int replyCount = comment.ReplyCount;
+                newCommentUser = comment.Username;
 
-                
                 replyContainerDiv = $@"
                     <div id=""reply-container-{comment.CommentId}"" class=""reply-container"" aria-labelledby=""toggle-replies-btn-{comment.CommentId}"" aria-hidden=""true"">
                         <div class=""reply mt-4 text-justify float-left"" id=""inner-reply-{comment.CommentId}"" >
@@ -700,8 +708,14 @@ namespace VisualMech
                     <div id=""respond-container-{comment.CommentId}"" class=""respond-container"" aria-labelledby=""toggle-replies-btn-{comment.CommentId}"" aria-hidden=""true"">
                         <div class=""row container mb-3 gap-3"">
                             <textarea placeholder=""Type your reply here {sessionUser}"" id=""replybox-{comment.CommentId}"" rows=""5"" class=""form-control"" style=""background-color: white; resize: none;"" draggable=""false""></textarea>
-                            <button type=""button"" class=""comment_button my-2 bg-danger w-25"" onclick=""toggleRespond({comment.CommentId})"">Cancel</button>
-                            <button type=""button"" id=""button-addon-reply-{comment.CommentId}"" class=""comment_button my-2 bg-danger w-25"" onclick=""reply_Click({comment.CommentId})"">Reply</button>
+                            <div class=""row gap-2"">
+                                <div class=""col-4"">
+                                    <button type=""button"" class=""comment_button_2 my-2 bg-danger"" onclick=""toggleRespond({comment.CommentId})"">Cancel</button>
+                                </div>
+                                <div class=""col-4"">
+                                    <button type=""button"" id=""button-addon-reply-{comment.CommentId}"" class=""comment_button_2 my-2 bg-danger"" onclick=""reply_Click({comment.CommentId})"">Reply</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 " : "";
@@ -732,11 +746,11 @@ namespace VisualMech
 
                 allCommentString.Append($@"
                         <div class=""row"">
-                            <div class=""col-2 text-end"">
+                            <div class=""col-md-2 text-md-end"">
                                 <img src= ""{comment.AvatarPath}"" alt="""" role=""button"" class=""rounded-circle comment-avatar mt-2"" width=""40"" height=""40"" data-bs-toggle=""popover"" title=""About {comment.Username}"" data-bs-content=""{comment.AboutMe}"">
                                
                             </div>
-                            <div class =""col-10"">
+                            <div class =""col-md-10 text-start"">
                                 <div class=""row"">
                                     <div class=""col"">
                                         <span class=""fw-bold comment-header-style"">{comment.Username}</span>
@@ -855,7 +869,7 @@ namespace VisualMech
             else
             {
 
-                return new string[] { allCommentString.ToString(), order, sessionUser };
+                return new string[] { allCommentString.ToString(), "Ignore", newCommentUser };
             }
 
             
