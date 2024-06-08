@@ -17,6 +17,7 @@ using System.Web.Script.Serialization;
 using System.ComponentModel.Design;
 using Microsoft.Ajax.Utilities;
 using System.Runtime.Remoting.Contexts;
+using Microsoft.AspNet.SignalR.Messaging;
 
 namespace VisualMech
 {
@@ -25,6 +26,7 @@ namespace VisualMech
         private static string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
         private static string cardTitle = "";
         private static List<LearnCard> cardList;
+        private static List<Badge> badgeList;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -55,6 +57,8 @@ namespace VisualMech
 
                 if (Request.QueryString["Learn"] != null)
                 {
+                    badgeList = Session["BadgeList"] as List<Badge>;
+
                     string learnID = Request.QueryString["Learn"];
 
                     LearnCard selectedCard = cardList.FirstOrDefault(card => card.CardID == learnID);
@@ -75,7 +79,7 @@ namespace VisualMech
             
             if (Session["Current_ID"] != null)
             {
-                recordVisitedPage();
+                RecordVisitedPage();
             }
             if (Session["Message"] != null)
             {
@@ -321,7 +325,6 @@ namespace VisualMech
                             
                             connection.Close();
 
-
                         }
                         else
                         {
@@ -370,8 +373,23 @@ namespace VisualMech
             return result;
         }
 
+        [WebMethod]
+        public static string CheckCommentBadge()
+        {
+            string badgeScript = null;
+            // Get the current HttpContext
+            HttpContext context = HttpContext.Current;
 
-        public void recordVisitedPage()
+            Badge FirstWordBadge = badgeList.FirstOrDefault(badge => badge.BadgeID == "4");
+            bool isNewRecord = FirstWordBadge.RecordBadgeToUser(context.Session["Current_ID"].ToString());
+            if (isNewRecord)//Only show badge script if this is a new record
+            {
+                badgeScript = FirstWordBadge.GetToastString();
+            }
+            return badgeScript;
+        }
+
+        private void RecordVisitedPage()
         {
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -379,14 +397,23 @@ namespace VisualMech
                 {
                     connection.Open();
 
-                    string selectQuery = "SELECT COUNT(*) FROM visited_pages WHERE user_id = @UserId AND mechanic_title = @MechanicTitle";
-                    int count;
+                    string selectQuery = "SELECT COUNT(*) as recordCount, (SELECT COUNT(*) FROM visited_pages WHERE user_id = @UserId) as totalVisited FROM visited_pages WHERE user_id = @UserId AND mechanic_title = @MechanicTitle";
+                    int count = 0;
+                    int totalVisits = 0;
 
                     using (MySqlCommand selectCommand = new MySqlCommand(selectQuery, connection))
                     {
                         selectCommand.Parameters.AddWithValue("@UserId", Session["Current_ID"]);
                         selectCommand.Parameters.AddWithValue("@MechanicTitle", cardTitle);
-                        count = Convert.ToInt32(selectCommand.ExecuteScalar());
+                        using (MySqlDataReader reader = (MySqlDataReader)selectCommand.ExecuteReader())
+                        {
+                            while(reader.Read())
+                            {
+                                count = reader.GetInt32("recordCount");
+                                totalVisits = reader.GetInt32("totalVisited");
+                            }
+                            
+                        }
                     }
 
                     if (count == 0) // No similar record found
@@ -402,25 +429,44 @@ namespace VisualMech
                             insertCommand.ExecuteNonQuery();
                         }
 
+                        //Set the toast message to greet user
                         Session["Message"] = $@"Have fun learning all about {cardTitle},<br/>Collaborate with other learners in the comment section!";
 
-                        
-                    }
-                    else
-                    {
-                        // Similar record found, skip insertion of new record
                     }
 
                     connection.Close();
+
+                    //Check badge condition
+                    if(totalVisits >= 1) // 1 visited learn mechanic page is the condition for earning the badge
+                    {
+                        Badge BeginBadge = badgeList.FirstOrDefault(badge => badge.BadgeID == "0");
+                        bool isNewRecord = BeginBadge.RecordBadgeToUser(Session["Current_ID"].ToString());
+                        if (isNewRecord)
+                        {
+                            BeginBadge.ShowBadgeToast(ClientScript, this.GetType());
+                        }
+                        
+                    }
+                    if(totalVisits == cardList.Count()) // Check if all learn mechanic page are visited
+                    {
+                        Badge MasterBadge = badgeList.FirstOrDefault(badge => badge.BadgeID == "1");
+                        bool isNewRecord = MasterBadge.RecordBadgeToUser(Session["Current_ID"].ToString());
+                        if (isNewRecord)
+                        {
+                            MasterBadge.ShowBadgeToast(ClientScript, this.GetType());
+                        }
+                        
+                    }
                 }
                 catch (Exception ex)
                 {
-                    Response.Write(ex.Message); 
+                    throw ex;
                 }
             }
         
         }
 
+        
 
     }
 }

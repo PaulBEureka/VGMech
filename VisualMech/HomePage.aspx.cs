@@ -16,8 +16,10 @@ namespace VisualMech
         private string learnCardString = "", miniGameCardString = "";
         private readonly CardManager<LearnCard> learnCardManager = new CardManager<LearnCard>("Learn.json");
         private readonly CardManager<MiniGameCard> miniGameCardManager = new CardManager<MiniGameCard>("MiniGame.json");
+        private readonly BadgeManager badgeManager = new BadgeManager("Badges.json");
         private static List<LearnCard> learnCardList;
         private static List<MiniGameCard> miniGameCardList;
+
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -39,6 +41,7 @@ namespace VisualMech
 
             Session["CardList"] = learnCardList;
             Session["MiniGameCardList"] = miniGameCardList;
+            Session["BadgeList"] = badgeManager.GetBadges();
 
             if (!IsPostBack)
             {

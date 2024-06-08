@@ -290,8 +290,8 @@
                     console.log("Entered Oldest append");
 
                     if (sessionUser === incomingUser) {//Insert before the first comment that is not the active session user
-                        console.log(childDivToFirst);
                         childDivToFirst.insertAdjacentHTML('beforebegin', commentContent);
+                        PageMethods.CheckCommentBadge(onSuccessBadge); // Check if the user haven't got the first comment badge
                     }
                     else {
                         const moreDiv = document.getElementById('insertNextCommentDiv');
@@ -306,6 +306,7 @@
 
                     if (sessionUser === incomingUser) {//prepend at the beginning of the comment section if the comment came from the session user
                         $('#commentSection').prepend(commentContent);
+                        PageMethods.CheckCommentBadge(onSuccessBadge); // Check if the user haven't got the first comment badge
                     }
                     else {//Insert before the comment that is not the active session user
                         childDivToFirst.removeAttribute('data-comment-type'); //Remove the data-comment-type to set as next basis of insertion to the new comment
@@ -333,6 +334,12 @@
             onContentLoaded();
 
         };
+
+        function onSuccessBadge(response) {
+            if (response != null) {
+                eval(response);
+            }
+        }
 
 
         function updateReplyCount(commentId, value) {

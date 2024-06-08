@@ -36,7 +36,7 @@
                             <asp:Literal ID="UsernameLit" runat="server"></asp:Literal>
                           
 
-                            <asp:FileUpload ID="customFile" runat="server" CssClass="form-control" Visible="false" Accept=".jpg, .jpeg, .png, .gif" />
+                            <asp:FileUpload ID="customFile" runat="server" ClientIDMode="Static" CssClass="form-control" Visible="false" Accept=".jpg, .jpeg, .png, .gif" onchange="handleFileSelect(event)" />
                             
                             <asp:Button ID="UploadBtn" Text="Change Avatar" Visible="false" runat="server" OnClick="UploadBtn_Click" CssClass="comment_button my-2 bg-danger" />
                             <br />
@@ -306,86 +306,21 @@
                       </div>
                     </div>
 
-                    <%-- inserted in panel at the moment --%>
-                    <asp:Panel runat="server" Visible ="false">
-                        <div class="col-sm-12 mb-3">
+                    <div class="col-sm-12 mb-3">
                         <div class="card_user h-100">
                             <div class="card-body-user">
                                 <h6 class="d-flex align-items-center mb-3">Badges Earned</h6>
                                 <div class="justify-content-evenly badge-container">
-                                    <div class="col">
-                                        <div class="card-badge">
-                                              <div class="container-image">
-                                                <img class="image-circle" src="Images/All_Learning.png">
-                                              </div>
-                                              <div class="content">
-                                                <div class="detail">
-                                                  <p class="fw-bold text-center">Master Explorer</p>
-                                                  <p><strong>Description:</strong><br />Visit All Learning Mechanics</p>
-                                                </div>
-                                              </div>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="card-badge">
-                                              <div class="container-image">
-                                                <img class="image-circle" src="Images/One_Learning.png">
-                                              </div>
-                                              <div class="content">
-                                                <div class="detail">
-                                                  <p class="fw-bold text-center">Beginning of a journey</p>
-                                                  <p><strong>Description:</strong><br />Visit One Learn Mechanic Page</p>
-                                                </div>
-                                              </div>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="card-badge">
-                                              <div class="container-image">
-                                                <img class="image-circle" src="Images/Top_5.png">
-                                              </div>
-                                              <div class="content">
-                                                <div class="detail">
-                                                  <p class="fw-bold text-center">Elite Five</p>
-                                                  <p><strong>Description:</strong><br />Reach top 5 leaderboard of any minigame</p>
-                                                </div>
-                                              </div>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="card-badge">
-                                              <div class="container-image">
-                                                <img class="image-circle" src="Images/Change_DP.png">
-                                              </div>
-                                              <div class="content">
-                                                <div class="detail">
-                                                  <p class="fw-bold text-center">I am Me</p>
-                                                  <p><strong>Description:</strong><br />Change Default Avatar Badge</p>
-                                                </div>
-                                              </div>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="card-badge">
-                                              <div class="container-image">
-                                                <img class="image-circle" src="Images/First_Comment.png">
-                                              </div>
-                                              <div class="content">
-                                                <div class="detail">
-                                                  <p class="fw-bold text-center">First Word Wizard</p>
-                                                  <p><strong>Description:</strong><br />Make your first comment Badge</p>
-                                                </div>
-                                              </div>
-                                        </div>
-                                    </div>
+                                    <asp:Literal ID="GainedBadgesLit" runat="server"></asp:Literal>
+                                    
 
                                     
-                                    </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                    </asp:Panel>
+
 
                         
                     </div>
@@ -407,7 +342,6 @@
             learnLinks.forEach(function (learnLink) {
                 learnLink.addEventListener('click', function () {
                     var linkId = this.getAttribute('data-card-id');
-                    console.log("Card ID: " + linkId);
                     HandleLink(linkId);
 
                 });
@@ -425,18 +359,50 @@
             $('#userInfoDiv').html(commentHTML[2]);
         }
 
-        document.getElementById('UploadBtn').onclick = function () {
-            var fileInput = document.getElementById('customFile');
-            var filePath = fileInput.value;
-            var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
 
-            if (!allowedExtensions.exec(filePath)) {
-                alert('Please upload only image files (JPEG, PNG, GIF).');
-                return false;
+        function handleFileSelect(event) {
+            var fileInput = event.target; // Get the input element that triggered the event
+            var file = fileInput.files[0]; // Get the selected file
+
+            var fileName = file.name.toLowerCase();
+            // Check if the file extension is allowed
+            if (!(/\.(jpg|jpeg|png|gif)$/i).test(fileName)) {
+                toastr.options = {
+                    "closeButton": false,
+                    "debug": false,
+                    "newestOnTop": false,
+                    "progressBar": false,
+                    "positionClass": "toast-top-right",
+                    "preventDuplicates": false,
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "10000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+
+                toastr['error']('Please select only JPG, JPEG, PNG, or GIF files.', 'Error');
+                // Clear the selected files if needed
+                fileInput.value = '';
+                return;
             }
+            else {
+                var reader = new FileReader();
 
-            return true;
-        };
+                reader.onload = function (event) {
+                    document.getElementById('avatarImg').src = event.target.result;
+                    // Show the image preview
+                    document.getElementById('avatarImg').style.display = 'block';
+                };
+
+                // Read the file as a data URL
+                reader.readAsDataURL(file);
+            }
+        }
 
 
         function ValidateCheckBox(sender, args) {
@@ -446,6 +412,8 @@
                 args.IsValid = false;
             }
         }
+
+        
 
         
     </script>

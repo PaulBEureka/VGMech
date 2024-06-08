@@ -29,12 +29,21 @@ namespace VisualMech
         private List<LearnCard> tempCardList;
         private int totalLearnPages;
         private int totalVisitedPages;
+        private List<Badge> badgeList;
+        private Badge MeBadge;
+        bool isNewRecord = false;
 
         public static bool IsClear { get; set; }
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            
             tempCardList = Session["CardList"] as List<LearnCard>;
+            badgeList = Session["BadgeList"] as List<Badge>;
+            MeBadge = badgeList.FirstOrDefault(badge => badge.BadgeID == "3");
+            
+            
+
 
             GetUserInfos();
             EditBtn.Click += EditBtn_Click;
@@ -61,7 +70,13 @@ namespace VisualMech
                             }}
                             toastr['success']('{Session["Message"]}', 'Notification');
                     ";
-                
+
+                if (Session["BadgeMessage"] != null)
+                {
+                    script += Session["BadgeMessage"].ToString();
+                    Session["BadgeMessage"] = null;
+                }
+
                 ClientScript.RegisterClientScriptBlock(this.GetType(), "MyScript", script, true);
                 Session["Message"] = null;
             }
@@ -71,10 +86,11 @@ namespace VisualMech
         {
             if (customFile.HasFile)
             {
+                lblMessage.Visible = false;
                 try
                 {
-                    int maxFileSizeKB = 2000; 
-                    int fileSizeKB = customFile.PostedFile.ContentLength / 1024; 
+                    int maxFileSizeKB = 2000;
+                    int fileSizeKB = customFile.PostedFile.ContentLength / 1024;
 
                     if (fileSizeKB > maxFileSizeKB)
                     {
@@ -90,13 +106,27 @@ namespace VisualMech
 
                     string avatarPath = "Avatars/" + fileName;
                     Session["Message"] = "User avatar successfully updated";
+
+                    
+
                     UpdateAvatarPathInDatabase(avatarPath);
+
+                    isNewRecord = MeBadge.RecordBadgeToUser(Session["Current_ID"].ToString());
+                    if (isNewRecord)
+                    {
+                        Session["BadgeMessage"] = MeBadge.GetToastString();
+                    }
+
                 }
                 catch (Exception ex)
                 {
                     lblMessage.Text = "Error uploading file: " + ex.Message;
                     lblMessage.Visible = true;
                     lblMessage.ForeColor = System.Drawing.Color.Red;
+                }
+                finally
+                {
+                    Response.Redirect("UserPage.aspx");
                 }
             }
             else
@@ -131,7 +161,9 @@ namespace VisualMech
 
                     Session["CurrentAvatarPath"] = UserDataGather.GetUserAvatarPath(Session["Current_ID"].ToString());
 
-                    Response.Redirect(Request.RawUrl);
+                    
+
+
 
 
                 }
@@ -143,6 +175,54 @@ namespace VisualMech
 
                 }
             }
+            
+        }
+
+        private string GetUserBadges()
+        {
+            string content = "";
+
+            string query = "SELECT * FROM owned_badges WHERE user_id = @UserId";
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@UserId", Session["Current_ID"]);
+
+                        connection.Open();
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                DateTime nowDate = DateTime.MinValue;
+
+                                string badgeTitle = reader.GetString("badge_name");
+
+                                DateTime localTimestamp = (DateTime)reader["obtained_date"];
+                                nowDate = localTimestamp.ToLocalTime();
+
+                                string badgeDateTime = nowDate.ToString("M/d/yyyy h:mm tt");
+
+                                Badge obtainedBadge = badgeList.FirstOrDefault(badge => badge.Title == badgeTitle);
+
+                                content += obtainedBadge.CreateBadgeHTML(badgeDateTime);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    lblMessage.Text = ex.Message;
+                    lblMessage.Visible = true;
+                    lblMessage.ForeColor = System.Drawing.Color.Red;
+                    return ""; // Return empty string on error
+                }
+            }
+
+            return content;
         }
 
         private string GetUserAvatarHtml()
@@ -160,24 +240,24 @@ namespace VisualMech
                         connection.Open();
                         using (MySqlDataReader reader = command.ExecuteReader())
                         {
-                            if (reader.Read()) 
+                            if (reader.Read())
                             {
                                 int pathIndex = reader.GetOrdinal("avatar_path");
-                                if (!reader.IsDBNull(pathIndex)) 
+                                if (!reader.IsDBNull(pathIndex))
                                 {
                                     string path = reader.GetString(pathIndex);
-                                    string imageHtml = $@"<img src=""{path}"" alt=""User"" class=""rounded-circle shadow"" width=""100"" height=""100"">";
+                                    string imageHtml = $@"<img src=""{path}"" id=""avatarImg"" alt=""User"" class=""rounded-circle shadow"" width=""100"" height=""100"">";
 
                                     return imageHtml;
                                 }
                                 else
                                 {
-                                    return ""; 
+                                    return "";
                                 }
                             }
                             else
                             {
-                                return ""; 
+                                return "";
                             }
                         }
                     }
@@ -207,14 +287,14 @@ namespace VisualMech
                         connection.Open();
                         using (MySqlDataReader reader = command.ExecuteReader())
                         {
-                            if (reader.Read()) 
+                            if (reader.Read())
                             {
                                 int pathIndex = reader.GetOrdinal("avatar_path");
-                                if (!reader.IsDBNull(pathIndex)) 
+                                if (!reader.IsDBNull(pathIndex))
                                 {
                                     string oldPath = reader.GetString(pathIndex);
 
-                               
+
 
                                     if (!string.IsNullOrEmpty(oldPath) && File.Exists(Server.MapPath(oldPath)) && oldPath != "Images/person_icon.png")
                                     {
@@ -261,7 +341,7 @@ namespace VisualMech
                             if (reader.Read())
                             {
                                 Session["CurrentUser"] = reader.IsDBNull(reader.GetOrdinal("username")) ? "" : reader.GetString(reader.GetOrdinal("username"));
-                                sessionEmail = reader.IsDBNull(reader.GetOrdinal("email")) ? "": reader.GetString(reader.GetOrdinal("email"));
+                                sessionEmail = reader.IsDBNull(reader.GetOrdinal("email")) ? "" : reader.GetString(reader.GetOrdinal("email"));
                                 sessionAboutMe = reader.IsDBNull(reader.GetOrdinal("about_me")) ? "" : reader.GetString(reader.GetOrdinal("about_me"));
 
 
@@ -301,6 +381,7 @@ namespace VisualMech
                                     VisitedPagesLit.Text = GetVisitedPages();
                                     RecomenddedPagesLit.Text = GetRecommendedPages();
                                     UserProgressLit.Text = GetUserProgress();
+                                    GainedBadgesLit.Text = GetUserBadges();
                                 }
                             }
                         }
@@ -321,7 +402,7 @@ namespace VisualMech
 
             float temp = (float)totalVisitedPages / totalLearnPages;
             double progressPercent = Math.Round((temp * 100), MidpointRounding.AwayFromZero);
-            
+
             return $@"<div class=""progress"">
                             <div class=""progress-bar progress-bar-striped progress-bar-animated bg-danger"" role=""progressbar"" aria-valuenow=""{progressPercent}"" aria-valuemin=""0"" aria-valuemax=""100"" style=""width: {progressPercent}%""></div>
                         </div>
@@ -393,7 +474,7 @@ namespace VisualMech
 
             titleList = titleList.Except(visitedPagesList).ToList();
 
-            foreach(string title in titleList)
+            foreach (string title in titleList)
             {
                 foreach (LearnCard card in tempCardList)
                 {
@@ -453,7 +534,7 @@ namespace VisualMech
                 tempClear = false;
             }
 
-            if(!InputValidator.CheckEmail(InputEmail.Text) && InputEmail.Text != Session["CurrentEmail"].ToString())
+            if (!InputValidator.CheckEmail(InputEmail.Text) && InputEmail.Text != Session["CurrentEmail"].ToString())
             {
                 EmailValidatorlbl.Text = "Email already taken";
                 EmailValidatorlbl.Visible = true;
@@ -650,7 +731,7 @@ namespace VisualMech
                 NewPasswordPanel.Visible = true;
             }
         }
-            
+
         protected void CancelChangePassBtn_Click(object sender, EventArgs e)
         {
             ChangePasswordPanel.Visible = false;
@@ -668,7 +749,7 @@ namespace VisualMech
             DeleteAccManageBtn.Visible = true;
             UploadBtn.Visible = true;
             customFile.Visible = true;
-            
+
         }
 
         protected void UpdatePassBtn_Click(object sender, EventArgs e)
@@ -712,8 +793,8 @@ namespace VisualMech
                 }
             }
 
-            
-        
+
+
         }
 
         protected void ManageBtn_Click(object sender, EventArgs e)
@@ -725,7 +806,7 @@ namespace VisualMech
             ExitManageBtn.Visible = true;
             DeleteAccManageBtn.Visible = true;
             ManageBtn.Visible = false;
-            
+
         }
 
         protected void ExitManageBtn_Click(object sender, EventArgs e)
@@ -809,5 +890,7 @@ namespace VisualMech
             }
         }
 
+
+    
     }
 }

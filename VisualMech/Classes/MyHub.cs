@@ -172,6 +172,7 @@ namespace VisualMech
         {
             string allLeaderboardsString = "";
             string congratsScript = null;
+            string badgeScript = null;
             string miniGameTitle = miniGameInfo[0];
             string sessionPlayerName = miniGameInfo[1];
             string currentRank = miniGameInfo[2];
@@ -187,6 +188,7 @@ namespace VisualMech
                     SELECT 
                         game_record.*, 
                         user.username, 
+                        user.user_id,
                         avatar.avatar_path 
                     FROM 
                         game_record 
@@ -213,6 +215,7 @@ namespace VisualMech
                         while (await reader.ReadAsync())
                         {
                             string username = reader["username"].ToString();
+                            int userId = reader.GetInt32("user_id");
                             string time_finished = reader["time_finished"].ToString();
                             string score = reader["game_score"].ToString();
                             string avatarPath = reader["avatar_path"].ToString();
@@ -252,6 +255,7 @@ namespace VisualMech
                                 int currentScoreInt = int.Parse(currrentScore);
                                 int currentRankInt = int.Parse(currentRank);
 
+                                
                                 if (currrentScore != "0")
                                 {
                                     if (newScore > currentScoreInt)
@@ -317,7 +321,7 @@ namespace VisualMech
             }
 
             
-            return new string[4] { allLeaderboardsString, congratsScript, returnRank, returnScore };
+            return new string[] { allLeaderboardsString, congratsScript, returnRank, returnScore };
         }
 
         private async Task<string[]> RetrieveRepliesData(string[] info)

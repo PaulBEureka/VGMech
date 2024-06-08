@@ -87,6 +87,11 @@
         });
 
         function onSuccess4(response) {
+            var badgeScript = response[4];
+            if (badgeScript != null) {
+                eval(badgeScript);
+            }
+
             updateLeaderboards(response);
             
         }
