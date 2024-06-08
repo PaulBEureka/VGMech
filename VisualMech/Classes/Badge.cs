@@ -114,7 +114,7 @@ namespace VisualMech.Classes
                 ";
         }
 
-        public string CreateBadgeHTML(string dateObtained)
+        public string CreateBadgeHTMLActive(string dateObtained)
         {
             return $@"<div class=""col"">
                         <div class=""card-badge"">
@@ -123,7 +123,7 @@ namespace VisualMech.Classes
                                 </div>
                                 <div class=""content"">
                                     <div class=""detail"">
-                                        <p class=""text-center"">Date obtained:<br/>{dateObtained}</p>
+                                        <p class=""text-center""><strong>Date obtained:</strong><br/>{dateObtained}</p>
                                         <p><strong>Description:</strong><br />{Description}</p>
                                     </div>
                                 </div>
@@ -134,5 +134,24 @@ namespace VisualMech.Classes
                     </div>";
         }
 
+        public string CreateBadgeHTMLDisabled()
+        {
+            return $@"<div class=""col"">
+                        <div class=""card-badge-inactive"">
+                                <div class=""container-image"">
+                                    <img class=""image-circle"" src=""{Path}"">
+                                </div>
+                                <div class=""content"">
+                                    <div class=""detail"">
+                                        <p class=""text-center fw-bold"">Badge not yet obtained</p>
+                                        <p><strong>Description:</strong><br />{Description}</p>
+                                    </div>
+                                </div>
+                        </div>
+                        <div clas=""container"">
+                            <p class=""fw-bold text-center"">{Title}</p>
+                        </div>
+                    </div>";
+        }
     }
 }

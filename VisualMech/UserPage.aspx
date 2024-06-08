@@ -309,7 +309,7 @@
                     <div class="col-sm-12 mb-3">
                         <div class="card_user h-100">
                             <div class="card-body-user">
-                                <h6 class="d-flex align-items-center mb-3">Badges Earned</h6>
+                                <h6 class="d-flex align-items-center mb-3">Badges</h6>
                                 <div class="justify-content-evenly badge-container">
                                     <asp:Literal ID="GainedBadgesLit" runat="server"></asp:Literal>
                                     
