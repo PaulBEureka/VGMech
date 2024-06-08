@@ -180,6 +180,7 @@ namespace VisualMech
 
         private string GetUserBadges()
         {
+            Dictionary<string, string> badgeDict = new Dictionary<string, string>();
             string content = "";
 
             string query = "SELECT * FROM owned_badges WHERE user_id = @UserId";
@@ -206,12 +207,24 @@ namespace VisualMech
 
                                 string badgeDateTime = nowDate.ToString("M/d/yyyy h:mm tt");
 
-                                Badge obtainedBadge = badgeList.FirstOrDefault(badge => badge.Title == badgeTitle);
-
-                                content += obtainedBadge.CreateBadgeHTML(badgeDateTime);
+                                badgeDict.Add(badgeTitle, badgeDateTime);
                             }
                         }
                     }
+                    
+                    //Not colored if not obtained
+                    foreach(Badge badge in badgeList)
+                    {
+                        if (badgeDict.ContainsKey(badge.Title))
+                        {
+                            content += badge.CreateBadgeHTMLActive(badgeDict[badge.Title]);
+                        }
+                        else
+                        {
+                            content += badge.CreateBadgeHTMLDisabled();
+                        }
+                    }
+
                 }
                 catch (Exception ex)
                 {
