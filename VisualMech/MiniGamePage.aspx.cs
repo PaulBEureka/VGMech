@@ -23,12 +23,14 @@ namespace VisualMech
         private static string cardTitle = "";
         private static string sessionPlayer;
         private static List<MiniGameCard> miniGameCardList;
-
+        private static List<Badge> badgeList;
 
         protected void Page_Load(object sender, EventArgs e)
         {
 
             miniGameCardList = Session["MiniGameCardList"] as List<MiniGameCard>;
+
+            badgeList = Session["BadgeList"] as List<Badge>;
 
             if (!IsPostBack)
             {
@@ -94,13 +96,26 @@ namespace VisualMech
 
             string currentRank;
             string currentScore;
+            string badgeScript = null;
 
             HttpContext context = HttpContext.Current;
+
 
             if (context.Session[sessionPlayerCurrentRank] != null)
             {
                 currentRank = context.Session[sessionPlayerCurrentRank].ToString();
                 currentScore = context.Session[sessionPlayerCurrentScore].ToString();
+
+                if(int.Parse(currentRank) <= 5)
+                {
+                    Badge EliteBadge = badgeList.FirstOrDefault(badge => badge.BadgeID == "2");
+                    bool isNewRecord = EliteBadge.RecordBadgeToUser(context.Session["Current_ID"].ToString());
+                    if (isNewRecord)//Only show badge script if this is a new record
+                    {
+                        badgeScript = EliteBadge.GetToastString();
+                    }
+                }
+
             }
             else
             {
@@ -108,7 +123,9 @@ namespace VisualMech
                 currentScore = "0";
             }
 
-            return new string[4] { cardTitle , sessionPlayer, currentRank, currentScore};
+            
+
+            return new string[] { cardTitle , sessionPlayer, currentRank, currentScore, badgeScript};
         }
 
         [WebMethod]

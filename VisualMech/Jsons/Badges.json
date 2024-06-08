@@ -1,0 +1,32 @@
+[
+  {
+    "BadgeID":  "0",
+    "Title": "Beginning of a journey",
+    "Description": "Visit One Learn Mechanic Page",
+    "Path": "Images/One_Learning.png"
+  },
+  {
+    "BadgeID": "1",
+    "Title": "Master Explorer",
+    "Description": "Visit All Learning Mechanics",
+    "Path": "Images/All_Learning.png"
+  },
+  {
+    "BadgeID": "2",
+    "Title": "Elite Five",
+    "Description": "Reach top 5 leaderboard of any minigame",
+    "Path": "Images/Top_5.png"
+  },
+  {
+    "BadgeID": "3",
+    "Title": "I am Me",
+    "Description": "Change Default Avatar Badge",
+    "Path": "Images/Change_DP.png"
+  },
+  {
+    "BadgeID": "4",
+    "Title": "First Word Wizard",
+    "Description": "Make your first comment Badge",
+    "Path": "Images/First_Comment.png"
+  }
+]

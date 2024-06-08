@@ -841,7 +841,7 @@ body {
 }
 
 .badge-container {
-    height: 200px;
+    height: 260px;
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
@@ -871,13 +871,13 @@ body {
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        background: #e7e7e7;
+        background: #9f1717;
         width: 120px;
         height: 120px;
         cursor: pointer;
         border: none;
         border-radius: 50%;
-        box-shadow: 0 0 3px 1px #1818183d, 2px 2px 3px #18181865, inset 2px 2px 2px #ffffff;
+        box-shadow: 0 0 3px 1px #e215153d, 2px 2px 3px #98484865, inset 2px 2px 2px #f48282;
         transition: all .3s ease-in-out, opacity .3s;
         transition-delay: .6s, 0s;
     }
@@ -921,7 +921,7 @@ body {
         cursor: pointer;
         border: none;
         border-radius: 8px;
-        box-shadow: 0 0 3px 1px #1818183d, 2px 2px 3px #18181865, inset 2px 2px 2px #ffffff;
+        box-shadow: 0 0 3px 1px #e215153d, 2px 2px 3px #98484865, inset 2px 2px 2px #f48282;
         visibility: hidden;
         transition: .3s ease-in-out;
         transition-delay: 0s;
@@ -929,8 +929,8 @@ body {
     }
 
     .card-badge:hover .content {
-        width: 200px;
-        height: auto;
+        width: 250px;
+        height: 170px;
         visibility: visible;
         transition-delay: .5s;
     }
@@ -1048,4 +1048,13 @@ body {
 .tooltip {
     background-color: #fff; 
     color: #000; 
+}
+
+
+/*Badges styles*/
+.badge-toast{
+    height:100px;
+    width:100px;
+    border-radius:50px;
+    border:5px solid white;
 }

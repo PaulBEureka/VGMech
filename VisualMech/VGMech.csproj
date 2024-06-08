@@ -643,6 +643,7 @@
     <Content Include="AdminCardPage.aspx" />
     <Content Include="AdminLearners.aspx" />
     <Content Include="AdminChange.aspx" />
+    <Content Include="Jsons\Badges.json" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile2.pubxml" />
@@ -701,6 +702,8 @@
     <Compile Include="AdminSite.Master.designer.cs">
       <DependentUpon>AdminSite.Master</DependentUpon>
     </Compile>
+    <Compile Include="Classes\Badge.cs" />
+    <Compile Include="Classes\BadgeManager.cs" />
     <Compile Include="Classes\Card.cs" />
     <Compile Include="Classes\CardManager.cs" />
     <Compile Include="Classes\EmailSender.cs" />
