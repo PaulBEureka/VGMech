@@ -285,10 +285,12 @@
                     <div class="col-sm-6 mb-3">
                       <div class="card_user h-100">
                         <div class="card-body-user">
-                            <h6 class="d-flex align-items-center mb-3">Recommended New Learn Game Mechanics</h6>
+                            <h6 class="d-flex align-items-center mb-3">Recommended Learn Game Mechanics</h6>
                             <ul class="list-group list-group-flush">
                                 
-                                <asp:Literal ID="RecomenddedPagesLit" runat="server"></asp:Literal>
+                                <asp:Literal ID="RecomenddedPagesLit" runat="server">
+                                    
+                                </asp:Literal>
                             </ul>
                         </div>
                       </div>
