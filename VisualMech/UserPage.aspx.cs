@@ -462,8 +462,15 @@ namespace VisualMech
                                         content += $@"<li class=""list-group-item"">Date visited: {visitedDateTime} <br /><a class=""learn-link"" href=""SamplePage.aspx?Learn={card.CardID}"">{mechanicTitle}</a></li>";
                                     }
                                 }
+
+                                
                                 totalVisitedPages++;
                             }
+                        }
+
+                        if (content == "")
+                        {
+                            content += $@"<li class=""list-group-item text-center"">Explore some of the recommended learn game mechanics over to the left!</li>";
                         }
                     }
                 }
@@ -496,6 +503,13 @@ namespace VisualMech
                         content += $@"<li class=""list-group-item""><a href=""SamplePage.aspx?Learn={card.CardID}"" class=""learn-link"" data-card-id =""{card.CardID}"">{title.ToUpper()}</a></li>";
                     }
                 }
+            }
+
+            if (content == "")
+            {
+                content += $@"
+                    <li class=""list-group-item text-center"">All Learn Mechanics completed!</li>
+                ";
             }
 
             return content;
