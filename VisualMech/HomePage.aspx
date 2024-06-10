@@ -14,6 +14,18 @@
 
         <div class="main-home-color">
             <!-- Home page layout -->
+        <div>
+            <div class="question-rectangle position-fixed row">
+                <div class="question-badge d-grid text-center col-3">
+                    <i class="fa-solid fa-circle-question question-icon m-auto text-center"></i>
+                </div>
+                <div class="col-9">
+                    <div class="row text-start">
+                        <p class="text-white question-font"><strong>Having troubles?</strong><br />Download our User Manual <a href="/PDFs/User_Manual_VGMech.pdf" class="text-white" download="User_Manual_VGMech.pdf">Here!</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
        <section id="homepage" class="intro-section-color" aria-labelledby="aspnetTitle">
@@ -177,19 +189,29 @@
             </div>
 
         </section>
+
+            
+            
         </div>
 
         
-
+         
         
 
     </main>
+    
     <script src="https://kit.fontawesome.com/d7d0e3dd38.js" crossorigin="anonymous"></script>
 
 
 
     <script src="/Content/custom.js"></script>
-    
+    <script>
+        const questionRectangle = document.querySelector('.question-rectangle');
+
+        questionRectangle.addEventListener('mouseover', () => {
+            questionRectangle.style.animation = 'none'; 
+        });
+    </script>
    
 
 </asp:Content>
