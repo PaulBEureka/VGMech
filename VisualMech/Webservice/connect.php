@@ -1,4 +1,6 @@
 <?php
+header("Access-Control-Allow-Origin: https://almers5.github.io");
+
 $servername = "mysql8010.site4now.net";
 $username = "aa9c62_visualg";
 $password = "Hello12345!"; 

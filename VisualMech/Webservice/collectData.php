@@ -1,6 +1,9 @@
 <?php
 include_once 'connect.php';
 
+// Allow requests from specific origin
+header("Access-Control-Allow-Origin: https://almers5.github.io");
+
 $user_id = $_POST['user_id'];
 $game_title = $_POST['game_title'];
 $game_score = $_POST['game_score'];
