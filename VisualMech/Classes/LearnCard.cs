@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Script.Serialization;
 using VisualMech.Classes;
@@ -24,8 +25,17 @@ namespace VisualMech.Content.Classes
         public string PossibleCombinations { get; set; }
         public string InteractiveControls { get; set; }
 
+        public string GetFormattedCodeText()
+        {
+            // Replace <br /> with new line characters
+            string formattedCode = Regex.Replace(CodeText, "<br />", "\n");
 
-        
+            // Replace &nbsp; with spaces
+            formattedCode = formattedCode.Replace("&nbsp;", " ");
+
+            return formattedCode;
+        }
+
         public override string GetCardHtml()
         {
             return $@"
@@ -87,7 +97,7 @@ namespace VisualMech.Content.Classes
                             </div>
                         </div>
                         <div class=""row justify-content-center m-auto gameMech-code-holder"">
-                            <p class= ""text-start text-break"" id=""codeText"">{CodeText}</>
+                           <pre><code class=""language-csharp"" id=""codeText"">{GetFormattedCodeText()}</code></pre>
                         </div>
                     </div>
                 </div>

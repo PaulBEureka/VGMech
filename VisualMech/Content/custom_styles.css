@@ -383,11 +383,15 @@ body {
 
 
 .gameMech-code-holder {
-    overflow:auto;
+    overflow-y: hidden;
     width: 98%;
     max-height: 600px;
-    background-color: white;
-    padding-top: 3em;
+    background-color: #f5f2f0;
+}
+
+pre {
+    max-height: 580px;
+    overflow:auto;
 }
 
 .gameMech-layout {
