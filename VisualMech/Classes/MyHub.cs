@@ -172,7 +172,6 @@ namespace VisualMech
         {
             string allLeaderboardsString = "";
             string congratsScript = null;
-            string badgeScript = null;
             string miniGameTitle = miniGameInfo[0];
             string sessionPlayerName = miniGameInfo[1];
             string currentRank = miniGameInfo[2];
