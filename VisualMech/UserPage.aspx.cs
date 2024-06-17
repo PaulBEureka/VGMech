@@ -204,10 +204,10 @@ namespace VisualMech
 
                                 DateTime localTimestamp = (DateTime)reader["obtained_date"];
                                 nowDate = localTimestamp.ToLocalTime();
+                                string temp = nowDate.ToLongDateString();    
 
-                                string badgeDateTime = nowDate.ToString("M/d/yyyy h:mm tt");
 
-                                badgeDict.Add(badgeTitle, badgeDateTime);
+                                badgeDict.Add(badgeTitle, temp);
                             }
                         }
                     }
@@ -450,7 +450,7 @@ namespace VisualMech
                                 DateTime localTimestamp = (DateTime)reader["visited_timestamp"];
                                 nowDate = localTimestamp.ToLocalTime();
 
-                                string visitedDateTime = nowDate.ToString("M/d/yyyy h:mm tt");
+                                string visitedDateTime = nowDate.ToShortDateString() + " " + nowDate.ToShortTimeString();
 
                                 visitedPagesList.Add(mechanicTitle);
 
