@@ -37,7 +37,13 @@ namespace VisualMech
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            
+            if (Session["Current_ID"] == null)
+            {
+                Response.Redirect("HomePage.aspx");
+            }
+
+
+
             tempCardList = Session["CardList"] as List<LearnCard>;
             badgeList = Session["BadgeList"] as List<Badge>;
             MeBadge = badgeList.FirstOrDefault(badge => badge.BadgeID == "3");
@@ -560,6 +566,15 @@ namespace VisualMech
                 UsernameValidatorlbl.Visible = true;
                 tempClear = false;
             }
+            else if(InputUsername.Text.Length > 15)
+            {
+                UsernameValidatorlbl.Text = "Username must be 1-15 characters long.";
+                UsernameValidatorlbl.Visible = true;
+                tempClear = false;
+            }
+
+
+
 
             if (!InputValidator.CheckEmail(InputEmail.Text) && InputEmail.Text != Session["CurrentEmail"].ToString())
             {
