@@ -329,6 +329,24 @@ __pycache__/
 *.odx.cs
 *.xsd.cs
 
+# Ignore Web.config file
+Web.config
+
+# Ignore Webservice folder
+Webservice/
+
+# Ignore PDFs folder
+PDFs/
+
+# Ignore Jsons folder
+Jsons/
+
+# Ignore Images folder
+Images/
+
+# Ignore Avatars folder
+Avatars/
+
 # OpenCover UI analysis results
 OpenCover/
 
