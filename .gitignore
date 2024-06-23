@@ -329,23 +329,23 @@ __pycache__/
 *.odx.cs
 *.xsd.cs
 
-# Ignore Web.config file
-Web.config
+# Ignore Web.config file inside VisualMech folder
+VisualMech/Web.config
 
-# Ignore Webservice folder
-Webservice/
+# Ignore Webservice folder and its contents inside VisualMech folder
+VisualMech/Webservice/
 
-# Ignore PDFs folder
-PDFs/
+# Ignore PDFs folder and its contents inside VisualMech folder
+VisualMech/PDFs/
 
-# Ignore Jsons folder
-Jsons/
+# Ignore Jsons folder and its contents inside VisualMech folder
+VisualMech/Jsons/
 
-# Ignore Images folder
-Images/
+# Ignore Images folder and its contents inside VisualMech folder
+VisualMech/Images/
 
-# Ignore Avatars folder
-Avatars/
+# Ignore Avatars folder and its contents inside VisualMech folder
+VisualMech/Avatars/
 
 # OpenCover UI analysis results
 OpenCover/

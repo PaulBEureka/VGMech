@@ -536,7 +536,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AdminLoginPage.aspx" />
-    <Content Include="Avatars\Screenshot 2024-04-18 172629.png" />
     <Content Include="Content\all.min.css" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
@@ -564,39 +563,6 @@
     <Content Include="HomePage.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Content\custom.js" />
-    <Content Include="Images\All_Learning.png" />
-    <Content Include="Images\andrei.png" />
-    <Content Include="Images\aries_pic.jpg" />
-    <Content Include="Images\Change_DP.png" />
-    <Content Include="Images\cj_pic.jpg" />
-    <Content Include="Images\CollectingMechanic_Thumbnail.png" />
-    <Content Include="Images\collecting_gif.gif" />
-    <Content Include="Images\collecting_thumb.png" />
-    <Content Include="Images\First_Comment.png" />
-    <Content Include="Images\game-mechanics-cover.png" />
-    <Content Include="Images\game-mechanics-cover2.png" />
-    <Content Include="Images\game-mechanics-cover3.png" />
-    <Content Include="Images\HealthSystem_Icon.png" />
-    <Content Include="Images\HealthSystem_Thumbnail.png" />
-    <Content Include="Images\health_gif.gif" />
-    <Content Include="Images\interaction_gif.gif" />
-    <Content Include="Images\InteractMechanic_Icon.png" />
-    <Content Include="Images\InteractMechanic_Thumbnail.png" />
-    <Content Include="Images\jump_card_bg.png" />
-    <Content Include="Images\kim_pic.jpg" />
-    <Content Include="Images\Mini_Game1_thumb.png" />
-    <Content Include="Images\movement_bg.png" />
-    <Content Include="Images\movement_gif.gif" />
-    <Content Include="Images\movement_icon.png" />
-    <Content Include="Images\One_Learning.png" />
-    <Content Include="Images\paul_pic.jpg" />
-    <Content Include="Images\person_icon.png" />
-    <Content Include="Images\ShootingMechanic_Thumbnail.png" />
-    <Content Include="Images\shooting_bg.png" />
-    <Content Include="Images\shooting_gif.gif" />
-    <Content Include="Images\shooting_thumb.png" />
-    <Content Include="Images\Top_5.png" />
-    <Content Include="Images\VGM_logo.png" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -646,7 +612,6 @@
     <Content Include="AdminLearners.aspx" />
     <Content Include="AdminChange.aspx" />
     <Content Include="Jsons\Badges.json" />
-    <Content Include="PDFs\User_Manual_VGMech.pdf" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile2.pubxml" />
@@ -692,11 +657,8 @@
     <Content Include="SignUpPage.aspx" />
     <Content Include="Site.Master" />
     <Content Include="ViewSwitcher.ascx" />
-    <Content Include="Web.config" />
     <Content Include="Bundle.config" />
     <Content Include="Site.Mobile.Master" />
-    <Content Include="Webservice\collectData.php" />
-    <Content Include="Webservice\connect.php" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdminLoginPage.aspx.cs">
@@ -837,12 +799,6 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
-    <None Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
-    <None Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
   </ItemGroup>
   <ItemGroup Condition="$(VisualStudioVersion) == '17.0'">
     <Reference Include="Microsoft.Data.Tools.Schema.Sql, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
